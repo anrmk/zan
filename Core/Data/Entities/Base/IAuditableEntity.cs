@@ -1,10 +1,6 @@
 ﻿using System;
 
 namespace Core.Entities.Base {
-    /// <summary>
-    /// Сушность с метками аудита
-    /// </summary>
-    /// <typeparam name="T">Тип сущности</typeparam>
     public interface IAuditableEntity {
         /// <summary>
         /// Дата создания

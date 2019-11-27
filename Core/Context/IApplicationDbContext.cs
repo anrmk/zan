@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Core.Context {
-    public interface IApplicationContext {
+    public interface IApplicationDbContext {
         Database ApplicationDatabase { get; }
         
         /// <summary>

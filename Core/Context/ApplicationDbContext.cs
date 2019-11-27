@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
+
 namespace Core.Context {
-    public class ApplicationContext: DbContext, IApplicationContext {
+    public class ApplicationDbContext: IdentityDbContext<ApplicationUserEntity>, IApplicationDbContext {
         /**
          * Первоначальное создание базы. Из консоли исполнить команды:
          * 1. Enable-Migrations
@@ -16,12 +19,15 @@ namespace Core.Context {
          */
         public Database ApplicationDatabase { get; private set; }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) {
-
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+           : base(options) {
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-           // optionsBuilder.UseNpgsql("Host=192.168.0.109;Database=smartwatch;Username=postgres;Password=12345");
+        protected override void OnModelCreating(ModelBuilder builder) {
+            base.OnModelCreating(builder);
+            // Customize the ASP.NET Core Identity model and override the defaults if needed.
+            // For example, you can rename the ASP.NET Core Identity table names and more.
+            // Add your customizations after calling base.OnModelCreating(builder);
         }
 
         public Task<int> SaveChangesAsync() {

@@ -12,7 +12,7 @@ namespace Core.Services.Base {
     /// </summary>
     /// <typeparam name="T">Тип данных, с которым работает сервис</typeparam>
     public abstract class AsyncEntityService<T>: IEntityService<T> where T : class {
-        protected IApplicationContext Context;
+        protected IApplicationDbContext Context;
 
         public bool ShareContext { get; set; } = false;
 
@@ -20,7 +20,7 @@ namespace Core.Services.Base {
         /// Конструктор
         /// </summary>
         /// <param name="context">Контекст СУБД</param>
-        protected AsyncEntityService(IApplicationContext context) {
+        protected AsyncEntityService(IApplicationDbContext context) {
             Context = context;
         }
 
