@@ -1,56 +1,53 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+﻿body {
+  background-color: #FFFFFF;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  font-size: 14px;
+.main.container {
+  margin-top: 2em;
 }
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
+
+.main.menu {
+  margin-top: 4em;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  transition: box-shadow 0.5s ease, padding 0.5s ease;
+}
+
+  .main.menu .item img.logo {
+    margin-right: 1.5em;
   }
+
+.overlay {
+  float: left;
+  margin: 0em 3em 1em 0em;
 }
 
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
+  .overlay .menu {
+    position: relative;
+    left: 0;
+    transition: left 0.5s ease;
+  }
+
+.main.menu.fixed {
+  background-color: #FFFFFF;
+  border: 1px solid #DDD;
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
 }
 
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+.overlay.fixed .menu {
+  left: 1150px;
 }
 
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
+.text.container .left.floated.image {
+  margin: 2em 2em 2em -4em;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
-html {
-  position: relative;
-  min-height: 100%;
+.text.container .right.floated.image {
+  margin: 2em -4em 2em 2em;
 }
 
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  line-height: 60px; /* Vertically center the text there */
+.ui.footer.segment {
+  margin: 5em 0em 0em;
+  padding: 5em 0em;
 }

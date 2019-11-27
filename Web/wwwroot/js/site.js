@@ -1,4 +1,35 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$(document).ready(function () {
+    // fix main menu to page on passing
+    $('.main.menu').visibility({
+        type: 'fixed'
+    });
 
-// Write your JavaScript code.
+    $('.overlay').visibility({
+        type: 'fixed',
+        offset: 80
+    });
+
+    // lazy load images
+    $('.image').visibility({
+        type: 'image',
+        transition: 'vertical flip in',
+        duration: 500
+    });
+
+    $('.checkbox').checkbox();
+
+    // show dropdown on hover
+    //$('.main.menu  .ui.dropdown').dropdown({
+    //    on: 'hover'
+    //});
+
+    $('.ui.dropdown').dropdown({
+        clearable: true,
+        on: 'hover'
+    });
+
+    $('.ui.accordion').accordion({ animateChildren: false });
+    $('.tabular.menu .item').tab();
+
+
+});
