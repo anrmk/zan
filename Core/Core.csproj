@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Dto\" />
+    <Folder Include="Data\Entities\" />
+    <Folder Include="Data\Models\" />
+    <Folder Include="Context\" />
+    <Folder Include="Services\Base\" />
+    <Folder Include="Services\Business\" />
+    <Folder Include="Services\Managers\" />
+  </ItemGroup>
+
+</Project>
