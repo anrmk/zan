@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace Core.Entities {
+namespace Core.Data.Entities {
     [Table(name: "ApplicationUsers")]
     public class ApplicationUserEntity: IdentityUser {
         [ForeignKey("Profile")]

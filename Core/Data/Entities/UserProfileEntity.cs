@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Core.Entities.Base;
+using Core.Data.Entities.Base;
 
-namespace Core.Entities {
+namespace Core.Data.Entities {
     [Table(name: "UserProfiles")]
     public class UserProfileEntity: AuditableEntity<long> {
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Entities.Base {
+namespace Core.Data.Entities.Base {
     public interface IAuditableEntity {
         /// <summary>
         /// Дата создания

@@ -1,4 +1,4 @@
-﻿namespace Core.Entities.Base {
+﻿namespace Core.Data.Entities.Base {
     /// <summary>
     /// Сущность
     /// </summary>

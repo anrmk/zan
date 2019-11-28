@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Core.Context;
-using Core.Entities;
+using Core.Data.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Web.App_Config;
 
 namespace Web {
     public class Startup {
@@ -30,10 +27,12 @@ namespace Web {
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            #region Identity
+            #region DB
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            #endregion
 
+            #region Identity
             services.AddIdentity<ApplicationUserEntity, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -42,7 +41,7 @@ namespace Web {
                 // Password settings
                 options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 4;
-                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequiredUniqueChars = 4;
@@ -71,6 +70,9 @@ namespace Web {
             #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            Core.Config.ServiceModuleConfig.Configuration(services);
+            MapperConfig.Register(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -83,7 +85,6 @@ namespace Web {
                 app.UseHsts();
             }
 
-            //app.UseIdentity();
             app.UseAuthentication();
 
             app.UseHttpsRedirection();

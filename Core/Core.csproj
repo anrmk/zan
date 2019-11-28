@@ -10,9 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Dto\" />
     <Folder Include="Data\Models\" />
-    <Folder Include="Services\Business\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Core.Entities.Base {
+namespace Core.Data.Entities.Base {
     /// <summary>
     /// Базовая сущность
     /// </summary>

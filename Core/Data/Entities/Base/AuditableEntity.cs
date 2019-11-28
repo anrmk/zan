@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.Entities.Base {
+namespace Core.Data.Entities.Base {
     /// <summary>
     /// Сушность с метками аудита
     /// </summary>
