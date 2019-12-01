@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="account">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>@ViewData["Title"] - Zan</title>
+    <partial name="_StylePartial" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="ui middle aligned center aligned grid">
+        <div class="column" style="max-width: 450px;">
+            <h2 class="ui purple image header">
+                <img src="~/img/rkao-logo.png" class="image" />
+                <span class="content">
+                    Log-in to your account
+                </span>
+            </h2>
+            @RenderBody()
+        </div>
+    </div>
+
+    <partial name="_ScriptPartial" />
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

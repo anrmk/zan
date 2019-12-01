@@ -58,7 +58,7 @@ namespace Web {
             services.ConfigureApplicationCookie(options => {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
-                options.Cookie.Expiration = TimeSpan.FromDays(150);
+                options.Cookie.Expiration = TimeSpan.FromMinutes(15);
                 // If the LoginPath isn't set, ASP.NET Core defaults 
                 // the path to /Account/Login.
                 options.LoginPath = "/Account/Login";

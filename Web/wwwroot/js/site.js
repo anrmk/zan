@@ -33,3 +33,19 @@
 
 
 });
+
+$.validator.setDefaults({
+    errorClass: 'errorField',
+    errorElement: 'div',
+
+    //errorPlacement: function (error, element) {
+    //    error.addClass("ui red pointing above ui label error").appendTo(element.closest('div.field'));
+    //},
+    highlight: function (element, errorClass, validClass) {
+        //$(element).closest("form").addClass("error").removeClass("success");
+        $(element).closest("div.field").addClass("error").removeClass("success");
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        $(element).closest(".error").removeClass("error").addClass("success");
+    }
+});

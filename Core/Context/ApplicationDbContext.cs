@@ -10,7 +10,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace Core.Context {
-    public class ApplicationDbContext: DbContext, IApplicationDbContext {
+    public class ApplicationDbContext: IdentityDbContext<ApplicationUserEntity>, IApplicationDbContext {
         /**
          * Первоначальное создание базы. Из консоли исполнить команды:
          * 1. Enable-Migrations

@@ -1,4 +1,10 @@
-﻿<div class="ui borderless main menu">
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Data.Entities
+
+@inject SignInManager<ApplicationUserEntity> SignInManager
+@inject UserManager<ApplicationUserEntity> UserManager
+
+<div class="ui borderless main menu">
     <div class="ui container">
         <div class="header item">
             <img class="logo" src="~/img/rkao-logo.png">
@@ -7,21 +13,18 @@
         <a href="#" class="item">Blog</a>
         <a href="#" class="item">Articles</a>
         <a href="#" class="ui right floated dropdown item upward" tabindex="0">
-            Dropdown <i class="dropdown icon"></i>
+            @UserManager.GetUserName(User) <i class="dropdown icon"></i>
             <div class="menu transition hidden" tabindex="-1">
                 <div class="item">Link Item</div>
                 <div class="item">Link Item</div>
                 <div class="divider"></div>
                 <div class="header">Header Item</div>
                 <div class="item">
-                    <i class="dropdown icon"></i>
-                    Sub Menu
-                    <div class="menu transition hidden">
-                        <div class="item">Link Item</div>
-                        <div class="item">Link Item</div>
-                    </div>
+                    <i class="settings icon"></i> Account Settings
                 </div>
-                <div class="item">Link Item</div>
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="item">
+                    <div class="submit" href="#"><i class="sign-out icon"></i> Log out</div>
+                </form>
             </div>
         </a>
     </div>

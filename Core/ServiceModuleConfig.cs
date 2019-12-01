@@ -11,6 +11,7 @@ namespace Core.Config {
         public static void Configuration(IServiceCollection services) {
             ///Context
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+            
 
             ///Managers
             services.AddTransient<IUserProfileManager, UserProfileManager>();
