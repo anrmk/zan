@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using Core.Common;
 using Core.Context;
 using Core.Data.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +19,12 @@ using Web.App_Config;
 
 namespace Web {
     public class Startup {
+        private readonly List<CultureInfo> supportedCultures = new List<CultureInfo> {
+                    new CultureInfo("kk"),
+                    new CultureInfo("en"),
+                    new CultureInfo("ru")
+                };
+
         public Startup(IConfiguration configuration) {
             Configuration = configuration;
         }
@@ -69,6 +81,28 @@ namespace Web {
             });
             #endregion
 
+            #region Localization
+            services.Configure<RouteOptions>(options => {
+                options.ConstraintMap.Add("culture", typeof(LanguageRouteConstraint));
+            });
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts => { opts.ResourcesPath = "Resources"; })
+                .AddDataAnnotationsLocalization();
+
+            services.Configure<RequestLocalizationOptions>(opts => {
+                //var supportedCultures = new List<CultureInfo> {
+                //    new CultureInfo("kk"),
+                //    new CultureInfo("en"),
+                //    new CultureInfo("ru")
+                //};
+
+                opts.DefaultRequestCulture = new RequestCulture("ru");
+                opts.SupportedCultures = supportedCultures;
+                opts.SupportedUICultures = supportedCultures;
+            });
+            #endregion
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             Core.Config.ServiceModuleConfig.Configuration(services);
@@ -84,6 +118,14 @@ namespace Web {
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseRequestLocalization(new RequestLocalizationOptions {
+                DefaultRequestCulture = new RequestCulture("ru"),
+                // Formatting numbers, dates, etc.
+                SupportedCultures = supportedCultures,
+                // UI strings that we have localized.
+                SupportedUICultures = supportedCultures
+            });
 
             app.UseAuthentication();
 

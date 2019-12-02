@@ -1,31 +1,62 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Core.Data.Entities
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Builder
 
 @inject SignInManager<ApplicationUserEntity> SignInManager
 @inject UserManager<ApplicationUserEntity> UserManager
 
+@inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+}
 <div class="ui borderless main menu">
     <div class="ui container">
         <div class="header item">
-            <img class="logo" src="~/img/rkao-logo.png">
+            <img class="logo" src="~/img/rkao-logo.png" />
             Zan DataBase
         </div>
-        <a href="#" class="item">Blog</a>
-        <a href="#" class="item">Articles</a>
-        <a href="#" class="ui right floated dropdown item upward" tabindex="0">
-            @UserManager.GetUserName(User) <i class="dropdown icon"></i>
-            <div class="menu transition hidden" tabindex="-1">
-                <div class="item">Link Item</div>
-                <div class="item">Link Item</div>
-                <div class="divider"></div>
-                <div class="header">Header Item</div>
-                <div class="item">
-                    <i class="settings icon"></i> Account Settings
-                </div>
-                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="item">
-                    <div class="submit" href="#"><i class="sign-out icon"></i> Log out</div>
-                </form>
+        <a asp-controller="Home" asp-action="Index" class="item"><i class="star icon"></i> @Localizer["AllDocs"]</a>
+        <a asp-controller="Home" asp-action="Index" class="item"><i class="sitemap icon"></i> @Localizer["Tema"]</a>
+
+        <div class="ui dropdown item">
+            <i class="book icon"></i>@Localizer["Dictionaries"]<i class="dropdown icon"></i>
+            <div class="menu">
+                <a class="item">@Localizer["DicTermin"]</a>
+                <a class="item">@Localizer["DicJurTermin"]</a>
             </div>
-        </a>
+        </div>
+        <div class="right menu">
+            <div class="ui dropdown item">
+                <i class="globe icon"></i>@Localizer["Language"] <i class="dropdown icon"></i>
+                <div class="menu">
+                    <form class="item" method="post" role="form" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" asp-route-culture="en">
+                        <a href="javascript:void(0);" onclick="$(this).closest('form').submit();"><i class="gb uk flag"></i> English</a>
+                    </form>
+                    <form class="item" method="post" role="form" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" asp-route-culture="ru">
+                        <a href="javascript:void(0);" onclick="$(this).closest('form').submit();"><i class="ru flag"></i> Русский</a>
+                    </form>
+                    <form class="item" method="post" role="form" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" asp-route-culture="kk">
+                        <a href="javascript:void(0);" onclick="$(this).closest('form').submit();"><i class="kz flag"></i> Қазақ</a>
+                    </form>
+                </div>
+            </div>
+            <div class="ui dropdown item">
+                <img class="ui avatar image" src="~/img/elliot.jpg">
+                @UserManager.GetUserName(User) <i class="dropdown icon"></i>
+                <div class="menu transition hidden" tabindex="-1">
+                    <div class="item"><i class="info icon"></i> @Localizer["Guide"]</div>
+                    <div class="divider"></div>
+                    <div class="item"><i class="settings icon"></i> @Localizer["AccountSettings"]</div>
+                    <form class="item" method="post" role="form" asp-area="" asp-controller="Account" asp-action="Logout">
+                        <a href="javascript:void(0);" onclick="$(this).closest('form').submit();"><i class="sign-out icon"></i> @Localizer["Exit"]</a>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
