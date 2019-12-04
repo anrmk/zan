@@ -6,7 +6,9 @@ using Core.Data.Entities;
 using Core.Data.Entities.Base;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Hosting;
 
 
 namespace Core.Context {
@@ -20,9 +22,24 @@ namespace Core.Context {
          * Аналогично, главное не затирать старые миграции и заново не включать миграции
          * Версия миграции: 1.0.1
          */
+        private IHostingEnvironment _env;
+        private readonly IConfiguration _configuration;
+        private string _contentRootPath = "";
+
         public Database ApplicationDatabase { get; private set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration, IHostingEnvironment environment ) : base(options) {
+            _configuration = configuration;
+            _contentRootPath = environment.ContentRootPath;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+            string conn = _configuration.GetConnectionString("DefaultConnection");
+            var dir = AppDomain.CurrentDomain.BaseDirectory;
+            if(conn.Contains("%CONTENTROOTPATH%")) {
+                conn = conn.Replace("%CONTENTROOTPATH%", _contentRootPath);
+            }
+            optionsBuilder.UseSqlServer(conn);
         }
 
         protected override void OnModelCreating(ModelBuilder builder) {
