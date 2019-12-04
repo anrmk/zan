@@ -29,9 +29,16 @@
     });
 
     $('.ui.accordion').accordion({ animateChildren: false });
-    $('.tabular.menu .item').tab();
+    $('.menu .item').tab();
 
-
+    $('.ui.datepicker').calendar({
+        //type: 'date',
+        //endCalendar: $('.rangeend')
+    });
+    //$('#rangeend').calendar({
+    //    type: 'date',
+    //    startCalendar: $('#rangestart')
+    //});
 });
 
 $.validator.setDefaults({

@@ -1,0 +1,243 @@
+﻿@model Web.Models.DocumentViewModel.SearchViewModel
+
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
+<div class="ui segment">
+    <form class="ui form main search">
+        <div class="fields">
+            <div class="four wide field">
+                <select class="ui" asp-for="SearchDb">
+                    <option value="1" selected="selected">@Localizer["SearchInName"]</option>
+                    <option value="0">@Localizer["SearchEverywhere"]</option>
+                </select>
+            </div>
+            <div class="twelve wide field">
+                <div class="ui action input">
+                    <input type="text" name="SearchText" placeholder="@Localizer["Key"]" value="@Model.SearchText">
+                    <div class="ui dropdown blue button">
+                        <i class="settings icon"></i>
+                        <div class="ui menu transition hidden" tabindex="-1">
+                            <div class="header">@Localizer["Proximity"]:</div>
+                            <div class="item">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" name="IsNear" asp-for="IsNear">
+                                    <label>@Localizer["KeysNear"]</label>
+                                </div>
+                            </div>
+                            <div class="divider "></div>
+                            <div class="header">@Localizer["Coincidence"]:</div>
+                            <div class="item">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="LogicalMulti" value="1" @((int)Model.LogicalMulti == 1 ? "checked" : "")>
+                                        <label>@Localizer["AllKeysAnd"]</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="LogicalMulti" value="2" @((int)Model.LogicalMulti == 2 ? "checked" : "")>
+                                        <label>@Localizer["AnyKeysOr"]</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divider"></div>
+                            <div class="header">@Localizer["Ending"]:</div>
+                            <div class="item">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="EndOfWords" checked="checked" value="1" @((int)Model.EndOfWords == 1 ? "checked" : "")>
+                                        <label>@Localizer["StartKeys"]</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="EndOfWords" value="2" @((int)Model.EndOfWords == 2 ? "checked" : "")>
+                                        <label>@Localizer["ExatSearch"]</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui animated button" tabindex="0">
+                        <div class="visible content">@Localizer["Search"]</div>
+                        <div class="hidden content">
+                            <i class="right search icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui accordion field">
+            <div class="title">
+                <i class="dropdown icon"></i> @Localizer["ExtendedSearch"]
+            </div>
+
+            <div class="content field">
+                <div class="ui grid">
+                    <div class="four wide column">
+                        <div class="ui secondary vertical menu">
+                            <a class="item active" data-tab="tab-requisite">@Localizer["Requisities"]</a>
+                            <a class="item" data-tab="tab-language">@Localizer["LanguageDoc"]</a>
+                            <a class="item" data-tab="tab-npatype">@Localizer["FormAct"]</a>
+                            <a class="item" data-tab="tab-regionAction"> @Localizer["RegionDeistv"]</a>
+                            <a class="item" data-tab="tab-regionAccept"> @Localizer["PlaceAccept"]</a>
+                            <a class="item" data-tab="tab-sections"> @Localizer["RazdelZakon"]</a>
+                            <a class="item" data-tab="tab-source"> @Localizer["SourceOfPubl"]</a>
+                            <a class="item" data-tab="tab-regAgency"> @Localizer["RegisterOrgan"]</a>
+                            <a class="item" data-tab="tab-classifier"> @Localizer["SphereOfRights"]</a>
+                            <a class="item" data-tab="tab-department"> @Localizer["Department"]</a>
+                            <a class="item" data-tab="tab-devAgency"> @Localizer["DevAgency"]</a>
+                            <a class="item" data-tab="tab-titlePrefix"> @Localizer["TitlePrefix"]</a>
+                        </div>
+                    </div>
+                    <div class="twelve wide column">
+                        <div class="ui segment">
+                            <div class="ui tab active" data-tab="tab-requisite">
+                                <div class="field">
+                                    <h4 class="ui dividing header">@Localizer["Status"]</h4>
+                                    <div class="three fields">
+                                        <div class="field">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" name="HET">
+                                                <label>@Localizer["Current"]</label>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" name="YTS">
+                                                <label>@Localizer["NotActive"]</label>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" name="STP">
+                                                <label>@Localizer["BadDate"]</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h4 class="ui dividing header">@Localizer["Registration"]</h4>
+                                    <div class="three fields">
+                                        <div class="field">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" name="HET" tabindex="0" class="hidden" value="t">
+                                                <label>@Localizer["Registrated"]</label>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" name="HET" tabindex="0" class="hidden" value="f">
+                                                <label>@Localizer["NotRegistrated"]</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="three fields">
+                                        <div class="field">
+                                            <label asp-for="AcceptNumber">@Localizer["NumberOfAccept"]</label>
+                                            <input type="text" asp-for="AcceptNumber" />
+                                        </div>
+                                        <div class="field">
+                                            <label asp-for="AcceptedDateStart">@Localizer["DatePicker"]</label>
+                                            <div class="ui calendar" id="rangestart">
+                                                <div class="ui input left icon">
+                                                    <i class="calendar icon"></i>
+                                                    <input class="ui datepicker" type="text" placeholder="@Localizer["DateStart"]" asp-for="AcceptedDateStart">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label>&nbsp;</label>
+                                            <div class="ui calendar" id="rangeend">
+                                                <div class="ui input left icon">
+                                                    <i class="calendar icon"></i>
+                                                    <input class="ui datepicker" type="text" placeholder="@Localizer["DateFinish"]" asp-for="AcceptedDateFinish">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="three fields">
+                                        <div class="field">
+                                            <label asp-for="RegNumber">@Localizer["RegNumber"]</label>
+                                            <input type="text" asp-for="RegNumber" />
+                                        </div>
+                                        <div class="field">
+                                            <label asp-for="RegJustDateStart">@Localizer["DatePickerMu"]</label>
+                                            <div class="ui calendar" id="rangestart">
+                                                <div class="ui input left icon">
+                                                    <i class="calendar icon"></i>
+                                                    <input class="ui datepicker" type="text" placeholder="@Localizer["DateStart"]" asp-for="RegJustDateStart">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <label>&nbsp;</label>
+                                            <div class="ui calendar" id="rangeend">
+                                                <div class="ui input left icon">
+                                                    <i class="calendar icon"></i>
+                                                    <input class="ui datepicker" type="text" placeholder="@Localizer["DateFinish"]" asp-for="RegJustDateFinish">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="two fields">
+                                        <div class="field">
+                                            <label asp-for="NgrWord">@Localizer["NumberOfNgr"]</label>
+                                            <input type="text" asp-for="NgrWord" />
+                                        </div>
+                                        <div class="field">
+                                            <label asp-for="GrWord">@Localizer["NumberOfGr"]</label>
+                                            <input type="text" asp-for="GrWord" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui tab" data-tab="tab-language">
+                                Язык
+                            </div>
+                            <div class="ui tab" data-tab="tab-npatype">
+                                Форма акта
+                            </div>
+                            <div class="ui tab" data-tab="tab-regionAction">
+                                Регион действия
+                            </div>
+                            <div class="ui tab" data-tab="tab-regionAccept">
+                                Место принятия
+                            </div>
+                            <div class="ui tab" data-tab="tab-regionAccept">
+                                Место принятия
+                            </div>
+                            <div class="ui tab" data-tab="tab-source">
+                                Источник публикации
+                            </div>
+                            <div class="ui tab" data-tab="tab-regAgency">
+                                Орган госрегистрации
+                            </div>
+                            <div class="ui tab" data-tab="tab-classifier">
+                                Сфера правоотношений
+                            </div>
+                            <div class="ui tab" data-tab="tab-department">
+                                Ведомства
+                            </div>
+                            <div class="ui tab" data-tab="tab-devAgency">
+                                Орган разработчик
+                            </div>
+                            <div class="ui tab" data-tab="tab-titlePrefix">
+                                Кроме актов
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

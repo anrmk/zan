@@ -21,6 +21,10 @@
     {
       "library": "semantic-ui@2.4.1",
       "destination": "wwwroot/lib/semantic-ui/"
+    },
+    {
+      "library": "semantic-ui-calendar@0.0.8",
+      "destination": "wwwroot/lib/semantic-ui-calendar/"
     }
   ]
 }
