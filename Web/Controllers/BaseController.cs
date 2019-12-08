@@ -14,7 +14,7 @@ namespace Web.Controllers {
         protected IController controller;
         //protected TRepository _repository { get; private set; }
 
-        protected readonly IStringLocalizer<IController> _localizer;
+        private readonly IStringLocalizer<IController> _localizer;
         private readonly ILogger<IController> _logger;
 
         public BaseController(IHttpContextAccessor httpContextAccessor, IStringLocalizer<IController> localizer, ILogger<IController> logger) {

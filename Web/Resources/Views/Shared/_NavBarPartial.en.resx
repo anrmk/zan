@@ -120,6 +120,9 @@
   <data name="AccountSettings" xml:space="preserve">
     <value>Account Settings</value>
   </data>
+  <data name="AdminPanel" xml:space="preserve">
+    <value>Admin Panel</value>
+  </data>
   <data name="AllDocs" xml:space="preserve">
     <value>All documents</value>
   </data>

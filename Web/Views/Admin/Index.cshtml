@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Builder
+
+@inject IViewLocalizer Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{
+    ViewData["Title"] = @Localizer["Page"];
+}
+
+<div class="ui placeholder segment">
+    <div class="ui two column stackable center aligned grid">
+        <div class="ui vertical divider">.</div>
+        <div class="middle aligned row">
+            <div class="column">
+                <div class="ui icon header">
+                    <i class="sync icon"></i>
+                    Синхронизация данных
+                </div>
+                <a class="ui primary button" asp-controller="Admin" asp-action="Sync">
+                    @Localizer["Go"]
+                </a>
+            </div>
+            <div class="column">
+                <div class="ui icon header">
+                    <i class="world icon"></i>
+                    Управление пользователем
+                </div>
+                <div class="ui primary button">
+                    @Localizer["Go"]
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

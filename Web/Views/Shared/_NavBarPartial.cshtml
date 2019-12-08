@@ -1,6 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using Core.Data.Entities
-@using Microsoft.AspNetCore.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Microsoft.Extensions.Options
 @using Microsoft.AspNetCore.Builder
@@ -20,8 +19,8 @@
             <img class="logo" src="~/img/rkao-logo.png" />
             Zan DataBase
         </div>
-        <a asp-controller="Home" asp-action="Index" class="item"><i class="star icon"></i> @Localizer["AllDocs"]</a>
-        <a asp-controller="Home" asp-action="Index" class="item"><i class="sitemap icon"></i> @Localizer["Tema"]</a>
+        <a class="item" asp-controller="Home" asp-action="Index"><i class="star icon"></i> @Localizer["AllDocs"]</a>
+        <a class="item" asp-controller="Home" asp-action="Index"><i class="sitemap icon"></i> @Localizer["Tema"]</a>
 
         <div class="ui dropdown item">
             <i class="book icon"></i>@Localizer["Dictionaries"]<i class="dropdown icon"></i>
@@ -50,6 +49,8 @@
                 @UserManager.GetUserName(User) <i class="dropdown icon"></i>
                 <div class="menu transition hidden" tabindex="-1">
                     <div class="item"><i class="info icon"></i> @Localizer["Guide"]</div>
+                    <div class="divider"></div>
+                    <a class="item" asp-controller="Admin" asp-action="Index"><i class="universal access icon"></i> @Localizer["AdminPanel"]</a>
                     <div class="divider"></div>
                     <div class="item"><i class="settings icon"></i> @Localizer["AccountSettings"]</div>
                     <form class="item" method="post" role="form" asp-area="" asp-controller="Account" asp-action="Logout">

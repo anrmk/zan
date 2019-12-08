@@ -121,6 +121,10 @@
     <value>Account Settings</value>
     <comment>не переведено</comment>
   </data>
+  <data name="AdminPanel" xml:space="preserve">
+    <value>Басқару тақтасы</value>
+    <comment>не переведено</comment>
+  </data>
   <data name="AllDocs" xml:space="preserve">
     <value>Барлық құжаттар</value>
   </data>

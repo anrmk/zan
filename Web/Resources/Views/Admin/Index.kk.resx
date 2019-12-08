@@ -117,40 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AccountSettings" xml:space="preserve">
-    <value>Настройки профиля</value>
-  </data>
-  <data name="AdminPanel" xml:space="preserve">
-    <value>Панель администратора</value>
-  </data>
-  <data name="AllDocs" xml:space="preserve">
-    <value>Все документы</value>
-  </data>
-  <data name="DicJurTermin" xml:space="preserve">
-    <value>Словарь юридических терминов</value>
-  </data>
-  <data name="DicRusKazTermin" xml:space="preserve">
-    <value>Русско-казахский терминологический словарь</value>
-  </data>
-  <data name="DicTermin" xml:space="preserve">
-    <value>Словарь терминов</value>
-  </data>
-  <data name="Dictionaries" xml:space="preserve">
-    <value>Словари</value>
-  </data>
-  <data name="Enter" xml:space="preserve">
-    <value>Вход</value>
-  </data>
-  <data name="Exit" xml:space="preserve">
-    <value>Выход</value>
-  </data>
-  <data name="Guide" xml:space="preserve">
-    <value>Справка</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Язык</value>
-  </data>
-  <data name="Tema" xml:space="preserve">
-    <value>Тематический поиск</value>
+  <data name="Page" xml:space="preserve">
+    <value>Басқару тақтасы</value>
   </data>
 </root>
