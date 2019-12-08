@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Entities\Nsi\" />
     <Folder Include="Data\Models\" />
   </ItemGroup>
 

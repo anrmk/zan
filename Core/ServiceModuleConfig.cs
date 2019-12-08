@@ -19,8 +19,16 @@ namespace Core.Config {
             ///Managers
             services.AddTransient<IUserProfileManager, UserProfileManager>();
 
+            ///NSI Managers
+            services.AddTransient<INsiLanguageManager, NsiLanguageManager>();
+            services.AddTransient<INsiDocumentStatusManager, NsiDocumentStatusManager>();
+            services.AddTransient<INsiDocumentTypeManager, NsiDocumentTypeManager>();
+            services.AddTransient<INsiRegionManager, NsiRegionManager>();
+
             ///Business
             services.AddTransient<IAccountBusinessService, AccountBusinessService>();
+            services.AddTransient<INsiBusinessService, NsiBusinessService>(); //для работы со справочниками
+            services.AddTransient<ISyncBusinessService, SyncBusinessService>(); //для работы с синхронизацией данных
         }
     }
 }

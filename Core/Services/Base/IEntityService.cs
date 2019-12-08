@@ -13,6 +13,7 @@ namespace Core.Services.Base {
         Task<T> Find(params object[] keys);
         Task<T> Find(Expression<Func<T, bool>> where);
         Task<T> Create(T t);
+        Task<T> CreateOrUpdate(T t);
         Task<int> Delete(T t);
         Task<int> Delete(Expression<Func<T, bool>> where);
         Task<int> Update(T t);

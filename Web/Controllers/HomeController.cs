@@ -1,6 +1,8 @@
 ﻿using System;
 
 using System.Diagnostics;
+using System.Threading.Tasks;
+using Core.Services.Business;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
@@ -12,13 +14,18 @@ using Web.Models;
 namespace Web.Controllers {
     [Authorize]
     public class HomeController: BaseController<HomeController> {
+        private readonly ISyncBusinessService _syncBusinessService;
 
         public HomeController(IHttpContextAccessor httpContextAccessor,
             IStringLocalizer<HomeController> localizer,
-            ILogger<HomeController> logger) : base(httpContextAccessor, localizer, logger) {
+            ILogger<HomeController> logger,
+            ISyncBusinessService syncBusinessService) : base(httpContextAccessor, localizer, logger) {
+
+            _syncBusinessService = syncBusinessService;
         }
 
-        public IActionResult Index() {
+        public async Task<IActionResult> Index() {
+            await _syncBusinessService.Sync();
             return View();
         }
 
@@ -33,7 +40,7 @@ namespace Web.Controllers {
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
                 new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
                 );
-
+            
             return View();
         }
 

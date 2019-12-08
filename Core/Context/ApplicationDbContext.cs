@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.AspNetCore.Hosting;
-
+using Core.Data.Entities.Nsi;
 
 namespace Core.Context {
     public class ApplicationDbContext: IdentityDbContext<ApplicationUserEntity>, IApplicationDbContext {
@@ -22,7 +22,7 @@ namespace Core.Context {
          * Аналогично, главное не затирать старые миграции и заново не включать миграции
          * Версия миграции: 1.0.1
          */
-        private IHostingEnvironment _env;
+        //private IHostingEnvironment _env;
         private readonly IConfiguration _configuration;
         private string _contentRootPath = "";
 
@@ -93,6 +93,13 @@ namespace Core.Context {
         #region ENTITIES
         public DbSet<ApplicationUserEntity> ApplicationUsers { get; set; }
         public DbSet<UserProfileEntity> UserProfiles { get; set; }
+        #endregion
+
+        #region NSI
+        public DbSet<NsiLanguageEntity> NsiLanguages { get; set; }
+        public DbSet<NsiDocumentStatusEntity> NsiDocumentStatuses { get; set; }
+        public DbSet<NsiDocumentTypeEntity> NsiDocumentTypes { get; set; }
+        public DbSet<NsiRegionEntity> NsiRegions { get; set; }
         #endregion
     }
 }

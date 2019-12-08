@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 using Core.Context;
+using Core.Data.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services.Base {
@@ -82,16 +84,31 @@ namespace Core.Services.Base {
         /// <summary>
         /// Сохранить типизированный параметр
         /// </summary>
-        /// <param name="TObject">Типизированный параметр</param>
+        /// <param name="t">Типизированный параметр</param>
         /// <returns>Типизированный результат</returns>
-        public virtual async Task<T> Create(T TObject) {
+        public virtual async Task<T> Create(T t) {
             try {
-                var entry = DbSet.Add(TObject);
+                var entry = DbSet.Add(t);
                 if(!ShareContext)
                     await Context.SaveChangesAsync();
 
                 return entry.Entity;
             } catch(Exception ex) {
+                throw ex;
+            }
+        }
+
+        public virtual async Task<T> CreateOrUpdate(T t) {
+            try {
+                var entry = Context.Entry(t);
+                if(entry != null) {
+                    PropertyInfo property = typeof(T).GetProperty("Id");
+                    var findEntity = await DbSet.FindAsync(property.GetValue(t));
+                    return findEntity == null ? await Create(t) : await UpdateType(t);
+                }
+                return null;
+            } catch(Exception ex) {
+                Console.WriteLine("CreateOrUpdate: " + ex.Message);
                 throw ex;
             }
         }
