@@ -40,4 +40,8 @@
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\AdminViewModel\" />
+  </ItemGroup>
 </Project>

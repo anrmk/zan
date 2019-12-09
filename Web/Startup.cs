@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Web.App_Config;
+using Web.Hubs;
 
 namespace Web {
     public class Startup {
@@ -104,8 +105,10 @@ namespace Web {
             #endregion
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSignalR();
 
             Core.Config.ServiceModuleConfig.Configuration(services);
+
             MapperConfig.Register(services);
         }
 
@@ -133,10 +136,18 @@ namespace Web {
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseSignalR(routes => {
+                routes.MapHub<SyncDataHub>("/syncDataHub");
+            });
+
             app.UseMvc(routes => {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
+                routes.MapRoute(
+                    name: "api",
+                    template: "api/{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

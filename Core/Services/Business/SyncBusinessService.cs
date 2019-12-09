@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using Core.Data.Dto;
 using Core.Data.Entities.Nsi;
+using Core.Enums;
 using Core.Services.Managers;
 using Microsoft.Extensions.Configuration;
 
 namespace Core.Services.Business {
     public interface ISyncBusinessService {
-        Task Sync();
+        Task<SyncResultDto> Sync(NsiEnum nsiType);
     }
 
     public class SyncBusinessService: ISyncBusinessService {
-        //private IHostingEnvironment _env;
         private readonly IConfiguration _configuration;
 
         private readonly INsiLanguageManager _nsiLanguagesManager;
@@ -32,16 +34,37 @@ namespace Core.Services.Business {
             _nsiRegionManager = nsiRegionManager;
         }
 
-        public async Task Sync() {
-            await RunRemoteConnection("SELECT * FROM [nsi_Languages]", SyncNsiLanguage);
-            await RunRemoteConnection("SELECT * FROM [nsi_DocStatuses]", SyncNsiDocumentStatus);
-            await RunRemoteConnection("SELECT * FROM [nsi_DocTypes]", SyncNsiDocumentType);
-            await RunRemoteConnection("SELECT * FROM [nsi_Regions]", SyncNsiRegion);
+        public async Task<SyncResultDto> Sync(NsiEnum nsiType) {
+            var sw = Stopwatch.StartNew();
+            var result = new SyncResultDto(Enum.GetName(typeof(NsiEnum), nsiType));
+
+            switch(nsiType) {
+                case NsiEnum.Language:
+                    result.Count = await RunRemoteConnection("SELECT * FROM [nsi_Languages]", SyncNsiLanguage);
+                    break;
+                case NsiEnum.Region:
+                    result.Count = await RunRemoteConnection("SELECT * FROM [nsi_Regions]", SyncNsiRegion);
+                    break;
+                case NsiEnum.DocumentStatus:
+                    result.Count = await RunRemoteConnection("SELECT * FROM [nsi_DocStatuses]", SyncNsiDocumentStatus);
+                    break;
+                case NsiEnum.DocumentType:
+                    result.Count = await RunRemoteConnection("SELECT * FROM [nsi_DocTypes]", SyncNsiDocumentType);
+                    break;
+                default:
+                    break;
+            }
+            sw.Stop();
+            result.LeadTime = sw.Elapsed;
+
+            return result;
         }
 
-        public bool SyncNsiRegion(SqlDataReader reader) {
+        protected int SyncNsiRegion(SqlDataReader reader) {
+            var count = 0;
             try {
                 while(reader.Read()) {
+                    count++;
                     var id = (Guid)reader["Id"];
                     var item = _nsiRegionManager.Find(id).Result;
                     if(item == null) {
@@ -58,15 +81,15 @@ namespace Core.Services.Business {
                         };
                     }
                     item = _nsiRegionManager.CreateOrUpdate(item).Result;
-                    if(item == null)
-                        return false;
+                    if(item == null) {
+                        Console.Error.WriteLine($"SyncNsiLanguage: recordId {id}");
+                    }
                 }
-                return true;
             } catch(Exception e) {
                 Console.WriteLine("SyncNsiRegion: " + e.Message);
             }
 
-            return false;
+            return count;
         }
 
         /// <summary>
@@ -74,9 +97,11 @@ namespace Core.Services.Business {
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public bool SyncNsiDocumentType(SqlDataReader reader) {
+        protected int SyncNsiDocumentType(SqlDataReader reader) {
+            int count = 0;
             try {
                 while(reader.Read()) {
+                    count++;
                     var id = (Guid)reader["Id"];
                     var item = _nsiDocumentTypeManager.Find(id).Result;
                     if(item == null) {
@@ -89,15 +114,15 @@ namespace Core.Services.Business {
                         };
                     }
                     item = _nsiDocumentTypeManager.CreateOrUpdate(item).Result;
-                    if(item == null)
-                        return false;
+                    if(item == null) {
+                        Console.Error.WriteLine($"SyncNsiLanguage: recordId {id}");
+                    }
                 }
-                return true;
             } catch(Exception e) {
                 Console.WriteLine("SyncNsiDocumentType: " + e.Message);
             }
 
-            return false;
+            return count;
         }
 
         /// <summary>
@@ -105,9 +130,12 @@ namespace Core.Services.Business {
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public bool SyncNsiDocumentStatus(SqlDataReader reader) {
+        protected int SyncNsiDocumentStatus(SqlDataReader reader) {
+            int count = 0;
             try {
                 while(reader.Read()) {
+                    count++;
+
                     var id = (int)reader["Id"];
                     var item = _nsiDocumentStatusesManager.Find(id).Result;
                     if(item == null) {
@@ -121,15 +149,15 @@ namespace Core.Services.Business {
                         };
                     }
                     item = _nsiDocumentStatusesManager.CreateOrUpdate(item).Result;
-                    if(item == null)
-                        return false;
+                    if(item == null) {
+                        Console.Error.WriteLine($"SyncNsiLanguage: recordId {id}");
+                    }
                 }
-                return true;
             } catch(Exception e) {
                 Console.WriteLine("SyncNsiDocumentStatus: " + e.Message);
             }
 
-            return false;
+            return count;
         }
 
         /// <summary>
@@ -137,9 +165,11 @@ namespace Core.Services.Business {
         /// </summary>
         /// <param name="reader"></param>
         /// <returns></returns>
-        public bool SyncNsiLanguage(SqlDataReader reader) {
+        protected int SyncNsiLanguage(SqlDataReader reader) {
+            int count = 0;
             try {
                 while(reader.Read()) {
+                    count++;
                     var id = (int)reader["Id"];
 
                     var item = _nsiLanguagesManager.Find(id).Result;
@@ -155,18 +185,18 @@ namespace Core.Services.Business {
                         };
                     }
                     item = _nsiLanguagesManager.CreateOrUpdate(item).Result;
-                    if(item == null)
-                        return false;
+                    if(item == null) {
+                        Console.Error.WriteLine($"SyncNsiLanguage: recordId {id}");
+                    }
                 }
-                return true;
             } catch(Exception e) {
                 Console.WriteLine("SyncNsiLanguage: " + e.Message);
             }
 
-            return false;
+            return count;
         }
 
-        private async Task<bool> RunRemoteConnection(string query, Func<SqlDataReader, bool> myMethodName) {
+        private async Task<int> RunRemoteConnection(string query, Func<SqlDataReader, int> myMethodName) {
             using(SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("RemoteConnection"))) {
                 using(var command = new SqlCommand(query, connection)) {
                     await connection.OpenAsync();
