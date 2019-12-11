@@ -1,8 +1,6 @@
 ﻿using System;
 
 using System.Diagnostics;
-using System.Threading.Tasks;
-using Core.Services.Business;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;

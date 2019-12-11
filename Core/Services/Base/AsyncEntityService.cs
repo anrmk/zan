@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Core.Context;
-using Core.Data.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services.Base {

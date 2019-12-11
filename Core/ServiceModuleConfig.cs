@@ -1,5 +1,4 @@
 ﻿using Core.Context;
-using Core.Repositories;
 using Core.Services.Business;
 using Core.Services.Managers;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +23,14 @@ namespace Core.Config {
             services.AddTransient<INsiDocumentStatusManager, NsiDocumentStatusManager>();
             services.AddTransient<INsiDocumentTypeManager, NsiDocumentTypeManager>();
             services.AddTransient<INsiRegionManager, NsiRegionManager>();
+            services.AddTransient<INsiDevAgencyManager, NsiDevAgencyManager>();
+            services.AddTransient<INsiInitRegionManager, NsiInitRegionManager>();
+            services.AddTransient<INsiDocSectionManager, NsiDocSectionManager>();
+            services.AddTransient<INsiSourceManager, NsiSourceManager>();
+            services.AddTransient<INsiRegAgencyManager, NsiRegAgencyManager>();
+            services.AddTransient<INsiClassifierManager, NsiClassifierManager>();
+            services.AddTransient<INsiDepartmentManager, NsiDepartmentManager>();
+            services.AddTransient<INsiDocTitlePrefixManager, NsiDocTitlePrefixManager>();
 
             ///Business
             services.AddTransient<IAccountBusinessService, AccountBusinessService>();

@@ -6,7 +6,7 @@ namespace Core.Data.Entities.Nsi {
     /// Статус документа
     /// </summary>
     [Table(name: "nsi.DocumentStatuses")]
-    public class NsiDocumentStatusEntity : NsiEntity<int> {
+    public class NsiDocumentStatusEntity: NsiEntity<int> {
         public string CodeBd7 { get; set; }
     }
 }

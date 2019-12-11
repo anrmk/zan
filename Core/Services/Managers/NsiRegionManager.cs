@@ -8,6 +8,6 @@ namespace Core.Services.Managers {
 
     public class NsiRegionManager: AsyncEntityService<NsiRegionEntity>, INsiRegionManager {
         public NsiRegionManager(IApplicationDbContext context) : base(context) { }
-      
+
     }
 }

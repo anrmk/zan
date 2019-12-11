@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Core.Repositories {
     public interface IBaseRepository {
@@ -12,7 +10,7 @@ namespace Core.Repositories {
 
         public string Language {
             get { return _language.Substring(0, 1).ToUpper() + _language.Substring(1, 1).ToLower(); }
-            set { this._language = value; }
+            set { _language = value; }
         }
 
         public void Dispose() {

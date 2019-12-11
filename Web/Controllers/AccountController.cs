@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Core.Data.Dto;
 using Core.Services.Business;
@@ -32,7 +30,7 @@ namespace Web.Controllers {
             //    PhoneNumberConfirmed = true
             //});
 
-            var xxx = await _accountBusinessService.UpdateUserProfile("1111", new UserProfileDto() { });
+            //     var xxx = await _accountBusinessService.UpdateUserProfile("1111", new UserProfileDto() { });
 
             return View();
         }
@@ -46,26 +44,31 @@ namespace Web.Controllers {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null) {
             ViewData["ReturnUrl"] = returnUrl;
             if(ModelState.IsValid) {
-                var result = await _accountBusinessService.PasswordSignInAsync(model.Email, model.Password, model.RememberMe);
-                if(result.Succeeded) {
-                    _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
-                }
-                if(result.RequiresTwoFactor) {
-                    //return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
-                }
-                if(result.IsLockedOut) {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToAction(nameof(Lockout));
-                } else {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
+                try {
+                    var result = await _accountBusinessService.PasswordSignInAsync(model.Email, model.Password, model.RememberMe);
+                    if(result.Succeeded) {
+                        _logger.LogInformation("User logged in.");
+                        return RedirectToLocal(returnUrl);
+                    }
+                    if(result.RequiresTwoFactor) {
+                        //return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
+                    }
+                    if(result.IsLockedOut) {
+                        _logger.LogWarning("User account locked out.");
+                        return RedirectToAction(nameof(Lockout));
+                    } else {
+                        ModelState.AddModelError("All", "Invalid login attempt.");
+                        return View(model);
+                    }
+                } catch(Exception e) {
+                    ModelState.AddModelError("All", e.Message);
                 }
             }
             return View(model);

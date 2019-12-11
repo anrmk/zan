@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Web.Models.ViewModels.Nsi{
+namespace Web.Models.ViewModels.Nsi {
     public class NsiViewModel {
         public Guid? Id { get; set; }
         public int? IdInt { get; set; }

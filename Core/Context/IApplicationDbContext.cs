@@ -6,7 +6,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 namespace Core.Context {
     public interface IApplicationDbContext {
         Database ApplicationDatabase { get; }
-        
+
         /// <summary>
         /// Получение набора данных
         /// </summary>

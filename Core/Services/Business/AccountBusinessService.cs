@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using Core.Context;
 using Core.Data.Dto;
 using Core.Data.Entities;
 using Core.Services.Managers;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Core.Services.Business {
     public interface IAccountBusinessService {
@@ -53,7 +51,7 @@ namespace Core.Services.Business {
                 PhoneNumber = dto.PhoneNumber,
                 PhoneNumberConfirmed = dto.PhoneNumberConfirmed
             };
-            
+
             try {
                 var result = await _userManager.CreateAsync(user, password);
 

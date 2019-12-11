@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Core.Data.Dto {
+﻿namespace Core.Data.Dto {
     public class ApplicationUserDto {
         public string Id { get; set; }
         public string UserName { get; set; }

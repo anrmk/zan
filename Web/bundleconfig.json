@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "wwwroot/js/admin-controller.min.js",
+    "inputFiles": [
+      "wwwroot/js/admin-controller.js"
+    ]
+  }
+]

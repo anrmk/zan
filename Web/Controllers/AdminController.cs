@@ -49,7 +49,7 @@ namespace Web.Controllers.Api {
         public async Task<IActionResult> StartSync(NsiEnum nsitype) {
             var result = await _syncBusinessService.Sync(nsitype);
             if(result != null) {
-               await _syncDataHubContext.Clients.All.SendAsync("syncNsiResult", result);
+                await _syncDataHubContext.Clients.All.SendAsync("syncNsiResult", result);
             }
             return Ok(result);
         }

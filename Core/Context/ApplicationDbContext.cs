@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Core.Data.Entities;
 using Core.Data.Entities.Base;
+using Core.Data.Entities.Nsi;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Microsoft.AspNetCore.Hosting;
-using Core.Data.Entities.Nsi;
 
 namespace Core.Context {
     public class ApplicationDbContext: IdentityDbContext<ApplicationUserEntity>, IApplicationDbContext {
@@ -24,11 +23,11 @@ namespace Core.Context {
          */
         //private IHostingEnvironment _env;
         private readonly IConfiguration _configuration;
-        private string _contentRootPath = "";
+        private readonly string _contentRootPath = "";
 
         public Database ApplicationDatabase { get; private set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration, IHostingEnvironment environment ) : base(options) {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration, IHostingEnvironment environment) : base(options) {
             _configuration = configuration;
             _contentRootPath = environment.ContentRootPath;
         }
@@ -100,6 +99,14 @@ namespace Core.Context {
         public DbSet<NsiDocumentStatusEntity> NsiDocumentStatuses { get; set; }
         public DbSet<NsiDocumentTypeEntity> NsiDocumentTypes { get; set; }
         public DbSet<NsiRegionEntity> NsiRegions { get; set; }
+        public DbSet<NsiDevAgencyEntity> NsiDevAgencies { get; set; }
+        public DbSet<NsiInitRegionEntity> NsiInitRegions { get; set; }
+        public DbSet<NsiDocSectionEntity> NsiDocSections { get; set; }
+        public DbSet<NsiSourceEntity> NsiSources { get; set; }
+        public DbSet<NsiRegAgencyEntity> NsiRegAgencies { get; set; }
+        public DbSet<NsiClassifierEntity> NsiClassifiers { get; set; }
+        public DbSet<NsiDepartmentEntity> NsiDepartments { get; set; }
+        public DbSet<NsiDocTitlePrefixEntity> NsiDocTitlePrefixes { get; set; }
         #endregion
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Core.Repositories;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -26,17 +21,17 @@ namespace Web.Controllers {
         }
 
         public override ViewResult View(string view, object model) {
-            this.ViewBag.Language = this.CurrentLanguage;
+            ViewBag.Language = CurrentLanguage;
             return base.View(view, model);
         }
 
         public override ViewResult View(object model) {
-            this.ViewBag.Language = this.CurrentLanguage;
+            ViewBag.Language = CurrentLanguage;
             return base.View(model);
         }
 
         public override ViewResult View() {
-            this.ViewBag.Language = this.CurrentLanguage;
+            ViewBag.Language = CurrentLanguage;
             return base.View();
         }
     }
