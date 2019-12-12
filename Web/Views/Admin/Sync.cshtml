@@ -63,7 +63,102 @@
             <div class="description"></div>
         </div>
     </div>
-
+    <div class="item" id="DevAgency">
+        <div class="right floated content">
+            <a class="ui compact labeled icon button" data-action="sync" data-name="DevAgency">
+                <i class="play icon"></i> Пуск
+            </a>
+        </div>
+        <i class="large github middle aligned icon"></i>
+        <div class="content">
+            <div class="header">Орган разработчик</div>
+            <div class="description"></div>
+        </div>
+    </div>
+    <div class="item" id="InitRegion">
+        <div class="right floated content">
+            <a class="ui compact labeled icon button" data-action="sync" data-name="InitRegion">
+                <i class="play icon"></i> Пуск
+            </a>
+        </div>
+        <i class="large github middle aligned icon"></i>
+        <div class="content">
+            <div class="header">Место принятия</div>
+            <div class="description"></div>
+        </div>
+    </div>
+    <div class="item" id="DocSection">
+        <div class="right floated content">
+            <a class="ui compact labeled icon button" data-action="sync" data-name="DocSection">
+                <i class="play icon"></i> Пуск
+            </a>
+        </div>
+        <i class="large github middle aligned icon"></i>
+        <div class="content">
+            <div class="header">Раздел законодательства</div>
+            <div class="description"></div>
+        </div>
+    </div>
+    <div class="item" id="Source">
+        <div class="right floated content">
+            <a class="ui compact labeled icon button" data-action="sync" data-name="Source">
+                <i class="play icon"></i> Пуск
+            </a>
+        </div>
+        <i class="large github middle aligned icon"></i>
+        <div class="content">
+            <div class="header">Источник публикации</div>
+            <div class="description"></div>
+        </div>
+    </div>
+    <div class="item" id="RegAgency">
+        <div class="right floated content">
+            <a class="ui compact labeled icon button" data-action="sync" data-name="RegAgency">
+                <i class="play icon"></i> Пуск
+            </a>
+        </div>
+        <i class="large github middle aligned icon"></i>
+        <div class="content">
+            <div class="header">Орган гос.регистрации</div>
+            <div class="description"></div>
+        </div>
+    </div>
+    <div class="item" id="Classifier">
+        <div class="right floated content">
+            <a class="ui compact labeled icon button" data-action="sync" data-name="Classifier">
+                <i class="play icon"></i> Пуск
+            </a>
+        </div>
+        <i class="large github middle aligned icon"></i>
+        <div class="content">
+            <div class="header">Сфера правоотношений</div>
+            <div class="description"></div>
+        </div>
+    </div>
+    <div class="item" id="Department">
+        <div class="right floated content">
+            <a class="ui compact labeled icon button" data-action="sync" data-name="Department">
+                <i class="play icon"></i> Пуск
+            </a>
+        </div>
+        <i class="large github middle aligned icon"></i>
+        <div class="content">
+            <div class="header">Ведомства</div>
+            <div class="description"></div>
+        </div>
+    </div>
+    <div class="item" id="DocTitlePrefix">
+        <div class="right floated content">
+            <a class="ui compact labeled icon button" data-action="sync" data-name="DocTitlePrefix">
+                <i class="play icon"></i> Пуск
+            </a>
+        </div>
+        <i class="large github middle aligned icon"></i>
+        <div class="content">
+            <div class="header">Кроме актов</div>
+            <div class="description"></div>
+        </div>
+    </div>
     <h4 class="ui center aligned icon header">
         <i class="circular file alternate outline icon"></i>
         Документы
@@ -71,12 +166,12 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/admin-controller.es5.js" asp-append-version="true"></script>
+    <script src="~/js/admin-controller.js" asp-append-version="true"></script>
     <script type="text/javascript">
         $(document).ready(() => {
             window.adminController = new AdminController({}, (sender) => {
                 $('a[data-action=sync]').on('click', (e) => {
-                    var target = $(e.target);
+                    var target = $(e.currentTarget);
                     var dataName = target.data('name');
                     target.addClass('loading disabled');
                     $.ajax({
@@ -84,7 +179,7 @@
                         data: { nsitype: dataName }
                     }).done((data, status, jqXHR) => {
                         target.removeClass('loading disabled');
-                         //alert(data.count);
+                        //alert(data.count);
                     });
                 })
             });

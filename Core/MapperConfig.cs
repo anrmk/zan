@@ -10,7 +10,7 @@ namespace Core.Config {
             CreateMap<ApplicationUserEntity, ApplicationUserDto>().ReverseMap();
             CreateMap<UserProfileEntity, UserProfileDto>().ReverseMap();
 
-            CreateMap<NsiLanguageEntity, NsiDto>().ReverseMap();//CodeImport
+            CreateMap<NsiLanguageEntity, NsiDto>().ReverseMap(); //CodeImport
             CreateMap<NsiDocumentTypeEntity, NsiDto>().ReverseMap();
             CreateMap<NsiRegionEntity, NsiDto>().ReverseMap(); //CodeRu, CodeKk, CodeEn
             CreateMap<NsiDocumentStatusEntity, NsiDto>().ReverseMap(); //CodeBd7
