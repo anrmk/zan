@@ -16,12 +16,14 @@ namespace Core.Config {
             CreateMap<NsiDocumentStatusEntity, NsiDto>().ReverseMap(); //CodeBd7
             CreateMap<NsiDevAgencyEntity, NsiDto>().ReverseMap();
             CreateMap<NsiInitRegionEntity, NsiDto>().ReverseMap(); //OldId
-            CreateMap<NsiDocSectionEntity, NsiDto>().ReverseMap();
+            CreateMap<NsiDocumentSectionEntity, NsiDto>().ReverseMap();
             CreateMap<NsiSourceEntity, NsiDto>().ReverseMap();
             CreateMap<NsiRegAgencyEntity, NsiDto>().ReverseMap();
             CreateMap<NsiClassifierEntity, NsiDto>().ReverseMap();
             CreateMap<NsiDepartmentEntity, NsiDto>().ReverseMap();
-            CreateMap<NsiDocTitlePrefixEntity, NsiDto>().ReverseMap(); //CodeRu, CodeKk, CodeEn
+            CreateMap<NsiDocumentTitlePrefixEntity, NsiDto>().ReverseMap(); //CodeRu, CodeKk, CodeEn
+            CreateMap<NsiLawForceEntity, NsiDto>().ReverseMap();
+            CreateMap<NsiGrifTypeEntity, NsiDto>().ReverseMap();
         }
     }
 }

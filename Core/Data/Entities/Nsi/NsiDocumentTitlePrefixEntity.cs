@@ -6,8 +6,8 @@ namespace Core.Data.Entities.Nsi {
     /// <summary>
     /// Кроме актов
     /// </summary>
-    [Table(name: "nsi.DocTitlePrefixes")]
-    public class NsiDocTitlePrefixEntity: NsiEntity<Guid> {
+    [Table(name: "nsi.DocumentTitlePrefixes")]
+    public class NsiDocumentTitlePrefixEntity: NsiEntity<Guid> {
         public string CodeRu { get; set; }
         public string CodeKk { get; set; }
         public string CodeEn { get; set; }

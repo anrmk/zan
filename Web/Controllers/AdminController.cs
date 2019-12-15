@@ -46,7 +46,7 @@ namespace Web.Controllers.Api {
 
         [HttpGet]
         [Route("startSync")]
-        public async Task<IActionResult> StartSync(NsiEnum nsitype) {
+        public async Task<IActionResult> StartSync(SyncCommandEnum nsitype) {
             var result = await _syncBusinessService.Sync(nsitype);
             if(result != null) {
                 await _syncDataHubContext.Clients.All.SendAsync("syncNsiResult", result);

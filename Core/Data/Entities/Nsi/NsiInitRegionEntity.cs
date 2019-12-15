@@ -4,7 +4,7 @@ using Core.Data.Entities.Base;
 
 namespace Core.Data.Entities.Nsi {
     /// <summary>
-    /// Орган разработчик
+    /// Место принятия
     /// </summary>
     [Table(name: "nsi.InitRegions")]
     public class NsiInitRegionEntity: NsiEntity<Guid> {

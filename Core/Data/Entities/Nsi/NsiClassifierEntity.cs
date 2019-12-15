@@ -4,7 +4,7 @@ using Core.Data.Entities.Base;
 
 namespace Core.Data.Entities.Nsi {
     /// <summary>
-    /// Сфера провоотношений
+    /// Сфера правоотношений
     /// </summary>
     [Table(name: "nsi.Classifiers")]
     public class NsiClassifierEntity: NsiEntity<Guid> {

@@ -1,5 +1,5 @@
 ﻿namespace Core.Enums {
-    public enum NsiEnum {
+    public enum SyncCommandEnum {
         Language = 0, //Язык документа
         DocumentType = 1, //Форма акта
         DocumentStatus = 2, //Статус документа
@@ -11,7 +11,9 @@
         RegAgency = 8, //Орган гос.регистрации
         Classifier = 9, // Сфера правоотношений
         Department = 10, //Ведомства
-        DocTitlePrefix = 11 //Кроме актов
-
+        DocTitlePrefix = 11, //Кроме актов
+        LawForce = 12, //Юридическая сила акта
+        GrifType = 13, //Гриф
+        Document = 14 //Документы
     }
 }

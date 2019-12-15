@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Data.Entities;
 using Core.Data.Entities.Base;
+using Core.Data.Entities.Documents;
 using Core.Data.Entities.Nsi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -92,6 +93,7 @@ namespace Core.Context {
         #region ENTITIES
         public DbSet<ApplicationUserEntity> ApplicationUsers { get; set; }
         public DbSet<UserProfileEntity> UserProfiles { get; set; }
+        public DbSet<DocumentEntity> Documents { get; set; }
         #endregion
 
         #region NSI
@@ -101,12 +103,14 @@ namespace Core.Context {
         public DbSet<NsiRegionEntity> NsiRegions { get; set; }
         public DbSet<NsiDevAgencyEntity> NsiDevAgencies { get; set; }
         public DbSet<NsiInitRegionEntity> NsiInitRegions { get; set; }
-        public DbSet<NsiDocSectionEntity> NsiDocSections { get; set; }
+        public DbSet<NsiDocumentSectionEntity> NsiDocSections { get; set; }
         public DbSet<NsiSourceEntity> NsiSources { get; set; }
         public DbSet<NsiRegAgencyEntity> NsiRegAgencies { get; set; }
         public DbSet<NsiClassifierEntity> NsiClassifiers { get; set; }
         public DbSet<NsiDepartmentEntity> NsiDepartments { get; set; }
-        public DbSet<NsiDocTitlePrefixEntity> NsiDocTitlePrefixes { get; set; }
+        public DbSet<NsiDocumentTitlePrefixEntity> NsiDocTitlePrefixes { get; set; }
+        public DbSet<NsiLawForceEntity> NsiLawForces { get; set; }
+        public DbSet<NsiGrifTypeEntity> nsiGrifTypes { get; set; }
         #endregion
     }
 }

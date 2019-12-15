@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using Core.Data.Dto;
+using Core.Data.Entities.Documents;
 using Core.Data.Entities.Nsi;
 using Core.Enums;
 using Core.Services.Managers;
@@ -10,11 +12,13 @@ using Microsoft.Extensions.Configuration;
 
 namespace Core.Services.Business {
     public interface ISyncBusinessService {
-        Task<SyncResultDto> Sync(NsiEnum nsiType);
+        Task<SyncResultDto> Sync(SyncCommandEnum nsiType);
     }
 
     public class SyncBusinessService: ISyncBusinessService {
         private readonly IConfiguration _configuration;
+
+        private readonly IDocumentManager _documentManager;
 
         private readonly INsiLanguageManager _nsiLanguagesManager;
         private readonly INsiDocumentStatusManager _nsiDocumentStatusesManager;
@@ -22,27 +26,33 @@ namespace Core.Services.Business {
         private readonly INsiRegionManager _nsiRegionManager;
         private readonly INsiDevAgencyManager _nsiDevAgencyManager;
         private readonly INsiInitRegionManager _nsiInitRegionManager;
-        private readonly INsiDocSectionManager _nsiDocSectionManager;
+        private readonly INsiDocumentSectionManager _nsiDocSectionManager;
         private readonly INsiSourceManager _nsiSourceManager;
         private readonly INsiRegAgencyManager _nsiRegAgencyManager;
         private readonly INsiClassifierManager _nsiClassifierManager;
         private readonly INsiDepartmentManager _nsiDepartmentManager;
-        private readonly INsiDocTitlePrefixManager _nsiDocTitlePrefixManager;
+        private readonly INsiDocumentTitlePrefixManager _nsiDocumentTitlePrefixManager;
+        private readonly INsiLawForceManager _nsiLawForceManager;
+        private readonly INsiGrifTypeManager _nsiGrifTypeManager;
 
         public SyncBusinessService(IConfiguration configuration,
+            IDocumentManager documentManager,
             INsiLanguageManager nsiLanguagesManager,
             INsiDocumentStatusManager nsiDocumentStatusesManager,
             INsiDocumentTypeManager nsiDocumentTypeManager,
             INsiRegionManager nsiRegionManager,
             INsiDevAgencyManager nsiDevAgencyManager,
             INsiInitRegionManager nsiInitRegionManager,
-            INsiDocSectionManager nsiDocSectionManager,
+            INsiDocumentSectionManager nsiDocSectionManager,
             INsiSourceManager nsiSourceManager,
             INsiRegAgencyManager nsiRegAgencyManager,
             INsiClassifierManager nsiClassifierManager,
             INsiDepartmentManager nsiDepartmentManager,
-            INsiDocTitlePrefixManager nsiDocTitlePrefixManager) {
+            INsiDocumentTitlePrefixManager nsiDocumentTitlePrefixManager,
+            INsiLawForceManager nsiLawForceManager,
+            INsiGrifTypeManager nsiGrifTypeManager) {
             _configuration = configuration;
+            _documentManager = documentManager;
 
             _nsiLanguagesManager = nsiLanguagesManager;
             _nsiDocumentStatusesManager = nsiDocumentStatusesManager;
@@ -55,49 +65,60 @@ namespace Core.Services.Business {
             _nsiRegAgencyManager = nsiRegAgencyManager;
             _nsiClassifierManager = nsiClassifierManager;
             _nsiDepartmentManager = nsiDepartmentManager;
-            _nsiDocTitlePrefixManager = nsiDocTitlePrefixManager;
+            _nsiDocumentTitlePrefixManager = nsiDocumentTitlePrefixManager;
+            _nsiLawForceManager = nsiLawForceManager;
+            _nsiGrifTypeManager = nsiGrifTypeManager;
         }
 
-        public async Task<SyncResultDto> Sync(NsiEnum nsiType) {
+        public async Task<SyncResultDto> Sync(SyncCommandEnum nsiType) {
             var sw = Stopwatch.StartNew();
-            var result = new SyncResultDto(Enum.GetName(typeof(NsiEnum), nsiType));
+            var result = new SyncResultDto(Enum.GetName(typeof(SyncCommandEnum), nsiType));
 
             switch(nsiType) {
-                case NsiEnum.Language:
+                case SyncCommandEnum.Language:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_Languages]", SyncNsiLanguage);
                     break;
-                case NsiEnum.DocumentType:
+                case SyncCommandEnum.DocumentType:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_DocTypes]", SyncNsiDocumentType);
                     break;
-                case NsiEnum.DocumentStatus:
+                case SyncCommandEnum.DocumentStatus:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_DocStatuses]", SyncNsiDocumentStatus);
                     break;
-                case NsiEnum.Region:
+                case SyncCommandEnum.Region:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_Regions]", SyncNsiRegion);
                     break;
-                case NsiEnum.DevAgency:
+                case SyncCommandEnum.DevAgency:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_DevAgencies]", SyncNsiDevAgency);
                     break;
-                case NsiEnum.InitRegion:
+                case SyncCommandEnum.InitRegion:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_InitRegions]", SyncNsiInitRegion);
                     break;
-                case NsiEnum.DocSection:
+                case SyncCommandEnum.DocSection:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_DocSections]", SyncNsiDocSection);
                     break;
-                case NsiEnum.Source:
+                case SyncCommandEnum.Source:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_Sources]", SyncNsiSource);
                     break;
-                case NsiEnum.RegAgency:
+                case SyncCommandEnum.RegAgency:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_RegAgencies]", SyncNsiRegAgency);
                     break;
-                case NsiEnum.Classifier:
+                case SyncCommandEnum.Classifier:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_Classifier]", SyncNsiClassifier);
                     break;
-                case NsiEnum.Department:
+                case SyncCommandEnum.Department:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_Departments]", SyncNsiDepartment);
                     break;
-                case NsiEnum.DocTitlePrefix:
+                case SyncCommandEnum.DocTitlePrefix:
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_DocTitlePrefixes]", SyncNsiDocTitlePrefix);
+                    break;
+                case SyncCommandEnum.LawForce:
+                    result.Count = await RunRemoteConnection("SELECT * FROM [nsi_LawForces]", SyncNsiLawForce);
+                    break;
+                case SyncCommandEnum.GrifType:
+                    result.Count = await RunRemoteConnection("SELECT * FROM [nsi_GrifTypes]", SyncNsiGrifType);
+                    break;
+                case SyncCommandEnum.Document:
+                    result.Count = await RunRemoteConnection("SELECT TOP (1000) * FROM [dyn_Documents]", SyncDocuments);
                     break;
                 default:
                     break;
@@ -106,6 +127,113 @@ namespace Core.Services.Business {
             result.LeadTime = sw.Elapsed;
 
             return result;
+        }
+
+        public int SyncDocuments(SqlDataReader reader) {
+            var count = 0;
+            try {
+                while(reader.Read()) {
+                    count++;
+                    var id = (Guid)reader["Id"];
+                    var item = _documentManager.Find(id).Result ?? new DocumentEntity();
+
+                    item.Id = id;
+                    item.Ngr = reader["Ngr"] as string;
+                    item.GosNumber = reader["GosNumber"] != DBNull.Value ? (int)reader["GosNumber"] : (int?)null;
+                    item.AcceptNumber = reader["AcceptNumber"] as string;
+                    item.RegNumber = reader["RegNumber"] as string;
+                    item.NsiDocumentStatusEntity_Id = reader["StatusId"] != DBNull.Value ? (int)reader["StatusId"] : (int?)null;
+                    item.NsiDocumentSectionEntity_Id = reader["SectionId"] != DBNull.Value ? (Guid)reader["SectionId"] : Guid.Empty;
+                    item.NsiLanguageEntity_Id = reader["LanguageId"] != DBNull.Value ? (int)reader["LanguageId"] : (int?)null;
+                    item.NsiDevAgencyEntity_Id = reader["DevAgencyId"] != DBNull.Value ? (Guid)reader["DevAgencyId"] : Guid.Empty;
+                    item.NsiRegAgencyEntity_Id = reader["RegAgencyId"] != DBNull.Value ? (Guid)reader["RegAgencyId"] : Guid.Empty;
+                    item.NsiRegionEntity_Id = reader["AcceptedRegionId"] != DBNull.Value ? (Guid)reader["AcceptedRegionId"] : Guid.Empty;
+                    item.NsiInitRegionEntity_Id = reader["InitRegionId"] != DBNull.Value ? (Guid)reader["InitRegionId"] : Guid.Empty;
+                    item.NsiClassifierEntity_Id = reader["ClassifierId"] != DBNull.Value ? (Guid)reader["ClassifierId"] : Guid.Empty;
+                    item.NsiLawForceEntity_Id = reader["LawForfceId"] != DBNull.Value ? (Guid)reader["LawForfceId"] : Guid.Empty;
+                    item.AcceptedDate = reader["AcceptedDate"] != DBNull.Value ? (DateTime)reader["AcceptedDate"]: (DateTime?)null;
+                    item.EditionDate = (DateTime)reader["EditionDate"];
+                    item.EntryDate = reader["EntryDate"] != DBNull.Value ? (DateTime)reader["EntryDate"] : (DateTime?)null;
+                    item.RegJustDate = reader["RegJustDate"] != DBNull.Value ? (DateTime)reader["RegJustDate"] : (DateTime?)null;
+                    item.RegSystDate = reader["RegSystDate"] != DBNull.Value ? (DateTime)reader["RegSystDate"] : (DateTime?)null;
+                    item.PublishedDate = reader["PublishedDate"] != DBNull.Value ? (DateTime)reader["PublishedDate"] : (DateTime?)null;
+                    item.PrintDepartment = reader["PrintDepartment"] as string;
+                    item.IssetOtherEditions = reader["IssetOtherEditions"] != DBNull.Value ? (bool)reader["IssetOtherEditions"] : false;
+                    item.IsArchive = reader["IsArchive"] != DBNull.Value ? (bool)reader["IsArchive"] : false;
+
+                    item = _documentManager.CreateOrUpdate(item).Result;
+                    if(item == null) {
+                        Console.Error.WriteLine($"SyncDocuments: recordId {id}");
+                    }
+                }
+            } catch(Exception e) {
+                Console.WriteLine("SyncDocuments: " + e.Message);
+            }
+
+            return count;
+        }
+
+        #region NSI
+        /// <summary>
+        /// Гриф
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        public int SyncNsiGrifType(SqlDataReader reader) {
+            var count = 0;
+            try {
+                while(reader.Read()) {
+                    count++;
+                    var id = (Guid)reader["Id"];
+                    var item = _nsiGrifTypeManager.Find(id).Result ?? new NsiGrifTypeEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+
+                    item = _nsiGrifTypeManager.CreateOrUpdate(item).Result;
+                    if(item == null) {
+                        Console.Error.WriteLine($"SyncNsiGrifType: recordId {id}");
+                    }
+                }
+            } catch(Exception e) {
+                Console.WriteLine("SyncNsiGrifType: " + e.Message);
+            }
+
+            return count;
+        }
+
+        /// <summary>
+        /// Юридическая сила акта
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
+        public int SyncNsiLawForce(SqlDataReader reader) {
+            var count = 0;
+            try {
+                while(reader.Read()) {
+                    count++;
+                    var id = (Guid)reader["Id"];
+                    var item = _nsiLawForceManager.Find(id).Result ?? new NsiLawForceEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+
+                    item = _nsiLawForceManager.CreateOrUpdate(item).Result;
+                    if(item == null) {
+                        Console.Error.WriteLine($"SyncNsiLawForce: recordId {id}");
+                    }
+                }
+            } catch(Exception e) {
+                Console.WriteLine("SyncNsiLawForce: " + e.Message);
+            }
+
+            return count;
         }
 
         /// <summary>
@@ -119,20 +247,17 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (Guid)reader["Id"];
-                    var item = _nsiDocTitlePrefixManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiDocTitlePrefixEntity {
-                            Id = id,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
+                    var item = _nsiDocumentTitlePrefixManager.Find(id).Result ?? new NsiDocumentTitlePrefixEntity();
 
-                            CodeRu = reader["CodeRu"] as string,
-                            CodeKk = reader["CodeKk"] as string,
-                            CodeEn = reader["CodeEn"] as string
-                        };
-                    }
-                    item = _nsiDocTitlePrefixManager.CreateOrUpdate(item).Result;
+                    item.Id = id;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+                    item.CodeRu = reader["CodeRu"] as string;
+                    item.CodeKk = reader["CodeKk"] as string;
+                    item.CodeEn = reader["CodeEn"] as string;
+
+                    item = _nsiDocumentTitlePrefixManager.CreateOrUpdate(item).Result;
                     if(item == null) {
                         Console.Error.WriteLine($"SyncNsiDocTitlePrefix: recordId {id}");
                     }
@@ -155,17 +280,15 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (Guid)reader["Id"];
-                    var item = _nsiDepartmentManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiDepartmentEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
-                            ParentId = reader["ParentId"] != DBNull.Value ? reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty : Guid.Empty
-                        };
-                    }
+                    var item = _nsiDepartmentManager.Find(id).Result ?? new NsiDepartmentEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+
                     item = _nsiDepartmentManager.CreateOrUpdate(item).Result;
                     if(item == null) {
                         Console.Error.WriteLine($"SyncNsiDepartment: recordId {id}");
@@ -189,17 +312,15 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (Guid)reader["Id"];
-                    var item = _nsiClassifierManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiClassifierEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
-                            ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty
-                        };
-                    }
+                    var item = _nsiClassifierManager.Find(id).Result ?? new NsiClassifierEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+
                     item = _nsiClassifierManager.CreateOrUpdate(item).Result;
                     if(item == null) {
                         Console.Error.WriteLine($"SyncNsiClassifier: recordId {id}");
@@ -223,17 +344,15 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (Guid)reader["Id"];
-                    var item = _nsiRegAgencyManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiRegAgencyEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
-                            ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty
-                        };
-                    }
+                    var item = _nsiRegAgencyManager.Find(id).Result ?? new NsiRegAgencyEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+
                     item = _nsiRegAgencyManager.CreateOrUpdate(item).Result;
                     if(item == null) {
                         Console.Error.WriteLine($"SyncNsiRegAgency: recordId {id}");
@@ -257,24 +376,22 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (Guid)reader["Id"];
-                    var item = _nsiSourceManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiSourceEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
-                            ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty
-                        };
-                    }
+                    var item = _nsiSourceManager.Find(id).Result ?? new NsiSourceEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+
                     item = _nsiSourceManager.CreateOrUpdate(item).Result;
                     if(item == null) {
-                        Console.Error.WriteLine($"SyncSource: recordId {id}");
+                        Console.Error.WriteLine($"SyncNsiSource: recordId {id}");
                     }
                 }
             } catch(Exception e) {
-                Console.WriteLine("SyncSource: " + e.Message);
+                Console.WriteLine("SyncNsiSource: " + e.Message);
             }
 
             return count;
@@ -291,23 +408,21 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (Guid)reader["Id"];
-                    var item = _nsiDocSectionManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiDocSectionEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string
-                        };
-                    }
+                    var item = _nsiDocSectionManager.Find(id).Result ?? new NsiDocumentSectionEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+
                     item = _nsiDocSectionManager.CreateOrUpdate(item).Result;
                     if(item == null) {
-                        Console.Error.WriteLine($"SyncDocSection: recordId {id}");
+                        Console.Error.WriteLine($"SyncNsiDocSection: recordId {id}");
                     }
                 }
             } catch(Exception e) {
-                Console.WriteLine("SyncDocSection: " + e.Message);
+                Console.WriteLine("SyncNsiDocSection: " + e.Message);
             }
 
             return count;
@@ -324,18 +439,15 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (Guid)reader["Id"];
-                    var item = _nsiInitRegionManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiInitRegionEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
-                            ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty,
-                            //OldId = reader["OldId"] != DBNull.Value ? (int)reader["OldId"] : null
-                        };
-                    }
+                    var item = _nsiInitRegionManager.Find(id).Result ?? new NsiInitRegionEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+
                     item = _nsiInitRegionManager.CreateOrUpdate(item).Result;
                     if(item == null) {
                         Console.Error.WriteLine($"SyncNsiInitRegion: recordId {id}");
@@ -359,17 +471,15 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (Guid)reader["Id"];
-                    var item = _nsiDevAgencyManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiDevAgencyEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
-                            ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty
-                        };
-                    }
+                    var item = _nsiDevAgencyManager.Find(id).Result ?? new NsiDevAgencyEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+
                     item = _nsiDevAgencyManager.CreateOrUpdate(item).Result;
                     if(item == null) {
                         Console.Error.WriteLine($"SyncNsiDevAgency: recordId {id}");
@@ -393,20 +503,18 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (Guid)reader["Id"];
-                    var item = _nsiRegionManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiRegionEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
-                            ComentRu = reader["ComentRu"] as string,
-                            ComentKk = reader["ComentKk"] as string,
-                            ComentEn = reader["ComentEn"] as string,
-                            ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty,
-                        };
-                    }
+                    var item = _nsiRegionManager.Find(id).Result ?? new NsiRegionEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+                    item.ComentRu = reader["ComentRu"] as string;
+                    item.ComentKk = reader["ComentKk"] as string;
+                    item.ComentEn = reader["ComentEn"] as string;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+
                     item = _nsiRegionManager.CreateOrUpdate(item).Result;
                     if(item == null) {
                         Console.Error.WriteLine($"SyncNsiLanguage: recordId {id}");
@@ -430,19 +538,17 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (Guid)reader["Id"];
-                    var item = _nsiDocumentTypeManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiDocumentTypeEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
-                        };
-                    }
+                    var item = _nsiDocumentTypeManager.Find(id).Result ?? new NsiDocumentTypeEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+
                     item = _nsiDocumentTypeManager.CreateOrUpdate(item).Result;
                     if(item == null) {
-                        Console.Error.WriteLine($"SyncNsiLanguage: recordId {id}");
+                        Console.Error.WriteLine($"SyncNsiDocumentType: recordId {id}");
                     }
                 }
             } catch(Exception e) {
@@ -462,22 +568,19 @@ namespace Core.Services.Business {
             try {
                 while(reader.Read()) {
                     count++;
-
                     var id = (int)reader["Id"];
-                    var item = _nsiDocumentStatusesManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiDocumentStatusEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
-                            CodeBd7 = reader["CodeBd7"] as string
-                        };
-                    }
+                    var item = _nsiDocumentStatusesManager.Find(id).Result ?? new NsiDocumentStatusEntity();
+
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+                    item.CodeBd7 = reader["CodeBd7"] as string;
+
                     item = _nsiDocumentStatusesManager.CreateOrUpdate(item).Result;
                     if(item == null) {
-                        Console.Error.WriteLine($"SyncNsiLanguage: recordId {id}");
+                        Console.Error.WriteLine($"SyncNsiDocumentStatus: recordId {id}");
                     }
                 }
             } catch(Exception e) {
@@ -498,19 +601,16 @@ namespace Core.Services.Business {
                 while(reader.Read()) {
                     count++;
                     var id = (int)reader["Id"];
+                    var item = _nsiLanguagesManager.Find(id).Result ?? new NsiLanguageEntity();
 
-                    var item = _nsiLanguagesManager.Find(id).Result;
-                    if(item == null) {
-                        item = new NsiLanguageEntity {
-                            Id = id,
-                            Code = reader["Code"] as string,
-                            NameRu = reader["NameRu"] as string,
-                            NameKk = reader["NameKk"] as string,
-                            NameEn = reader["NameEn"] as string,
-                            Sort = (int)reader["Sort"],
-                            CodeImport = reader["CodeImport"] as string
-                        };
-                    }
+                    item.Id = id;
+                    item.Code = reader["Code"] as string;
+                    item.NameRu = reader["NameRu"] as string;
+                    item.NameKk = reader["NameKk"] as string;
+                    item.NameEn = reader["NameEn"] as string;
+                    item.Sort = (int)reader["Sort"];
+                    item.CodeImport = reader["CodeImport"] as string;
+
                     item = _nsiLanguagesManager.CreateOrUpdate(item).Result;
                     if(item == null) {
                         Console.Error.WriteLine($"SyncNsiLanguage: recordId {id}");
@@ -522,6 +622,7 @@ namespace Core.Services.Business {
 
             return count;
         }
+        #endregion
 
         private async Task<int> RunRemoteConnection(string query, Func<SqlDataReader, int> myMethodName) {
             using(SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("RemoteConnection"))) {

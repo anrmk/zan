@@ -17,6 +17,7 @@ namespace Core.Config {
 
             ///Managers
             services.AddTransient<IUserProfileManager, UserProfileManager>();
+            services.AddTransient<IDocumentManager, DocumentManager>();
 
             ///NSI Managers
             services.AddTransient<INsiLanguageManager, NsiLanguageManager>();
@@ -25,12 +26,14 @@ namespace Core.Config {
             services.AddTransient<INsiRegionManager, NsiRegionManager>();
             services.AddTransient<INsiDevAgencyManager, NsiDevAgencyManager>();
             services.AddTransient<INsiInitRegionManager, NsiInitRegionManager>();
-            services.AddTransient<INsiDocSectionManager, NsiDocSectionManager>();
+            services.AddTransient<INsiDocumentSectionManager, NsiDocumentSectionManager>();
             services.AddTransient<INsiSourceManager, NsiSourceManager>();
             services.AddTransient<INsiRegAgencyManager, NsiRegAgencyManager>();
             services.AddTransient<INsiClassifierManager, NsiClassifierManager>();
             services.AddTransient<INsiDepartmentManager, NsiDepartmentManager>();
-            services.AddTransient<INsiDocTitlePrefixManager, NsiDocTitlePrefixManager>();
+            services.AddTransient<INsiDocumentTitlePrefixManager, NsiDocumentTitlePrefixManager>();
+            services.AddTransient<INsiLawForceManager, NsiLawForceManager>();
+            services.AddTransient<INsiGrifTypeManager, NsiGrifTypeManager>();
 
             ///Business
             services.AddTransient<IAccountBusinessService, AccountBusinessService>();

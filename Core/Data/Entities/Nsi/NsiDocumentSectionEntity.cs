@@ -6,8 +6,8 @@ namespace Core.Data.Entities.Nsi {
     /// <summary>
     /// Раздел законодательства
     /// </summary>
-    [Table(name: "nsi.DocSections")]
-    public class NsiDocSectionEntity: NsiEntity<Guid> {
+    [Table(name: "nsi.DocumentSections")]
+    public class NsiDocumentSectionEntity: NsiEntity<Guid> {
 
     }
 }
