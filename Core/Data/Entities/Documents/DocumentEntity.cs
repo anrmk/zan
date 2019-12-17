@@ -1,12 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+
 using Core.Data.Entities.Base;
 using Core.Data.Entities.Nsi;
 
 namespace Core.Data.Entities.Documents {
-    public class DocumentEntity : Entity<Guid> {
+    public class DocumentEntity: Entity<Guid> {
+        /// <summary>
+        /// Заголовок
+        /// </summary>
+        public string Title { get; set; }
+
+        public string Info { get; set; }
+
         /// <summary>
         /// Номер группы регистрации
         /// </summary>

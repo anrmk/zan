@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Globalization;
 using System.Threading.Tasks;
+
 using Core.Data.Dto;
 using Core.Data.Entities.Documents;
 using Core.Data.Entities.Nsi;
 using Core.Enums;
 using Core.Services.Managers;
+
 using Microsoft.Extensions.Configuration;
 
 namespace Core.Services.Business {
@@ -118,7 +119,7 @@ namespace Core.Services.Business {
                     result.Count = await RunRemoteConnection("SELECT * FROM [nsi_GrifTypes]", SyncNsiGrifType);
                     break;
                 case SyncCommandEnum.Document:
-                    result.Count = await RunRemoteConnection("SELECT TOP (1000) * FROM [dyn_Documents]", SyncDocuments);
+                    result.Count = await RunRemoteConnection("SELECT * FROM [dyn_Documents]", SyncDocuments);
                     break;
                 default:
                     break;
@@ -142,16 +143,19 @@ namespace Core.Services.Business {
                     item.GosNumber = reader["GosNumber"] != DBNull.Value ? (int)reader["GosNumber"] : (int?)null;
                     item.AcceptNumber = reader["AcceptNumber"] as string;
                     item.RegNumber = reader["RegNumber"] as string;
+                    item.Title = reader["Title"] as string;
+                    item.Info = reader["Info"] as string;
+
                     item.NsiDocumentStatusEntity_Id = reader["StatusId"] != DBNull.Value ? (int)reader["StatusId"] : (int?)null;
-                    item.NsiDocumentSectionEntity_Id = reader["SectionId"] != DBNull.Value ? (Guid)reader["SectionId"] : Guid.Empty;
+                    item.NsiDocumentSectionEntity_Id = reader["SectionId"] != DBNull.Value ? (Guid)reader["SectionId"] : (Guid?)null;
                     item.NsiLanguageEntity_Id = reader["LanguageId"] != DBNull.Value ? (int)reader["LanguageId"] : (int?)null;
-                    item.NsiDevAgencyEntity_Id = reader["DevAgencyId"] != DBNull.Value ? (Guid)reader["DevAgencyId"] : Guid.Empty;
-                    item.NsiRegAgencyEntity_Id = reader["RegAgencyId"] != DBNull.Value ? (Guid)reader["RegAgencyId"] : Guid.Empty;
-                    item.NsiRegionEntity_Id = reader["AcceptedRegionId"] != DBNull.Value ? (Guid)reader["AcceptedRegionId"] : Guid.Empty;
-                    item.NsiInitRegionEntity_Id = reader["InitRegionId"] != DBNull.Value ? (Guid)reader["InitRegionId"] : Guid.Empty;
-                    item.NsiClassifierEntity_Id = reader["ClassifierId"] != DBNull.Value ? (Guid)reader["ClassifierId"] : Guid.Empty;
-                    item.NsiLawForceEntity_Id = reader["LawForfceId"] != DBNull.Value ? (Guid)reader["LawForfceId"] : Guid.Empty;
-                    item.AcceptedDate = reader["AcceptedDate"] != DBNull.Value ? (DateTime)reader["AcceptedDate"]: (DateTime?)null;
+                    item.NsiDevAgencyEntity_Id = reader["DevAgencyId"] != DBNull.Value ? (Guid)reader["DevAgencyId"] : (Guid?)null;
+                    item.NsiRegAgencyEntity_Id = reader["RegAgencyId"] != DBNull.Value ? (Guid)reader["RegAgencyId"] : (Guid?)null;
+                    item.NsiRegionEntity_Id = reader["AcceptedRegionId"] != DBNull.Value ? (Guid)reader["AcceptedRegionId"] : (Guid?)null;
+                    item.NsiInitRegionEntity_Id = reader["InitRegionId"] != DBNull.Value ? (Guid)reader["InitRegionId"] : (Guid?)null;
+                    item.NsiClassifierEntity_Id = reader["ClassifierId"] != DBNull.Value ? (Guid)reader["ClassifierId"] : (Guid?)null;
+                    item.NsiLawForceEntity_Id = reader["LawForfceId"] != DBNull.Value ? (Guid)reader["LawForfceId"] : (Guid?)null;
+                    item.AcceptedDate = reader["AcceptedDate"] != DBNull.Value ? (DateTime)reader["AcceptedDate"] : (DateTime?)null;
                     item.EditionDate = (DateTime)reader["EditionDate"];
                     item.EntryDate = reader["EntryDate"] != DBNull.Value ? (DateTime)reader["EntryDate"] : (DateTime?)null;
                     item.RegJustDate = reader["RegJustDate"] != DBNull.Value ? (DateTime)reader["RegJustDate"] : (DateTime?)null;
@@ -287,7 +291,7 @@ namespace Core.Services.Business {
                     item.NameRu = reader["NameRu"] as string;
                     item.NameKk = reader["NameKk"] as string;
                     item.NameEn = reader["NameEn"] as string;
-                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : (Guid?)null;
 
                     item = _nsiDepartmentManager.CreateOrUpdate(item).Result;
                     if(item == null) {
@@ -319,7 +323,7 @@ namespace Core.Services.Business {
                     item.NameRu = reader["NameRu"] as string;
                     item.NameKk = reader["NameKk"] as string;
                     item.NameEn = reader["NameEn"] as string;
-                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : (Guid?)null;
 
                     item = _nsiClassifierManager.CreateOrUpdate(item).Result;
                     if(item == null) {
@@ -351,7 +355,7 @@ namespace Core.Services.Business {
                     item.NameRu = reader["NameRu"] as string;
                     item.NameKk = reader["NameKk"] as string;
                     item.NameEn = reader["NameEn"] as string;
-                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : (Guid?)null;
 
                     item = _nsiRegAgencyManager.CreateOrUpdate(item).Result;
                     if(item == null) {
@@ -383,7 +387,7 @@ namespace Core.Services.Business {
                     item.NameRu = reader["NameRu"] as string;
                     item.NameKk = reader["NameKk"] as string;
                     item.NameEn = reader["NameEn"] as string;
-                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : (Guid?)null;
 
                     item = _nsiSourceManager.CreateOrUpdate(item).Result;
                     if(item == null) {
@@ -446,7 +450,7 @@ namespace Core.Services.Business {
                     item.NameRu = reader["NameRu"] as string;
                     item.NameKk = reader["NameKk"] as string;
                     item.NameEn = reader["NameEn"] as string;
-                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : (Guid?)null;
 
                     item = _nsiInitRegionManager.CreateOrUpdate(item).Result;
                     if(item == null) {
@@ -478,7 +482,7 @@ namespace Core.Services.Business {
                     item.NameRu = reader["NameRu"] as string;
                     item.NameKk = reader["NameKk"] as string;
                     item.NameEn = reader["NameEn"] as string;
-                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : (Guid?)null;
 
                     item = _nsiDevAgencyManager.CreateOrUpdate(item).Result;
                     if(item == null) {
@@ -513,7 +517,7 @@ namespace Core.Services.Business {
                     item.ComentRu = reader["ComentRu"] as string;
                     item.ComentKk = reader["ComentKk"] as string;
                     item.ComentEn = reader["ComentEn"] as string;
-                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : Guid.Empty;
+                    item.ParentId = reader["ParentId"] != DBNull.Value ? (Guid)reader["ParentId"] : (Guid?)null;
 
                     item = _nsiRegionManager.CreateOrUpdate(item).Result;
                     if(item == null) {

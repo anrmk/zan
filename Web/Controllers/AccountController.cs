@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using Core.Data.Dto;
 using Core.Services.Business;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+
 using Web.Models.AccountViewModel;
 
 namespace Web.Controllers {

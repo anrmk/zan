@@ -53,6 +53,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Logs\" />
     <Folder Include="Models\AdminViewModel\" />
   </ItemGroup>
 

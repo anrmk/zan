@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+
 using Core.Data.Dto;
 using Core.Data.Entities;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Web.App_Config {

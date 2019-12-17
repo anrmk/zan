@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Core.Data.Entities;
 using Core.Data.Entities.Base;
 using Core.Data.Entities.Documents;
 using Core.Data.Entities.Nsi;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Core.Context {
@@ -44,6 +47,8 @@ namespace Core.Context {
 
         protected override void OnModelCreating(ModelBuilder builder) {
             base.OnModelCreating(builder);
+
+            builder.Entity<NsiLanguageEntity>().Property(e => e.Id).ValueGeneratedNever();
             // Customize the ASP.NET Core Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Core Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
@@ -53,6 +58,7 @@ namespace Core.Context {
             var modifiedEntries = ChangeTracker.Entries()
                 .Where(x => x.Entity is IAuditableEntity
                     && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
 
             foreach(var entry in modifiedEntries) {
                 IAuditableEntity entity = entry.Entity as IAuditableEntity;

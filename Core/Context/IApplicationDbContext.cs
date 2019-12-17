@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Core.Context {

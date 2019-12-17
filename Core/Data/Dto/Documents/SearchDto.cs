@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Web.Models.ViewModels.Nsi;
-
-namespace Web.Models.DocumentViewModel {
-    public class SearchViewModel {
+namespace Core.Data.Dto.Documents {
+    public class SearchDto {
         #region Search Settings
         /// <summary>
         /// Критерий поиска
@@ -25,19 +23,19 @@ namespace Web.Models.DocumentViewModel {
         /// <summary>
         /// Совпадение
         /// </summary>
-        public LogicalMultiEnum LogicalMulti { get; set; } = LogicalMultiEnum.And;
+        public int LogicalMulti { get; set; } = 1;
 
         /// <summary>
         /// Окончание
         /// </summary>
-        public EndOfWordsEnum EndOfWords { get; set; } = EndOfWordsEnum.Any;
+        public int EndOfWords { get; set; } = 1;
         #endregion
 
         public Guid? Id { get; set; }
         public int Page { get; set; } = 1;
-        public int Size { get; set; } = 100;
+        public int Limit { get; set; } = 100;
         public int Total { get; set; } = 0;
-        public int TotalPages { get { return ((Total / Size) + 1); } }
+        public int TotalPages { get { return ((Total / Limit) + 1); } }
         //public SortEnum Sort { get; set; } = SortEnum.ByRelevance;
         public bool SordByDesc { get; set; } = true;
 
@@ -61,17 +59,6 @@ namespace Web.Models.DocumentViewModel {
         public string GrWord { get; set; }
         #endregion
 
-        public IList<NsiViewModel> Languages { get; set; }
-    }
-
-    public enum LogicalMultiEnum {
-        And = 1,
-        Or = 2
-    }
-
-    public enum EndOfWordsEnum {
-        Any = 1,
-        Equal = 2,
-        Default = 3
+        public IList<int> Languages { get; set; }
     }
 }

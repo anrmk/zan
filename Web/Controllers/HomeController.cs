@@ -1,13 +1,16 @@
 ﻿using System;
 
 using System.Diagnostics;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+
 using Web.Models;
+using Web.Models.DocumentViewModel;
 
 namespace Web.Controllers {
     [Authorize]
@@ -19,6 +22,9 @@ namespace Web.Controllers {
         }
 
         public IActionResult Index() {
+            var searchCriteria = new SearchViewModel();
+
+
             return View();
         }
 

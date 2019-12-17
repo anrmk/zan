@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading.Tasks;
+
 using Core.Context;
 using Core.Data.Entities.Nsi;
 using Core.Services.Base;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services.Managers {

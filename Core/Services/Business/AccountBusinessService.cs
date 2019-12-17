@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using AutoMapper;
+
 using Core.Data.Dto;
 using Core.Data.Entities;
 using Core.Services.Managers;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace Core.Services.Business {
