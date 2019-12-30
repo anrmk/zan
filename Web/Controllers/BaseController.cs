@@ -1,11 +1,19 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace Web.Controllers {
     public class BaseController<IController>: Controller {
-        public string CurrentLanguage => "ru";
+        public string CurrentLanguage {
+            get {
+                var rqf = Request.HttpContext.Features.Get<IRequestCultureFeature>();
+                var culture = rqf.RequestCulture.Culture;
+                return culture.TwoLetterISOLanguageName;
+            }
+        }
+
         protected IController controller;
         //protected TRepository _repository { get; private set; }
 

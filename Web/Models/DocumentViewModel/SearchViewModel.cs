@@ -4,8 +4,30 @@ using System.Collections.Generic;
 using Web.Models.ViewModels.Nsi;
 
 namespace Web.Models.DocumentViewModel {
+    public class SearchString {
+        public string Value { get; set; }
+        public bool Regex { get; set; } = false;
+
+    }
+
     public class SearchViewModel {
+
+        public SearchString Search { get; set; }
+
+        public int Draw { get; set; }
+        public int Length { get; set; }
+        public int Start { get; set; }
+
+        #region Search Filter
+        public IList<int?> Languages { get; set; }
+        public IList<int?> Statuses { get; set; }
+        public IList<Guid?> AcceptedRegions { get; set; }
+        public IList<Guid?> DocumentTypes { get; set; }
+        public IList<Guid?> DocumentSections { get; set; }
+        #endregion
+
         #region Search Settings
+
         /// <summary>
         /// Критерий поиска
         /// Искать по тексту или названию
@@ -32,7 +54,7 @@ namespace Web.Models.DocumentViewModel {
         /// </summary>
         public EndOfWordsEnum EndOfWords { get; set; } = EndOfWordsEnum.Any;
         #endregion
-
+        /*
         public Guid? Id { get; set; }
         public int Page { get; set; } = 1;
         public int Size { get; set; } = 100;
@@ -42,26 +64,25 @@ namespace Web.Models.DocumentViewModel {
         public bool SordByDesc { get; set; } = true;
 
         public string Spells { get; set; }
+        */
 
         #region Requisities
-        public string SelectedStatuses { get; set; }
-        public string UnselectedStatuses { get; set; }
-        public string SelectedRegistered { get; set; }
-        public string UnselectedRegistered { get; set; }
+        //public string SelectedStatuses { get; set; }
+        //public string UnselectedStatuses { get; set; }
+        //public string SelectedRegistered { get; set; }
+        //public string UnselectedRegistered { get; set; }
 
-        public string AcceptNumber { get; set; }
-        public DateTime? AcceptedDateStart { get; set; }
-        public DateTime? AcceptedDateFinish { get; set; }
+        //public string AcceptNumber { get; set; }
+        //public DateTime? AcceptedDateStart { get; set; }
+        //public DateTime? AcceptedDateFinish { get; set; }
 
-        public string RegNumber { get; set; }
-        public DateTime? RegJustDateStart { get; set; }
-        public DateTime? RegJustDateFinish { get; set; }
+        //public string RegNumber { get; set; }
+        //public DateTime? RegJustDateStart { get; set; }
+        //public DateTime? RegJustDateFinish { get; set; }
 
-        public string NgrWord { get; set; }
-        public string GrWord { get; set; }
+        //public string NgrWord { get; set; }
+        //public string GrWord { get; set; }
         #endregion
-
-        public IList<NsiViewModel> Languages { get; set; }
     }
 
     public enum LogicalMultiEnum {

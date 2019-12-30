@@ -15,6 +15,8 @@ namespace Core.Data.Dto.Documents {
         /// </summary>
         public string SearchText { get; set; } = "";
 
+        public bool Regex { get; set; } = false;
+
         /// <summary>
         /// Близость слов
         /// </summary>
@@ -31,11 +33,19 @@ namespace Core.Data.Dto.Documents {
         public int EndOfWords { get; set; } = 1;
         #endregion
 
+        public int Draw { get; set; }
+        public int Length { get; set; }
+        public int Start { get; set; }
+
         public Guid? Id { get; set; }
         public int Page { get; set; } = 1;
         public int Limit { get; set; } = 100;
         public int Total { get; set; } = 0;
-        public int TotalPages { get { return ((Total / Limit) + 1); } }
+        public int TotalPages { 
+            get { 
+                return ((Total + Limit) / Limit); 
+            } 
+        }
         //public SortEnum Sort { get; set; } = SortEnum.ByRelevance;
         public bool SordByDesc { get; set; } = true;
 
@@ -59,6 +69,10 @@ namespace Core.Data.Dto.Documents {
         public string GrWord { get; set; }
         #endregion
 
-        public IList<int> Languages { get; set; }
+        public IList<int?> Languages { get; set; }
+        public IList<int?> Statuses { get; set; }
+        public IList<Guid?> AcceptedRegions { get; set; }
+        public IList<Guid?> DocumentTypes { get; set; }
+        public IList<Guid?> DocumentSections { get; set; }
     }
 }

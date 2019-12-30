@@ -47,6 +47,10 @@ namespace Core.Data.Entities.Documents {
         public Guid? NsiDocumentSectionEntity_Id { get; set; }
         public virtual NsiDocumentSectionEntity Section { get; set; }
 
+        //[ForeignKey("DocumentType")]
+        //public Guid? NsiDocumentTypeEntity_Id { get; set; }
+        //public virtual NsiDocumentTypeEntity DocumentType { get; set; }
+
         /// <summary>
         /// Язык документа
         /// </summary>

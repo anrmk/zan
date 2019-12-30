@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Core.Context;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Core.Services.Managers {
     public interface INsiDocumentStatusManager: IEntityService<NsiDocumentStatusEntity> {
         Task<NsiDocumentStatusEntity> FindByCodeAsync(string code);
+        Task<IEnumerable<NsiDocumentStatusEntity>> FindByCodesAsync(string[] code);
     }
 
     public class NsiDocumentStatusManager: AsyncEntityService<NsiDocumentStatusEntity>, INsiDocumentStatusManager {
@@ -17,6 +19,10 @@ namespace Core.Services.Managers {
 
         public async Task<NsiDocumentStatusEntity> FindByCodeAsync(string code) {
             return await DbSet.Where(x => x.Code.Equals(code)).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<NsiDocumentStatusEntity>> FindByCodesAsync(string[] code) {
+            return await DbSet.Where(x => code.Contains(x.Code)).ToListAsync();
         }
     }
 }

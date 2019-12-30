@@ -1,0 +1,93 @@
+﻿@model Web.Models.DocumentViewModel.SearchViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+<form class="ui vertical fluid accordion text menu" id="documentFilterPanel">
+    <div class="item">
+        <div class="active title">
+            <i class="dropdown icon"></i>
+            <b>@Localizer["LanguageDoc"]</b>
+        </div>
+        <div class="active content">
+            @foreach(var item in ViewBag.Languages) {
+                <div class="item">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="languages[]" value="@item.Id">
+                        <label>@item.GetName(ViewBag.Language)</label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="item">
+        <div class="active title">
+            <i class="dropdown icon"></i>
+            <b>@Localizer["Status"]</b>
+        </div>
+        <div class="active content">
+            @foreach(var item in ViewBag.Statuses) {
+                <div class="item">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="statuses[]" value="@item.Id">
+                        <label>@item.GetName(ViewBag.Language)</label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="item">
+        <div class="title">
+            <i class="dropdown icon"></i>
+            <b>@Localizer["RegionDeistv"]</b>
+        </div>
+        <div class="content">
+            @foreach(var item in ViewBag.Regions) {
+                <div class="item">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="acceptedRegions[]" value="@item.Id" />
+                        <label>@item.GetName(ViewBag.Language)</label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="item">
+        <div class="title">
+            <i class="dropdown icon"></i>
+            <b>@Localizer["SectionOfLegislation"]</b>
+        </div>
+        <div class="content scrolling ">
+            @foreach(var item in ViewBag.DocumentSections) {
+                <div class="item">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="documentSections[]" value="@item.Id">
+                        <label>@item.GetName(ViewBag.Language)</label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    @*
+        <div class="item">
+        <div class="title">
+            <i class="dropdown icon"></i>
+            <b>@Localizer["TitlePrefix"]</b>
+        </div>
+        <div class="content scrolling ">
+            @foreach(var item in ViewBag.DocumentTitlePrefixes) {
+                <div class="item">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="DocumentTitlePrefixes[]">
+                        <label>@item.GetName(ViewBag.Language)</label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+        *@
+
+    @*<div class="item">
+            <div class="header">@Localizer["SphereOfRights"]</div>
+        </div>*@
+</form>

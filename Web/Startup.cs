@@ -96,12 +96,6 @@ namespace Web {
                 .AddDataAnnotationsLocalization();
 
             services.Configure<RequestLocalizationOptions>(opts => {
-                //var supportedCultures = new List<CultureInfo> {
-                //    new CultureInfo("kk"),
-                //    new CultureInfo("en"),
-                //    new CultureInfo("ru")
-                //};
-
                 opts.DefaultRequestCulture = new RequestCulture("ru");
                 opts.SupportedCultures = supportedCultures;
                 opts.SupportedUICultures = supportedCultures;
@@ -110,6 +104,7 @@ namespace Web {
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSignalR();
+
 
             Core.Config.ServiceModuleConfig.Configuration(services);
 

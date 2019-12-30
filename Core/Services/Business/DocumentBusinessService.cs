@@ -11,39 +11,44 @@ using Core.Extensions;
 using Core.Services.Managers;
 
 namespace Core.Services.Business {
-    public interface IDocumentBusinessService { }
+    public interface IDocumentBusinessService {
+        Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, string sort, string order, int offset, int limit);
+    }
 
     public class DocumentBusinessService: IDocumentBusinessService {
         private readonly IMapper _mapper;
         private readonly IDocumentManager _documentManager;
 
-        public DocumentBusinessService(IMapper mapper, DocumentManager documentManager) {
+        public DocumentBusinessService(IMapper mapper, IDocumentManager documentManager) {
             _mapper = mapper;
             _documentManager = documentManager;
         }
 
-        public async Task<Pager<DocumentDto>> GetListOfDocument(SearchDto search) {
-            //(string search, string sort = "Id", string order = "asc", int limit = 20, int offset = 0)
-            // var result = _documentManager.Search(search);
+        public async Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, string sort, string order, int offset, int limit) {
             Expression<Func<DocumentEntity, bool>> where = x =>
                 (true)
-                // && (search.Languages.Contains(x.Language.Id))
-                && (x.Status.Name == search.SelectedStatuses)
+                && ((string.IsNullOrEmpty(search.SearchText)) || x.Title.Contains(search.SearchText.Trim()))
+                && ((search.Languages == null || search.Languages.Count == 0) || search.Languages.Contains(x.Language.Id))
+                && ((search.Statuses == null  || search.Statuses.Count == 0) || search.Statuses.Contains(x.Status.Id))
+                // && (search.AcceptedRegions.Contains(x.AcceptedRegion.Id) || false)
+                //&& ((search.DocumentTypes == null || search.DocumentTypes.Count == 0) || search.DocumentTypes.Contains(x.NsiDocumentSectionEntity_Id.Id) || false)
+                && ((search.DocumentSections == null || search.DocumentSections.Count == 0) || search.DocumentSections.Contains(x.Section.Id) || false)
+
                 && (x.IsArchive == false);
 
             var sortby = GetExpression<DocumentEntity>(null ?? "Name");
 
-            Tuple<List<DocumentEntity>, int> tuple = await _documentManager.Pager<DocumentEntity>(where, sortby, search.SordByDesc, search.Total * search.TotalPages, search.Limit);
+            Tuple<List<DocumentEntity>, int> tuple = await _documentManager.Pager<DocumentEntity>(where, sortby, !order.Equals("asc"), offset, limit);
             var list = tuple.Item1;
             var count = tuple.Item2;
 
             if(count == 0)
-                return new Pager<DocumentDto>(new List<DocumentDto>(), 0, search.Page, search.Limit);
+                return new PagerExtended<DocumentDto>(new List<DocumentDto>(), 0, offset, limit);
 
-            var page = (search.Total + search.Limit) / search.Limit;
+            var page = (offset + limit) / limit;
 
             var result = _mapper.Map<List<DocumentDto>>(list);
-            return new Pager<DocumentDto>(result, count, page, search.Limit);
+            return new PagerExtended<DocumentDto>(result, count, page, limit);
         }
 
         public static Expression<Func<TSource, string>> GetExpression<TSource>(string propertyName) {

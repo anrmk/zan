@@ -28,13 +28,19 @@
         on: 'hover'
     });
 
-    $('.ui.accordion').accordion({ animateChildren: false });
+    $('.ui.accordion').accordion({
+        'animateChildren': false,
+        'exclusive': false,
+       // 'closeNested': false
+    });
+
     $('.menu .item').tab();
 
     $('.ui.datepicker').calendar({
         //type: 'date',
         //endCalendar: $('.rangeend')
     });
+
     //$('#rangeend').calendar({
     //    type: 'date',
     //    startCalendar: $('#rangestart')

@@ -2,6 +2,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <Company>WaspLine LLC</Company>
+    <Product>Zan</Product>
+    <Authors>Aziz Nurmukhamedov</Authors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,8 +22,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.6" />
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.6" />
+    <!--<PackageReference Include="Microsoft.AspNetCore.All"  />-->
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0"/>
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Owin" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />

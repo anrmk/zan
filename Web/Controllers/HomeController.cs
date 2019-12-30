@@ -1,29 +1,53 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
+using Core.Data.Dto.Documents;
+using Core.Services.Business;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
-
+using Web.Hubs;
 using Web.Models;
 using Web.Models.DocumentViewModel;
 
 namespace Web.Controllers {
     [Authorize]
     public class HomeController: BaseController<HomeController> {
-        public HomeController(IHttpContextAccessor httpContextAccessor,
-            IStringLocalizer<HomeController> localizer,
-            ILogger<HomeController> logger) : base(httpContextAccessor, localizer, logger) {
+        private readonly IMapper _mapper;
+        private readonly IDocumentBusinessService _documentBusinessService;
+        private readonly INsiBusinessService _nsiBusinessService;
 
+        public HomeController(IMapper mapper, IHttpContextAccessor httpContextAccessor,
+            IStringLocalizer<HomeController> localizer,
+            ILogger<HomeController> logger,
+            IDocumentBusinessService documentBusinessService,
+            INsiBusinessService nsiBusinessService) : base(httpContextAccessor, localizer, logger) {
+            _mapper = mapper;
+            _documentBusinessService = documentBusinessService;
+            _nsiBusinessService = nsiBusinessService;
         }
 
-        public IActionResult Index() {
+        public async Task<IActionResult> Index() {
             var searchCriteria = new SearchViewModel();
+            // var result = await _documentBusinessService.GetListOfDocument(new SearchDto(), "", "", 0, 100);
 
+            ViewBag.Languages = await _nsiBusinessService.GetLanguages();
+            ViewBag.Statuses = await _nsiBusinessService.GetDocumentStatues();
+            //ViewBag.DocumentTypes = await _nsiBusinessService.GetDocumentTypes();
+            ViewBag.DocumentSections = await _nsiBusinessService.GetDocumentSections();
+            ViewBag.Regions = await _nsiBusinessService.GetRegions(null);
+            ViewBag.DocumentTitlePrefixes = await _nsiBusinessService.GetDocumentTitlePrefixes();
+            //result.Languages = _mapper.Map<List<SelectListItem>>(lang);
+
+            //var result = _documentBusinessService.GetListOfDocument(_mapper.Map<SearchDto>(searchCriteria));
 
             return View();
         }
@@ -90,5 +114,49 @@ namespace Web.Controllers {
         public IActionResult Error() {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+    }
+}
+
+namespace Web.Controllers.Api {
+    [Route("api/[controller]")]
+    [ApiController]
+    public class HomeController: ControllerBase {
+        private readonly IMapper _mapper;
+        private readonly ISyncBusinessService _syncBusinessService;
+        private readonly IHubContext<SyncDataHub> _syncDataHubContext;
+        private readonly IDocumentBusinessService _documentBusinessService;
+
+        public HomeController(IMapper mapper, IHubContext<SyncDataHub> syncDataHubContext, ISyncBusinessService syncBusinessService,
+            IDocumentBusinessService documentBusinessService) {
+            _mapper = mapper;
+            _syncDataHubContext = syncDataHubContext;
+            _syncBusinessService = syncBusinessService;
+            _documentBusinessService = documentBusinessService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GetPager([FromForm] SearchViewModel model) {
+            //public async Task<IActionResult> GetPager([FromQuery]int? draw, [FromQuery]int? start, [FromQuery]int? length) {
+            //var search = Request.Query["search[value]"];
+            // var start = 10;
+            //start = start.HasValue ? start / 10 : 0;
+
+            //var searchDto = new SearchDto() {
+            //    SearchText = search.ToString() ?? "",
+            //    Languages = new List<int>(Request.Query["languages[]"].ToArray().Select(int.Parse)),
+            //    Statuses = new List<int>(Request.Query["statuses[]"].ToArray().Select(int.Parse)),
+            //    AcceptedRegions = new List<Guid>(Request.Query["acceptedRegions[]"].ToArray().Select(Guid.Parse)),
+            //    DocumentTypes = new List<Guid>(Request.Query["documentTypes[]"].ToArray().Select(Guid.Parse))
+
+            //    // Languages = Request.Query["language[]"].ToArray()
+
+            //};
+            var search = _mapper.Map<SearchDto>(model);
+            var item = await _documentBusinessService.GetListOfDocument(search, "Id", "asc", search.Start, search.Length);
+            return Ok(item);
+        }
+
+
+
     }
 }

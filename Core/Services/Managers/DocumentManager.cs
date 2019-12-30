@@ -17,9 +17,5 @@ namespace Core.Services.Managers {
         public Task<Pager<DocumentEntity>> FindByCodeAsync(string code) {
             throw new NotImplementedException();
         }
-
-        /*public async Task<NsiDocumentSectionEntity> FindByCodeAsync(string code) {
-            return await DbSet.Where(x => x.Code.Equals(code)).FirstOrDefaultAsync();
-        }*/
     }
 }

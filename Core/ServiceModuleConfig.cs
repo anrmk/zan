@@ -40,6 +40,7 @@ namespace Core.Config {
             services.AddTransient<IAccountBusinessService, AccountBusinessService>();
             services.AddTransient<INsiBusinessService, NsiBusinessService>(); //для работы со справочниками
             services.AddTransient<ISyncBusinessService, SyncBusinessService>(); //для работы с синхронизацией данных
+            services.AddTransient<IDocumentBusinessService, DocumentBusinessService>();
         }
     }
 }
