@@ -1,5 +1,4 @@
 ﻿using System;
-using Core.Data.Dto.Nsi;
 
 namespace Core.Data.Dto.Documents {
     public class DocumentDto {

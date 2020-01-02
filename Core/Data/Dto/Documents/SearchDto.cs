@@ -41,10 +41,10 @@ namespace Core.Data.Dto.Documents {
         public int Page { get; set; } = 1;
         public int Limit { get; set; } = 100;
         public int Total { get; set; } = 0;
-        public int TotalPages { 
-            get { 
-                return ((Total + Limit) / Limit); 
-            } 
+        public int TotalPages {
+            get {
+                return ((Total + Limit) / Limit);
+            }
         }
         //public SortEnum Sort { get; set; } = SortEnum.ByRelevance;
         public bool SordByDesc { get; set; } = true;

@@ -25,7 +25,14 @@
 </div>
 
 @section Scripts {
-    <script src="~/js/document-controller.js" ></script>
+    <script src="~/js/document-controller.js"></script>
 
-    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.DocumentController = new DocumentController({
+                language: '@lang',
+                callback: (data, status, jqXHR, methodName, target) => { }
+            });
+        });
+    </script>
 }

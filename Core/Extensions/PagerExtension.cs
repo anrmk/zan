@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Core.Extensions {
@@ -87,7 +88,7 @@ namespace Core.Extensions {
         public IList<int> Statuses { get; set; }
         public IList<Guid> AcceptedRegions { get; set; }
 
-        public PagerExtended(IEnumerable<T> list, int totalItems, int? pager, int pageSize = 0) 
+        public PagerExtended(IEnumerable<T> list, int totalItems, int? pager, int pageSize = 0)
             : base(list, totalItems, pager, pageSize) {
 
         }

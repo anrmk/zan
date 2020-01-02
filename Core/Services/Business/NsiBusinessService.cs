@@ -14,7 +14,7 @@ namespace Core.Services.Business {
         Task<List<NsiDto<Guid>>> GetDocumentTypes();
         Task<List<NsiDto<Guid>>> GetRegions(string parentId);
         Task<List<NsiDto<Guid>>> GetDocumentSections();
-        
+
         Task<List<NsiDto<Guid>>> GetDocumentTitlePrefixes();
 
     }
@@ -76,7 +76,7 @@ namespace Core.Services.Business {
             Guid.TryParse(parentId, out newGuid);
 
             var result = await _nsiRegionManager.FindByParentId(newGuid);
-            
+
             return _mapper.Map<List<NsiDto<Guid>>>(result);
         }
 

@@ -29,7 +29,7 @@ namespace Core.Services.Business {
                 (true)
                 && ((string.IsNullOrEmpty(search.SearchText)) || (x.Title.Contains(search.SearchText.Trim()) || x.Info.Contains(search.SearchText.Trim())))
                 && ((search.Languages == null || search.Languages.Count == 0) || search.Languages.Contains(x.Language.Id))
-                && ((search.Statuses == null  || search.Statuses.Count == 0) || search.Statuses.Contains(x.Status.Id))
+                && ((search.Statuses == null || search.Statuses.Count == 0) || search.Statuses.Contains(x.Status.Id))
                 // && (search.AcceptedRegions.Contains(x.AcceptedRegion.Id) || false)
                 //&& ((search.DocumentTypes == null || search.DocumentTypes.Count == 0) || search.DocumentTypes.Contains(x.NsiDocumentSectionEntity_Id.Id) || false)
                 && ((search.DocumentSections == null || search.DocumentSections.Count == 0) || search.DocumentSections.Contains(x.Section.Id) || false)
@@ -56,6 +56,5 @@ namespace Core.Services.Business {
             Expression conversion = Expression.Convert(Expression.Property(param, propertyName), typeof(string));
             return Expression.Lambda<Func<TSource, string>>(conversion, param);
         }
-
     }
 }

@@ -11,6 +11,24 @@
       ]
     },
     {
+      "provider": "unpkg",
+      "library": "mark.js@8.11.1",
+      "destination": "wwwroot/lib/jquery-mark/",
+      "files": [
+        "dist/jquery.mark.js",
+        "dist/jquery.mark.min.js"
+      ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "jquery-serializejson@2.9.0",
+      "destination": "wwwroot/lib/jquery-serializejson/",
+      "files": [
+        "jquery.serializejson.js",
+        "jquery.serializejson.min.js"
+      ]
+    },
+    {
       "library": "aspnet-signalr@1.1.4",
       "destination": "wwwroot/lib/signalr/"
     },
@@ -21,11 +39,6 @@
     {
       "library": "semantic-ui-calendar@0.0.8",
       "destination": "wwwroot/lib/semantic-ui-calendar/"
-    },
-    {
-      "provider": "unpkg",
-      "library": "jquery-serializejson@2.9.0",
-      "destination": "wwwroot/lib/jquery-serializejson/"
     },
     {
       "provider": "unpkg",
@@ -41,6 +54,21 @@
       "provider": "unpkg",
       "library": "datatables.net-responsive@2.2.3",
       "destination": "wwwroot/lib/jquery-datatables-net/responsive/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.mark.js@2.0.1",
+      "destination": "wwwroot/lib/jquery-datatables-net/mark"
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.mark.js@2.0.1",
+      "destination": "wwwroot/lib/jquery-datatables-net/mark/",
+      "files": [
+        "dist/datatables.mark.js",
+        "dist/datatables.mark.min.css",
+        "dist/datatables.mark.min.js"
+      ]
     }
   ]
 }

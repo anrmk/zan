@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
+
 using AutoMapper;
+
 using Core.Data.Dto.Documents;
 using Core.Services.Business;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
+
 using Web.Hubs;
 using Web.Models;
 using Web.Models.DocumentViewModel;
@@ -136,27 +137,9 @@ namespace Web.Controllers.Api {
 
         [HttpPost]
         public async Task<IActionResult> GetPager([FromForm] SearchViewModel model) {
-            //public async Task<IActionResult> GetPager([FromQuery]int? draw, [FromQuery]int? start, [FromQuery]int? length) {
-            //var search = Request.Query["search[value]"];
-            // var start = 10;
-            //start = start.HasValue ? start / 10 : 0;
-
-            //var searchDto = new SearchDto() {
-            //    SearchText = search.ToString() ?? "",
-            //    Languages = new List<int>(Request.Query["languages[]"].ToArray().Select(int.Parse)),
-            //    Statuses = new List<int>(Request.Query["statuses[]"].ToArray().Select(int.Parse)),
-            //    AcceptedRegions = new List<Guid>(Request.Query["acceptedRegions[]"].ToArray().Select(Guid.Parse)),
-            //    DocumentTypes = new List<Guid>(Request.Query["documentTypes[]"].ToArray().Select(Guid.Parse))
-
-            //    // Languages = Request.Query["language[]"].ToArray()
-
-            //};
             var search = _mapper.Map<SearchDto>(model);
             var item = await _documentBusinessService.GetListOfDocument(search, "Id", "asc", search.Start, search.Length);
             return Ok(item);
         }
-
-
-
     }
 }

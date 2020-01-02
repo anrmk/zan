@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Web.Models.ViewModels.Nsi;
-
 namespace Web.Models.DocumentViewModel {
     public class SearchString {
         public string Value { get; set; }

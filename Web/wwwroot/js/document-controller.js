@@ -5,22 +5,26 @@
         this.options = $.extend({
             filter: $('#documentFilterPanel'),
             table: $('#datatable'),
-            datatable: null
+            datatable: null,
+            controller: {
+                api: '/api/document',
+                mvc: '/document'
+            }
         }, this.options);
+
         this.init(this.options);
     }
 
     init(options) {
         var table = this.options.table.DataTable({
             'language': $.fn.dataTableExt.language[this.options.language],
-
             'ordering': false,
             'processing': true,
             'serverSide': true,
-            'searchDelay': 3000,
-            'searchHighlight': true,
+            'searchDelay': 1800,
+            'mark': true,
             'ajax': {
-                'url': '/api/home',
+                'url': this.options.controller.api,
                 'type': 'POST',
                 'data': (d) => {
                     var data = $.extend({}, d, this.options.filter.serializeJSON());
@@ -28,14 +32,10 @@
                 },
                 'async': true
             },
-            'fixedHeader': {
-                'header': true,
-                'footer': true
-            },
             'columns': [{
-                'data': 'title', 'render': this._renderTitle, 'orderable': false
+                'data': 'title', 'render': (data, type, row) => this._renderTitle(data, type, row, this), 'orderable': false
             }],
-          
+
             //'columnDefs': [
             //    { 'targets': 0 },
             //    { 'targets': 1}
@@ -59,43 +59,33 @@
         //    body.highlight(this.options.datatable.search());
         //});
 
+        // Pre-process the data returned from the server
         table.on('xhr', () => {
             var data = this.options.datatable.ajax.params();
             //alert('Search term was: ' + data.search.value);
         });
 
+        // Bind event on filter
         this.options.filter.find(':input').change((e) => {
-            let target = $(e.target);
             table.ajax.reload();
         });
 
         this.options.datatable = table;
     }
-    _renderTitle(data, type, row) {
+    _renderTitle(data, type, row, controller) {
         var className = row['statusId'] == 2 ? 'red' : row['statusId'] == 3 ? 'yellow' : '';
 
         return `<div class='ui raised segment'> 
                     <div class='ui ${className} ribbon label'>
                         <i class='file alternate outline icon'></i>${row['statusName']}
                     </div>
-                    <a href='/document/'>${row['title']}</a>
+                    <a href='${controller.options.controller.mvc}/details/${row['id']}'>${row['title']}</a>
                     <p>${row['info']}</p>
 
                     <small>
                         <i class='calendar alternate outline icon'></i>Дата редакции: <span class='ui tiny label'>${row['displayEditionDate']}</span>
-                        <i class='file alternate outline icon'></i>Раздел законодательства: <span class='ui tiny label'>${row['sectionName']}</span>
+                        <i class='file alternate outline icon'></i>Раздел законодательства: <span class='ui tiny blue label'>${row['sectionName']}</span>
                     </small>
                 </div>`;
-    }
-
-    _renderAction(data, type, row) {
-        return `<div class='ui buttons basic'>
-                <a class="ui circular icon button compact" title='карточка документа'>
-                    <i class="info circle icon"></i>
-                </a>
-                <a class="circular ui icon button compact">
-                  <i class="twitter icon"></i>
-                </a>
-            </div>`
     }
 }
