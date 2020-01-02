@@ -1,4 +1,6 @@
 ﻿@using Web.Models.DocumentViewModel;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = "Home Page";
@@ -12,10 +14,12 @@
         <partial name="_FilterPanelPartial" model="new SearchViewModel()" />
     </div>
     <div class="twelve wide column">
-        <table class="ui red table" id="datatable" style="width:100%">
-            @*<tbody>
-                    <tr>Результат поиска</tr>
-                </tbody>*@
+        <table class="" id="datatable" style="width:100%">
+            <thead style="display:none;">
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
         </table>
     </div>
 </div>

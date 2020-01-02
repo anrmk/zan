@@ -11,6 +11,9 @@ namespace Core.Data.Entities.Documents {
         /// </summary>
         public string Title { get; set; }
 
+        /// <summary>
+        /// Короткое описание
+        /// </summary>
         public string Info { get; set; }
 
         /// <summary>

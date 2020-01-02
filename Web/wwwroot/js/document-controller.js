@@ -11,9 +11,10 @@
     }
 
     init(options) {
-        this.options.datatable = this.options.table.DataTable({
+        var table = this.options.table.DataTable({
             'language': $.fn.dataTableExt.language[this.options.language],
-            //'data': 'id',
+
+            'ordering': false,
             'processing': true,
             'serverSide': true,
             'searchDelay': 3000,
@@ -27,37 +28,74 @@
                 },
                 'async': true
             },
-            'columnDefs': [{
-                'targets': [0],
-                'visible': false,
-                'searchable': false
+            'fixedHeader': {
+                'header': true,
+                'footer': true
+            },
+            'columns': [{
+                'data': 'title', 'render': this._renderTitle, 'orderable': false
             }],
-            'columns': [
-                { 'data': 'id' },
-                {
-                    'data': {
-                        //'_': 'title',
-                        'display': 'title'
-                    }
-                }
-            ]
+          
+            //'columnDefs': [
+            //    { 'targets': 0 },
+            //    { 'targets': 1}
+            //],
+            //'rowCallback': function (row, data) {
+            //    switch (data['status']) {
+            //        case 1: $(row).addClass(''); break;
+            //        case 2: $(row).addClass('negative'); break;
+            //        case 3: $(row).addClass('positive'); break;
+            //        default: return;
+            //    }
+            //},
         });
 
-        //this.options.datatable.on('draw', (e,x) => {
+
+
+        //table.on('draw', (e,x) => {
         //    var body = $(this.options.datatable.table().body());
 
         //    body.unhighlight();
         //    body.highlight(this.options.datatable.search());
         //});
 
-        this.options.datatable.on('xhr', () => {
+        table.on('xhr', () => {
             var data = this.options.datatable.ajax.params();
             //alert('Search term was: ' + data.search.value);
         });
 
         this.options.filter.find(':input').change((e) => {
             let target = $(e.target);
-            this.options.datatable.ajax.reload();
+            table.ajax.reload();
         });
+
+        this.options.datatable = table;
+    }
+    _renderTitle(data, type, row) {
+        var className = row['statusId'] == 2 ? 'red' : row['statusId'] == 3 ? 'yellow' : '';
+
+        return `<div class='ui raised segment'> 
+                    <div class='ui ${className} ribbon label'>
+                        <i class='file alternate outline icon'></i>${row['statusName']}
+                    </div>
+                    <a href='/document/'>${row['title']}</a>
+                    <p>${row['info']}</p>
+
+                    <small>
+                        <i class='calendar alternate outline icon'></i>Дата редакции: <span class='ui tiny label'>${row['displayEditionDate']}</span>
+                        <i class='file alternate outline icon'></i>Раздел законодательства: <span class='ui tiny label'>${row['sectionName']}</span>
+                    </small>
+                </div>`;
+    }
+
+    _renderAction(data, type, row) {
+        return `<div class='ui buttons basic'>
+                <a class="ui circular icon button compact" title='карточка документа'>
+                    <i class="info circle icon"></i>
+                </a>
+                <a class="circular ui icon button compact">
+                  <i class="twitter icon"></i>
+                </a>
+            </div>`
     }
 }

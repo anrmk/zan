@@ -27,7 +27,7 @@ namespace Core.Services.Business {
         public async Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, string sort, string order, int offset, int limit) {
             Expression<Func<DocumentEntity, bool>> where = x =>
                 (true)
-                && ((string.IsNullOrEmpty(search.SearchText)) || x.Title.Contains(search.SearchText.Trim()))
+                && ((string.IsNullOrEmpty(search.SearchText)) || (x.Title.Contains(search.SearchText.Trim()) || x.Info.Contains(search.SearchText.Trim())))
                 && ((search.Languages == null || search.Languages.Count == 0) || search.Languages.Contains(x.Language.Id))
                 && ((search.Statuses == null  || search.Statuses.Count == 0) || search.Statuses.Contains(x.Status.Id))
                 // && (search.AcceptedRegions.Contains(x.AcceptedRegion.Id) || false)
@@ -38,7 +38,7 @@ namespace Core.Services.Business {
 
             var sortby = GetExpression<DocumentEntity>(null ?? "Name");
 
-            Tuple<List<DocumentEntity>, int> tuple = await _documentManager.Pager<DocumentEntity>(where, sortby, !order.Equals("asc"), offset, limit);
+            Tuple<List<DocumentEntity>, int> tuple = await _documentManager.Pager<DocumentEntity>(where, sortby, !order.Equals("asc"), offset, limit, new string[] { "Status", "Section" });
             var list = tuple.Item1;
             var count = tuple.Item2;
 

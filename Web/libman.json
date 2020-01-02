@@ -10,7 +10,6 @@
         "jquery.min.js"
       ]
     },
-
     {
       "library": "aspnet-signalr@1.1.4",
       "destination": "wwwroot/lib/signalr/"
@@ -24,18 +23,24 @@
       "destination": "wwwroot/lib/semantic-ui-calendar/"
     },
     {
-      "provider": "filesystem",
-      "library": "https://cdn.datatables.net/v/se/jq-3.3.1/dt-1.10.20/",
-      "destination": "wwwroot/lib/jquery-datatables/",
-      "files": [
-        "datatables.min.css",
-        "datatables.min.js"
-      ]
-    },
-    {
       "provider": "unpkg",
       "library": "jquery-serializejson@2.9.0",
       "destination": "wwwroot/lib/jquery-serializejson/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net@1.10.20",
+      "destination": "wwwroot/lib/jquery-datatables-net"
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-se@1.10.20",
+      "destination": "wwwroot/lib/jquery-datatables-net/semantic-ui"
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-responsive@2.2.3",
+      "destination": "wwwroot/lib/jquery-datatables-net/responsive/"
     }
   ]
 }

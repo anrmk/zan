@@ -13,7 +13,13 @@ namespace Core.Config {
         public MapperConfig() {
             CreateMap<ApplicationUserEntity, ApplicationUserDto>().ReverseMap();
             CreateMap<UserProfileEntity, UserProfileDto>().ReverseMap();
-            CreateMap<DocumentEntity, DocumentDto>().ReverseMap();
+            CreateMap<DocumentEntity, DocumentDto>()
+                 .ForMember(d => d.StatusId, o => o.MapFrom(s => s.NsiDocumentStatusEntity_Id))
+                 .ForMember(d => d.StatusName, o => o.MapFrom(s => s.Status != null ? s.Status.NameRu : ""))
+                 .ForMember(d => d.SectionId, o => o.MapFrom(s => s.NsiDocumentSectionEntity_Id))
+                 .ForMember(d => d.SectionName, o => o.MapFrom(s => s.Section != null ? s.Section.NameRu : ""))
+
+                .ReverseMap();
 
             CreateMap<NsiLanguageEntity, NsiDto<int>>().ReverseMap(); //CodeImport
             CreateMap<NsiDocumentTypeEntity, NsiDto<Guid>>().ReverseMap();
