@@ -37,19 +37,6 @@ namespace Web.Controllers {
         }
 
         public async Task<IActionResult> Index() {
-            var searchCriteria = new SearchViewModel();
-            // var result = await _documentBusinessService.GetListOfDocument(new SearchDto(), "", "", 0, 100);
-
-            ViewBag.Languages = await _nsiBusinessService.GetLanguages();
-            ViewBag.Statuses = await _nsiBusinessService.GetDocumentStatues();
-            //ViewBag.DocumentTypes = await _nsiBusinessService.GetDocumentTypes();
-            ViewBag.DocumentSections = await _nsiBusinessService.GetDocumentSections();
-            ViewBag.Regions = await _nsiBusinessService.GetRegions(null);
-            ViewBag.DocumentTitlePrefixes = await _nsiBusinessService.GetDocumentTitlePrefixes();
-            //result.Languages = _mapper.Map<List<SelectListItem>>(lang);
-
-            //var result = _documentBusinessService.GetListOfDocument(_mapper.Map<SearchDto>(searchCriteria));
-
             return View();
         }
 
@@ -57,8 +44,7 @@ namespace Web.Controllers {
             return View();
         }
 
-        public IActionResult SetCulture(string id = "en") {
-            var culture = id;
+        public IActionResult SetCulture(string culture = "ru") {
             Response.Cookies.Append(
                 CookieRequestCultureProvider.DefaultCookieName,
                 CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),

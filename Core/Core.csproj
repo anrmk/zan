@@ -14,6 +14,8 @@
     <Compile Remove="Migrations\20191216193828_added-document-entity4.Designer.cs" />
     <Compile Remove="Migrations\20191217031047_init2.cs" />
     <Compile Remove="Migrations\20191217031047_init2.Designer.cs" />
+    <Compile Remove="Migrations\20200103022416_update-entities.cs" />
+    <Compile Remove="Migrations\20200103022416_update-entities.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

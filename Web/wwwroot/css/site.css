@@ -61,3 +61,15 @@
   line-height: 1.4285em;
   color: rgba(0, 0, 0, 0.87);
 }
+
+div.document {
+  padding: 60px 30px 60px 60px;
+  font-family: "Times New Roman";
+  font-size: 14px;
+  line-height: 1.5px;
+}
+
+div.document p {
+  text-indent: 30px;
+  text-align: justify;
+}

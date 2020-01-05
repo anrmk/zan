@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using AutoMapper;
 
@@ -32,22 +33,23 @@ namespace Web.Controllers {
 
         // GET: Document
         public async Task<ActionResult> Index() {
-            var searchCriteria = new SearchViewModel();
-
             ViewBag.Languages = await _nsiBusinessService.GetLanguages();
             ViewBag.Statuses = await _nsiBusinessService.GetDocumentStatues();
             //ViewBag.DocumentTypes = await _nsiBusinessService.GetDocumentTypes();
             ViewBag.DocumentSections = await _nsiBusinessService.GetDocumentSections();
             ViewBag.Regions = await _nsiBusinessService.GetRegions(null);
             ViewBag.DocumentTitlePrefixes = await _nsiBusinessService.GetDocumentTitlePrefixes();
-            //result.Languages = _mapper.Map<List<SelectListItem>>(lang);
 
             return View();
         }
 
         // GET: Document/Details/5
-        public ActionResult Details(string id) {
-            return View();
+        public async Task<ActionResult> Details(Guid id) {
+            var item = await _documentBusinessService.GetDocument(id);
+            if(item == null) {
+                return NotFound();
+            }
+            return View(item);
         }
 
         // GET: Document/Create

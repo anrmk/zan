@@ -100,6 +100,7 @@ namespace Core.Context {
         public DbSet<ApplicationUserEntity> ApplicationUsers { get; set; }
         public DbSet<UserProfileEntity> UserProfiles { get; set; }
         public DbSet<DocumentEntity> Documents { get; set; }
+        public DbSet<DocumentBodyEntity> DocumentBodies { get; set; }
         #endregion
 
         #region NSI

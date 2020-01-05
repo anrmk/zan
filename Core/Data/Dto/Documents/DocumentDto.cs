@@ -5,6 +5,9 @@ namespace Core.Data.Dto.Documents {
         public string Id { get; set; }
         public string Title { get; set; }
         public string Info { get; set; }
+
+        public DocumentBodyDto Content { get; set; }
+
         public string Ngr { get; set; }
         public int? GosNumber { get; set; }
         public string AcceptNumber { get; set; }

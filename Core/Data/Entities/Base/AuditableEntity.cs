@@ -2,11 +2,30 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace Core.Data.Entities.Base {
+    public interface IAuditableEntity {
+        /// <summary>
+        /// Дата создания
+        /// </summary>
+        DateTime CreatedDate { get; set; }
+        /// <summary>
+        /// Пользователь-создатель
+        /// </summary>
+        string CreatedBy { get; set; }
+        /// <summary>
+        /// Дата обновления
+        /// </summary>
+        DateTime UpdatedDate { get; set; }
+        /// <summary>
+        /// Пользователь, обновивший запись
+        /// </summary>
+        string UpdatedBy { get; set; }
+    }
+
     /// <summary>
     /// Сушность с метками аудита
     /// </summary>
     /// <typeparam name="T">Тип сущности</typeparam>
-    public abstract class AuditableEntity<T>: Entity<T>, IAuditableEntity {
+    public abstract class AuditableEntity<T>: BaseEntity<T>, IAuditableEntity {
         /// <summary>
         /// Дата создания
         /// </summary>

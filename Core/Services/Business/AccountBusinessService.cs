@@ -90,6 +90,7 @@ namespace Core.Services.Business {
             await _signInManager.SignOutAsync();
         }
 
+        //TODO: Здесь что-то непонятное происходит. Вспомнить и исправить!
         public async Task<ApplicationUserDto> UpdateUserProfile(string id, UserProfileDto dto) {
             try {
                 var item1 = await _userProfileManager.Create(new UserProfileEntity() {

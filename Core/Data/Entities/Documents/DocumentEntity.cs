@@ -5,7 +5,7 @@ using Core.Data.Entities.Base;
 using Core.Data.Entities.Nsi;
 
 namespace Core.Data.Entities.Documents {
-    public class DocumentEntity: Entity<Guid> {
+    public class DocumentEntity: BaseEntity<Guid> {
         /// <summary>
         /// Заголовок
         /// </summary>

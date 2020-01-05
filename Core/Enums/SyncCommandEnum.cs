@@ -14,6 +14,7 @@
         DocTitlePrefix = 11, //Кроме актов
         LawForce = 12, //Юридическая сила акта
         GrifType = 13, //Гриф
-        Document = 14 //Документы
+        Document = 14, //Документы
+        DocumentBody = 15 //Документы-содержание
     }
 }

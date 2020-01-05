@@ -20,6 +20,7 @@ namespace Core.Services.Business {
         private readonly IConfiguration _configuration;
 
         private readonly IDocumentManager _documentManager;
+        private readonly IDocumentBodyManager _documentBodyManager;
 
         private readonly INsiLanguageManager _nsiLanguagesManager;
         private readonly INsiDocumentStatusManager _nsiDocumentStatusesManager;
@@ -38,6 +39,7 @@ namespace Core.Services.Business {
 
         public SyncBusinessService(IConfiguration configuration,
             IDocumentManager documentManager,
+            IDocumentBodyManager documentBodyManager,
             INsiLanguageManager nsiLanguagesManager,
             INsiDocumentStatusManager nsiDocumentStatusesManager,
             INsiDocumentTypeManager nsiDocumentTypeManager,
@@ -54,6 +56,7 @@ namespace Core.Services.Business {
             INsiGrifTypeManager nsiGrifTypeManager) {
             _configuration = configuration;
             _documentManager = documentManager;
+            _documentBodyManager = documentBodyManager;
 
             _nsiLanguagesManager = nsiLanguagesManager;
             _nsiDocumentStatusesManager = nsiDocumentStatusesManager;
@@ -121,6 +124,9 @@ namespace Core.Services.Business {
                 case SyncCommandEnum.Document:
                     result.Count = await RunRemoteConnection("SELECT * FROM [dyn_Documents]", SyncDocuments);
                     break;
+                case SyncCommandEnum.DocumentBody:
+                    result.Count = await RunRemoteConnection("[dyn_DocumentBodies]", SyncDocumentBodies);
+                    break;
                 default:
                     break;
             }
@@ -128,6 +134,32 @@ namespace Core.Services.Business {
             result.LeadTime = sw.Elapsed;
 
             return result;
+        }
+
+        public int SyncDocumentBodies(SqlDataReader reader) {
+            var count = 0;
+            try {
+                while(reader.Read()) {
+                    count++;
+                    var id = (Guid)reader["Id"];
+                    var documentId = (Guid)reader["DocumentId"];
+
+                    var item = _documentBodyManager.Find(id).Result ?? new DocumentBodyEntity();
+
+                    item.Id = id;
+                    item.DocumentId = documentId;
+                    item.Body = reader["Body"] as string;
+                    
+                    item = _documentBodyManager.CreateOrUpdate(item).Result;
+                    if(item == null) {
+                        Console.Error.WriteLine($"SyncDocumentBodies: recordId {id}");
+                    }
+                }
+            } catch(Exception e) {
+                Console.WriteLine("SyncDocuments: " + e.Message);
+            }
+
+            return count;
         }
 
         public int SyncDocuments(SqlDataReader reader) {
@@ -629,11 +661,35 @@ namespace Core.Services.Business {
         #endregion
 
         private async Task<int> RunRemoteConnection(string query, Func<SqlDataReader, int> myMethodName) {
+            var count = await GetCountAsync(query);
+            if(count > 0) {
+                var limit = 1000;
+                var pages = count / limit;
+                for(var i = 0; i < pages; i++) {
+                    var offset = i * limit;
+                    using(SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("RemoteConnection"))) {
+                        var cmd = new SqlCommand($"SELECT * FROM {query} ORDER BY Id OFFSET {offset} ROWS FETCH NEXT {limit} ROWS ONLY; ");
+                        await connection.OpenAsync();
+
+                        using(var command = new SqlCommand(query, connection)) {
+                            await connection.OpenAsync();
+                            using(var reader = await command.ExecuteReaderAsync()) {
+                                return myMethodName(reader);
+                            }
+                        }
+                    }
+                }
+            }
+            return 0;
+        }
+
+        private async Task<int> GetCountAsync(string tableName) {
             using(SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("RemoteConnection"))) {
+                var query = $"SELECT COUNT(*) FROM {tableName}";
                 using(var command = new SqlCommand(query, connection)) {
                     await connection.OpenAsync();
                     using(var reader = await command.ExecuteReaderAsync()) {
-                        return myMethodName(reader);
+                        return (int)reader[0];
                     }
                 }
             }

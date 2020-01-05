@@ -13,15 +13,20 @@ using Core.Services.Managers;
 namespace Core.Services.Business {
     public interface IDocumentBusinessService {
         Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, string sort, string order, int offset, int limit);
+        Task<DocumentDto> GetDocument(Guid id);
     }
 
     public class DocumentBusinessService: IDocumentBusinessService {
         private readonly IMapper _mapper;
         private readonly IDocumentManager _documentManager;
+        private readonly IDocumentBodyManager _documentBodyManager;
 
-        public DocumentBusinessService(IMapper mapper, IDocumentManager documentManager) {
+        public DocumentBusinessService(IMapper mapper,
+            IDocumentManager documentManager,
+            IDocumentBodyManager documentBodyManager) {
             _mapper = mapper;
             _documentManager = documentManager;
+            _documentBodyManager = documentBodyManager;
         }
 
         public async Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, string sort, string order, int offset, int limit) {
@@ -49,6 +54,18 @@ namespace Core.Services.Business {
 
             var result = _mapper.Map<List<DocumentDto>>(list);
             return new PagerExtended<DocumentDto>(result, count, page, limit);
+        }
+
+        public async Task<DocumentDto> GetDocument(Guid id) {
+            var item = await _documentManager.Find(id);
+            if(item != null) {
+                var itemBody = await _documentBodyManager.FindByDocumentIdAsync(id);
+                var dto = _mapper.Map<DocumentDto>(item);
+                dto.Content = _mapper.Map<DocumentBodyDto>(itemBody);
+
+                return dto;
+            }
+            return null;
         }
 
         public static Expression<Func<TSource, string>> GetExpression<TSource>(string propertyName) {

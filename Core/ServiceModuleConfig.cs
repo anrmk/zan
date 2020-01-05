@@ -19,6 +19,7 @@ namespace Core.Config {
             ///Managers
             services.AddTransient<IUserProfileManager, UserProfileManager>();
             services.AddTransient<IDocumentManager, DocumentManager>();
+            services.AddTransient<IDocumentBodyManager, DocumentBodyManager>();
 
             ///NSI Managers
             services.AddTransient<INsiLanguageManager, NsiLanguageManager>();

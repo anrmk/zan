@@ -19,8 +19,9 @@ namespace Core.Config {
                  .ForMember(d => d.StatusName, o => o.MapFrom(s => s.Status != null ? s.Status.NameRu : ""))
                  .ForMember(d => d.SectionId, o => o.MapFrom(s => s.NsiDocumentSectionEntity_Id))
                  .ForMember(d => d.SectionName, o => o.MapFrom(s => s.Section != null ? s.Section.NameRu : ""))
-
                 .ReverseMap();
+            
+            CreateMap<DocumentBodyEntity, DocumentBodyDto>().ReverseMap();
 
             CreateMap<NsiLanguageEntity, NsiDto<int>>().ReverseMap(); //CodeImport
             CreateMap<NsiDocumentTypeEntity, NsiDto<Guid>>().ReverseMap();

@@ -1,4 +1,8 @@
-﻿@{
+﻿@using Web.Models.DocumentViewModel;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
+@{
     ViewData["Title"] = "Document";
     var lang = ViewBag.Language;
 }
@@ -9,7 +13,9 @@
     </div>
     <div class="twelve wide column">
         <div class="ui raised segment">
-            Здесь будет содержание
+            <div class="document">
+                @Html.Raw(Model.Content == null ? "" : Model.Content.Content)
+            </div>
         </div>
     </div>
 </div>

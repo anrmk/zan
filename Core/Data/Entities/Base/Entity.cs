@@ -3,24 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Data.Entities.Base {
     /// <summary>
-    /// Базовая сущность
+    /// Сущность
     /// </summary>
-    public abstract class BaseEntity {
+    /// <typeparam name="T">Тип сущности</typeparam>
+    public interface IEntity<T> {
         /// <summary>
-        /// Код сущности
+        /// Первичный ключ
         /// </summary>
-        public string Code { get; set; }
-        /// <summary>
-        /// Наименование сущности
-        /// </summary>
-        public string Name { get; set; }
+        T Id { get; set; }
     }
 
     /// <summary>
     /// Сущность
     /// </summary>
     /// <typeparam name="T">Тип сущности</typeparam>
-    public abstract class Entity<T>: BaseEntity, IEntity<T> {
+    public abstract class Entity<T>: IEntity<T> {
         /// <summary>
         /// Первичный ключ
         /// </summary>

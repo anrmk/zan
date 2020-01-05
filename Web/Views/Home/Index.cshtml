@@ -1,5 +1,4 @@
-﻿@using Web.Models.DocumentViewModel;
-@using Microsoft.AspNetCore.Mvc.Localization
+﻿@using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
 @{
@@ -7,25 +6,10 @@
     var lang = ViewBag.Language;
 }
 
-<partial name="_SearchPanelPartial" model="new SearchViewModel()" />
-
 <div class="ui grid">
     <div class="four wide column">
-        <partial name="_FilterPanelPartial" model="new SearchViewModel()" />
     </div>
     <div class="twelve wide column">
-        <table class="" id="datatable" style="width:100%">
-            <thead style="display:none;">
-                <tr>
-                    <th></th>
-                </tr>
-            </thead>
-        </table>
+        Главная страница. Краткая информация, ссылки на "Справочник"
     </div>
 </div>
-
-@section Scripts {
-    <script src="~/js/document-controller.js" ></script>
-
-    
-}
