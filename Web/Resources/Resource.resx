@@ -123,4 +123,7 @@
   <data name="Login" xml:space="preserve">
     <value>Вход</value>
   </data>
+  <data name="Ngr" xml:space="preserve">
+    <value>123</value>
+  </data>
 </root>

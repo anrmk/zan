@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Linq;
 
 namespace Core.Extensions {
     /// <summary>
@@ -20,11 +16,11 @@ namespace Core.Extensions {
             if(string.IsNullOrEmpty(content))
                 return "";
             var res = GetMetaTag(content, "\r\n    \r\n    \r\n    \r\n", "\r\n\r\n \r\n");
-            
+
             var value = res.Replace("\r", string.Empty).Replace("  ", "&nbsp;");
             var arr = value.Split('\n').Where(a => a.Trim() != string.Empty);
             var htmlStr = "<p>" + string.Join("</p><p class='paragraph'>", arr) + "</p>";
-           
+
             return htmlStr;
 
             //return res;

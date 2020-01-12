@@ -7,7 +7,7 @@ namespace Core.Data.Entities.Nsi {
     /// <summary>
     /// Юридическая сила акта
     /// </summary>
-    [Table(name: "nsi.LasForces")]
+    [Table(name: "nsi.LawForces")]
     public class NsiLawForceEntity: NsiEntity<Guid> {
     }
 }

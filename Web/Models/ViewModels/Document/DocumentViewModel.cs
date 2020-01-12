@@ -1,16 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace Core.Data.Dto.Documents {
-    public class DocumentDto {
+namespace Web.Models.ViewModels.Document {
+    public class DocumentViewModel {
         public string Id { get; set; }
         public string Title { get; set; }
         public string Info { get; set; }
+        public string Content { get; set; }
 
+        [Display(Name = "Ngr")]
         public string Ngr { get; set; }
+
+        [Display(Name = "GosNumber")]
         public int? GosNumber { get; set; }
+
+        [Display(Name = "AcceptNumber")]
         public string AcceptNumber { get; set; }
+
+        [Display(Name = "RegNumber")]
         public string RegNumber { get; set; }
+
+        [Display(Name = "PrintDepartment")]
+        public string PrintDepartment { get; set; }
 
         public int? StatusId { get; set; }
         public string Status { get; set; }
@@ -21,7 +33,7 @@ namespace Core.Data.Dto.Documents {
         public Guid? DocumentTypeId { get; set; }
         public string DocumentType { get; set; }
 
-        public int LanguageId { get; set; }
+        public int? LanguageId { get; set; }
         public string Language { get; set; }
 
         public Guid? DevAgencyId { get; set; }
@@ -31,6 +43,7 @@ namespace Core.Data.Dto.Documents {
         public string RegAgency { get; set; }
 
         public Guid? RegionActionId { get; set; }
+        [Display(Name = "RegionAction")]
         public string RegionAction { get; set; }
 
         public Guid? AcceptedRegionId { get; set; }
@@ -45,21 +58,9 @@ namespace Core.Data.Dto.Documents {
         public Guid? LawForceId { get; set; }
         public string LawForce { get; set; }
 
+        [Display(Name = "AcceptedDate")]
         public DateTime? AcceptedDate { get; set; }
-        public DateTime EditionDate { get; set; }
-        public string DisplayEditionDate => EditionDate.ToString("dd MMM yyyy");
-        public DateTime? EntryDate { get; set; }
-        public DateTime? RegJustDate { get; set; }
-        public DateTime? RegSystDate { get; set; }
-        public DateTime? PublishedDate { get; set; }
-        public string PrintDepartment { get; set; }
-        public bool? IssetOtherEditions { get; set; }
-        public bool? IsArchive { get; set; }
 
-        public DocumentBodyDto Content { get; set; }
-        public List<DocumentDto> Versions { get; set; }
-
-        //  public IEnumerable<NsiDto<int>> AvailableLanguages => DocumentDtoExtension.GetLanguages(Versions);
-
+        public List<DocumentViewModel> Versions { get; set; }
     }
 }

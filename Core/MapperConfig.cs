@@ -15,12 +15,19 @@ namespace Core.Config {
             CreateMap<ApplicationUserEntity, ApplicationUserDto>().ReverseMap();
             CreateMap<UserProfileEntity, UserProfileDto>().ReverseMap();
             CreateMap<DocumentEntity, DocumentDto>()
-                 .ForMember(d => d.StatusId, o => o.MapFrom(s => s.NsiDocumentStatusEntity_Id))
-                 .ForMember(d => d.StatusName, o => o.MapFrom(s => s.Status != null ? s.Status.NameRu : ""))
-                 .ForMember(d => d.SectionId, o => o.MapFrom(s => s.NsiDocumentSectionEntity_Id))
-                 .ForMember(d => d.SectionName, o => o.MapFrom(s => s.Section != null ? s.Section.NameRu : ""))
+                 .ForMember(d => d.Status, o => o.MapFrom(s => s.Status != null ? s.Status.NameRu : ""))
+                 .ForMember(d => d.Section, o => o.MapFrom(s => s.Section != null ? s.Section.NameRu : ""))
+                 .ForMember(d => d.DocumentType, o => o.MapFrom(s => s.DocumentType != null ? s.DocumentType.NameRu : ""))
+                 .ForMember(d => d.Language, o => o.MapFrom(s => s.Language != null ? s.Language.NameRu : ""))
+                 .ForMember(d => d.DevAgency, o => o.MapFrom(s => s.DevAgency != null ? s.DevAgency.NameRu : ""))
+                 .ForMember(d => d.RegAgency, o => o.MapFrom(s => s.RegAgency != null ? s.RegAgency.NameRu : ""))
+                 .ForMember(d => d.RegionAction, o => o.MapFrom(s => s.RegionAction != null ? s.RegionAction.NameRu : ""))
+                 .ForMember(d => d.AcceptedRegion, o => o.MapFrom(s => s.AcceptedRegion != null ? s.AcceptedRegion.NameRu : ""))
+                 .ForMember(d => d.InitRegion, o => o.MapFrom(s => s.InitRegion != null ? s.InitRegion.NameRu : ""))
+                 .ForMember(d => d.Classifier, o => o.MapFrom(s => s.Classifier != null ? s.Classifier.NameRu : ""))
+                 .ForMember(d => d.LawForce, o => o.MapFrom(s => s.LawForce != null ? s.LawForce.NameRu : ""))
                 .ReverseMap();
-            
+
             CreateMap<DocumentBodyEntity, DocumentBodyDto>().ReverseMap();
 
             CreateMap<NsiLanguageEntity, NsiDto<int>>().ReverseMap(); //CodeImport

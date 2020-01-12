@@ -1,6 +1,4 @@
-﻿
-using System.Text.RegularExpressions;
-using Core.Extensions;
+﻿using Core.Extensions;
 
 namespace Core.Data.Dto.Documents {
     public class DocumentBodyDto {

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RuntimeFrameworkName>Microsoft.AspNetCore.App</RuntimeFrameworkName>
     <Product>Zan Core</Product>
     <Company>WaspLine LLC</Company>
     <Authors>Aziz Nurmukhamedov</Authors>
@@ -16,15 +16,17 @@
     <Compile Remove="Migrations\20191217031047_init2.Designer.cs" />
     <Compile Remove="Migrations\20200103022416_update-entities.cs" />
     <Compile Remove="Migrations\20200103022416_update-entities.Designer.cs" />
+    <Compile Remove="Migrations\ApplicationDbContextModelSnapshot.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Data\Models\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.6" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.8" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="1.1.0" />
   </ItemGroup>

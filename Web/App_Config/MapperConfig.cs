@@ -6,7 +6,8 @@ using Core.Data.Dto.Nsi;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 
-using Web.Models.DocumentViewModel;
+using Web.Models.Document;
+using Web.Models.ViewModels.Document;
 
 namespace Web.App_Config {
     public class MapperConfig: Profile {
@@ -22,6 +23,11 @@ namespace Web.App_Config {
         }
 
         private MapperConfig() {
+            CreateMap<DocumentViewModel, DocumentDto>()
+                .ReverseMap()
+                .ForMember(d => d.Content, o => o.MapFrom(s => (s.Content != null) ? s.Content.Content : ""))
+                ;
+
             CreateMap<SearchViewModel, SearchDto>()
                 .ForMember(d => d.SearchText, o => o.MapFrom(s => s.Search.Value))
                 .ForMember(d => d.Regex, o => o.MapFrom(s => s.Search.Regex))

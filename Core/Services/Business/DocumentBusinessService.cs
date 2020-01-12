@@ -14,6 +14,8 @@ namespace Core.Services.Business {
     public interface IDocumentBusinessService {
         Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, string sort, string order, int offset, int limit);
         Task<DocumentDto> GetDocument(Guid id);
+        Task<DocumentDto> GetDocumentByNgr(string ngr, int lng, DateTime editionDate);
+        Task<List<DocumentDto>> GetDocumentsByNgr(string ngr);
     }
 
     public class DocumentBusinessService: IDocumentBusinessService {
@@ -57,7 +59,7 @@ namespace Core.Services.Business {
         }
 
         public async Task<DocumentDto> GetDocument(Guid id) {
-            var item = await _documentManager.Find(id);
+            var item = await _documentManager.FindInclude(id);
             if(item != null) {
                 var itemBody = await _documentBodyManager.FindByDocumentIdAsync(id);
                 var dto = _mapper.Map<DocumentDto>(item);
@@ -66,6 +68,23 @@ namespace Core.Services.Business {
                 return dto;
             }
             return null;
+        }
+
+        public async Task<DocumentDto> GetDocumentByNgr(string ngr, int lng, DateTime editionDate) {
+            var item = await _documentManager.FindByNgrAsync(ngr, lng, editionDate);
+            if(item != null) {
+                var itemBody = await _documentBodyManager.FindByDocumentIdAsync(item.Id);
+                var dto = _mapper.Map<DocumentDto>(item);
+                dto.Content = _mapper.Map<DocumentBodyDto>(itemBody);
+
+                return dto;
+            }
+            return null;
+        }
+
+        public async Task<List<DocumentDto>> GetDocumentsByNgr(string ngr) {
+            var item = await _documentManager.FindAllByNgrAsync(ngr);
+            return _mapper.Map<List<DocumentDto>>(item);
         }
 
         public static Expression<Func<TSource, string>> GetExpression<TSource>(string propertyName) {

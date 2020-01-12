@@ -117,13 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Exit" xml:space="preserve">
-    <value>Шығу</value>
+  <data name="AcceptedDate" xml:space="preserve">
+    <value>Дата принятия</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value />
+  <data name="AcceptNumber" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="GosNumber" xml:space="preserve">
+    <value>Номер в Госреестре НПА РК</value>
+  </data>
+  <data name="MainTypes" xml:space="preserve">
+    <value>Основные и производные виды</value>
   </data>
   <data name="Ngr" xml:space="preserve">
-    <value>test</value>
+    <value>Номер группы регистрации</value>
+  </data>
+  <data name="PrintDepartment" xml:space="preserve">
+    <value>Печатный орган</value>
+  </data>
+  <data name="PublishedDate" xml:space="preserve">
+    <value>Дата публикации</value>
+  </data>
+  <data name="RegionAction" xml:space="preserve">
+    <value>Регион действия</value>
+  </data>
+  <data name="RegNumber" xml:space="preserve">
+    <value>Номер регистрации в МЮ</value>
+  </data>
+  <data name="Section" xml:space="preserve">
+    <value>Отрасль законодательства</value>
   </data>
 </root>

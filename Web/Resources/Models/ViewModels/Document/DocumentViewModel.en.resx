@@ -117,13 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Exit" xml:space="preserve">
-    <value>Шығу</value>
+  <data name="AcceptedDate" xml:space="preserve">
+    <value>Date of adoption</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value />
+  <data name="AcceptNumber" xml:space="preserve">
+    <value>Number RLA</value>
+  </data>
+  <data name="GosNumber" xml:space="preserve">
+    <value>Number in state register RLA RK</value>
+  </data>
+  <data name="MainTypes" xml:space="preserve">
+    <value>Main and production types of RLA</value>
   </data>
   <data name="Ngr" xml:space="preserve">
-    <value>test</value>
+    <value>Number group of registered</value>
+  </data>
+  <data name="PrintDepartment" xml:space="preserve">
+    <value>Print Department</value>
+  </data>
+  <data name="PublishedDate" xml:space="preserve">
+    <value>Publication Date</value>
+  </data>
+  <data name="RegionAction" xml:space="preserve">
+    <value>Region of action</value>
+  </data>
+  <data name="RegNumber" xml:space="preserve">
+    <value>Number of registration in MJ</value>
+  </data>
+  <data name="Section" xml:space="preserve">
+    <value>Branch of legislation</value>
   </data>
 </root>

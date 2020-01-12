@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RuntimeFrameworkName>Microsoft.AspNetCore.App</RuntimeFrameworkName>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <Company>WaspLine LLC</Company>
     <Product>Zan</Product>
@@ -23,7 +24,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <!--<PackageReference Include="Microsoft.AspNetCore.All"  />-->
-    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Owin" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
@@ -38,14 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\Resource.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resource.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
+    <EmbeddedResource Update="Resources\Models\ViewModels\Document\DocumentViewModel.ru.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Resource.kk.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
@@ -63,5 +59,13 @@
   <ItemGroup>
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

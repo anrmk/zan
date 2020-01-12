@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Web.Models.DocumentViewModel {
+namespace Web.Models.Document {
     public class SearchString {
         public string Value { get; set; }
         public bool Regex { get; set; } = false;

@@ -74,17 +74,18 @@
     }
     _renderTitle(data, type, row, controller) {
         var className = row['statusId'] == 2 ? 'red' : row['statusId'] == 3 ? 'yellow' : '';
-
+        //<a href='${controller.options.controller.mvc}/details?ngr=${row[' ngr']}&lng=${row['languageId']}&ed=${row['editionDate']}' > ${ row['title'] }</a >
         return `<div class='ui raised segment'> 
                     <div class='ui ${className} ribbon label'>
-                        <i class='file alternate outline icon'></i>${row['statusName']}
+                        <i class='file alternate outline icon'></i>${row['status']}
                     </div>
                     <a href='${controller.options.controller.mvc}/details/${row['id']}'>${row['title']}</a>
+                    
                     <p>${row['info']}</p>
 
                     <small>
-                        <i class='calendar alternate outline icon'></i>Дата редакции: <span class='ui tiny label'>${row['displayEditionDate']}</span>
-                        <i class='file alternate outline icon'></i>Раздел законодательства: <span class='ui tiny blue label'>${row['sectionName']}</span>
+                        <i class='calendar alternate outline icon'></i>Дата редакции: <span class='ui tiny label'>${row['editionDate']}</span>
+                        <i class='file alternate outline icon'></i>Раздел законодательства: <span class='ui tiny blue label'>${row['section']}</span>
                     </small>
                 </div>`;
     }

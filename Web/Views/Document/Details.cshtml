@@ -1,5 +1,6 @@
-﻿@using Web.Models.DocumentViewModel;
+﻿@model Web.Models.ViewModels.Document.DocumentViewModel
 @using Microsoft.AspNetCore.Mvc.Localization
+
 @inject IViewLocalizer Localizer
 
 @{
@@ -9,12 +10,51 @@
 
 <div class="ui grid">
     <div class="four wide column">
-        Здесь будет меню
+        <div class="ui vertical fluid accordion text menu" id="documentFilterPanel">
+            <div class="item">
+                <div class="active title">
+                    <i class="dropdown icon"></i>
+                    <b>@Localizer["LanguageDoc"]</b>
+                </div>
+                <div class="active content">
+                    <div class="ui link list">
+                        @foreach(var item in ViewBag.Languages) {
+                            <div class="item @(Model.Id == item.Id ? "active": "") ">
+                                <a asp-action="Details" asp-route-id="@item.Id">@item.Language</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="active title">
+                    <i class="dropdown icon"></i>
+                    <b>@Localizer["Edition"]</b>
+                </div>
+                <div class="active content">
+                    <div class="ui link list">
+                        @foreach(var item in ViewBag.Versions) {
+                            <a asp-action="Details" asp-route-id="@item.Id" class="item">
+                                <i class="calendar alternate icon"></i> @item.DisplayEditionDate @item.LanguageId
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="_DocumentCardPartial" model="Model" />
     </div>
     <div class="twelve wide column">
+        @if(Model.StatusId == 2) {
+        <div class="ui ignored warning message">
+            @Model.Status
+        </div> 
+        }
+        <h4>@Model.Title</h4>
+        <p>@Model.Info</p>
         <div class="ui raised segment">
             <div class="document">
-                @Html.Raw(Model.Content == null ? "" : Model.Content.Content)
+                @Html.Raw(Model.Content == null ? "" : Model.Content)
             </div>
         </div>
     </div>

@@ -117,13 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Exit" xml:space="preserve">
-    <value>Шығу</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Ngr" xml:space="preserve">
-    <value>test</value>
+  <data name="Card" xml:space="preserve">
+    <value>Карточка документа</value>
   </data>
 </root>

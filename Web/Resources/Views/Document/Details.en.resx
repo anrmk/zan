@@ -117,13 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Exit" xml:space="preserve">
-    <value>Шығу</value>
+  <data name="Card" xml:space="preserve">
+    <value>Document card</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value />
+  <data name="Download" xml:space="preserve">
+    <value>Скачать</value>
   </data>
-  <data name="Ngr" xml:space="preserve">
-    <value>test</value>
+  <data name="Edition" xml:space="preserve">
+    <value>Edition</value>
+  </data>
+  <data name="LanguageDoc" xml:space="preserve">
+    <value>Document language</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Печать</value>
   </data>
 </root>

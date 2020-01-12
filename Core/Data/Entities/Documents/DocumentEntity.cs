@@ -40,67 +40,88 @@ namespace Core.Data.Entities.Documents {
         /// Статус документа
         /// </summary>
         [ForeignKey("Status")]
-        public int? NsiDocumentStatusEntity_Id { get; set; }
+        [Column(name: "NsiDocumentStatusEntity_Id")]
+        public int? StatusId { get; set; }
         public virtual NsiDocumentStatusEntity Status { get; set; }
 
         /// <summary>
         /// Раздел законодательства
         /// </summary>
         [ForeignKey("Section")]
-        public Guid? NsiDocumentSectionEntity_Id { get; set; }
+        [Column(name: "NsiDocumentSectionEntity_Id")]
+        public Guid? SectionId { get; set; }
         public virtual NsiDocumentSectionEntity Section { get; set; }
 
-        //[ForeignKey("DocumentType")]
-        //public Guid? NsiDocumentTypeEntity_Id { get; set; }
-        //public virtual NsiDocumentTypeEntity DocumentType { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        [ForeignKey("DocumentType")]
+        [Column(name: "NsiDocumentTypeEntity_Id")]
+        public Guid? DocumentTypeId { get; set; }
+        public virtual NsiDocumentTypeEntity DocumentType { get; set; }
 
         /// <summary>
         /// Язык документа
         /// </summary>
         [ForeignKey("Language")]
-        public int? NsiLanguageEntity_Id { get; set; }
+        [Column(name: "NsiLanguageEntity_Id")]
+        public int? LanguageId { get; set; }
         public virtual NsiLanguageEntity Language { get; set; }
 
         /// <summary>
         /// Орган разработчик
         /// </summary>
         [ForeignKey("DevAgency")]
-        public Guid? NsiDevAgencyEntity_Id { get; set; }
+        [Column(name: "NsiDevAgencyEntity_Id")]
+        public Guid? DevAgencyId { get; set; }
         public virtual NsiDevAgencyEntity DevAgency { get; set; }
 
         /// <summary>
         /// Орган госрегистрации
         /// </summary>
         [ForeignKey("RegAgency")]
-        public Guid? NsiRegAgencyEntity_Id { get; set; }
+        [Column(name: "NsiRegAgencyEntity_Id")]
+        public Guid? RegAgencyId { get; set; }
         public virtual NsiRegAgencyEntity RegAgency { get; set; }
 
         /// <summary>
-        /// Регион действия
+        /// Регион действия 
+        /// </summary>
+        [ForeignKey("RegionAction")]
+        [Column(name: "NsiRegionActionEntity_Id")]
+        public Guid? RegionActionId { get; set; }
+        public virtual NsiRegionEntity RegionAction { get; set; }
+
+        /// <summary>
+        /// Регион принятия
         /// </summary>
         [ForeignKey("AcceptedRegion")]
-        public Guid? NsiRegionEntity_Id { get; set; }
+        [Column(name: "NsiRegionAcceptedEntity_Id")]
+        public Guid? AcceptedRegionId { get; set; }
         public virtual NsiRegionEntity AcceptedRegion { get; set; }
 
         /// <summary>
         /// Место принятия
         /// </summary>
         [ForeignKey("InitRegion")]
-        public Guid? NsiInitRegionEntity_Id { get; set; }
+        [Column(name: "NsiInitRegionEntity_Id")]
+        public Guid? InitRegionId { get; set; }
         public virtual NsiInitRegionEntity InitRegion { get; set; }
 
         /// <summary>
         /// Сфера правоотношений
         /// </summary>
         [ForeignKey("Classifier")]
-        public Guid? NsiClassifierEntity_Id { get; set; }
+        [Column(name: "NsiClassifierEntity_Id")]
+        public Guid? ClassifierId { get; set; }
         public virtual NsiClassifierEntity Classifier { get; set; }
 
         /// <summary>
         /// Юридическая сила акта
         /// </summary>
         [ForeignKey("LawForce")]
-        public Guid? NsiLawForceEntity_Id { get; set; }
+        [Column(name: "NsiLawForceEntity_Id")]
+        public Guid? LawForceId { get; set; }
         public virtual NsiLawForceEntity LawForce { get; set; }
 
         /// <summary>

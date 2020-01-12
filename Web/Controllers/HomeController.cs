@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 
 using Web.Hubs;
 using Web.Models;
-using Web.Models.DocumentViewModel;
+using Web.Models.Document;
 
 namespace Web.Controllers {
     [Authorize]
@@ -36,7 +36,7 @@ namespace Web.Controllers {
             _nsiBusinessService = nsiBusinessService;
         }
 
-        public async Task<IActionResult> Index() {
+        public IActionResult Index() {
             return View();
         }
 

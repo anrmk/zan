@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using Core.Data.Dto.Documents;
+using Core.Extensions;
 using Core.Services.Business;
 
 using Microsoft.AspNetCore.Http;
@@ -13,7 +14,8 @@ using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 using Web.Hubs;
-using Web.Models.DocumentViewModel;
+using Web.Models.Document;
+using Web.Models.ViewModels.Document;
 
 namespace Web.Controllers {
     public class DocumentController: BaseController<DocumentController> {
@@ -49,7 +51,12 @@ namespace Web.Controllers {
             if(item == null) {
                 return NotFound();
             }
-            return View(item);
+            item.Versions = await _documentBusinessService.GetDocumentsByNgr(item.Ngr);
+            var model = _mapper.Map<DocumentViewModel>(item);
+            ViewBag.Languages = DocumentDtoExtension.GetAvailableLanguages(item.Versions, item.Ngr, item.EditionDate);
+            ViewBag.Versions = DocumentDtoExtension.GetAvailableVersions(item.Versions, item.Ngr, item.LanguageId);
+
+            return View(model);
         }
 
         // GET: Document/Create

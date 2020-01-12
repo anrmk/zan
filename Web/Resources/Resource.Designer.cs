@@ -77,5 +77,14 @@ namespace Web.Resources {
                 return ResourceManager.GetString("Login", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 123.
+        /// </summary>
+        public static string Ngr {
+            get {
+                return ResourceManager.GetString("Ngr", resourceCulture);
+            }
+        }
     }
 }

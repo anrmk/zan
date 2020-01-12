@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Core.Data.Dto.Documents {
+﻿namespace Core.Data.Dto.Documents {
     public class DocumentTagsDto {
         /// <summary>
         /// 

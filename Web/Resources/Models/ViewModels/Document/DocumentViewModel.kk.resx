@@ -117,13 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Exit" xml:space="preserve">
-    <value>Шығу</value>
+  <data name="AcceptedDate" xml:space="preserve">
+    <value>Қабылдау күні</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value />
+  <data name="AcceptNumber" xml:space="preserve">
+    <value>Нөмір</value>
+  </data>
+  <data name="GosNumber" xml:space="preserve">
+    <value>ҚР НҚА Мемтізіліміндегі нөмірі</value>
+  </data>
+  <data name="MainTypes" xml:space="preserve">
+    <value>НҚА-ның негізгі және туынды түрлері</value>
   </data>
   <data name="Ngr" xml:space="preserve">
-    <value>test</value>
+    <value>Тіркеу тобының нөмірі</value>
+  </data>
+  <data name="PrintDepartment" xml:space="preserve">
+    <value>Басылым органы</value>
+  </data>
+  <data name="PublishedDate" xml:space="preserve">
+    <value>Жарияланған күні</value>
+  </data>
+  <data name="RegionAction" xml:space="preserve">
+    <value>Әсер ету аймағы</value>
+  </data>
+  <data name="RegNumber" xml:space="preserve">
+    <value>ӘМ тіркеу нөмірі</value>
+  </data>
+  <data name="Section" xml:space="preserve">
+    <value>Заңнама саласы</value>
   </data>
 </root>

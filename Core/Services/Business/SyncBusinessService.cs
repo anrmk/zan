@@ -125,7 +125,7 @@ namespace Core.Services.Business {
                     result.Count = await RunRemoteConnection("SELECT * FROM [dyn_Documents]", SyncDocuments);
                     break;
                 case SyncCommandEnum.DocumentBody:
-                    result.Count = await RunRemoteConnection("[dyn_DocumentBodies]", SyncDocumentBodies);
+                    result.Count = await RunRemoteConnection("SELECT TOP(100) DOC.* , BODY.Id as BodyId, Body.Body as Content FROM[dyn_Documents] as DOC INNER JOIN[dyn_DocumentBodies] as BODY ON DOC.[Id] = BODY.[DocumentId] WHERE DOC.[Price] IS NULL", SyncDocumentBodies);
                     break;
                 default:
                     break;
@@ -149,7 +149,7 @@ namespace Core.Services.Business {
                     item.Id = id;
                     item.DocumentId = documentId;
                     item.Body = reader["Body"] as string;
-                    
+
                     item = _documentBodyManager.CreateOrUpdate(item).Result;
                     if(item == null) {
                         Console.Error.WriteLine($"SyncDocumentBodies: recordId {id}");
@@ -170,6 +170,7 @@ namespace Core.Services.Business {
                     var id = (Guid)reader["Id"];
                     var item = _documentManager.Find(id).Result ?? new DocumentEntity();
 
+                    #region DOCUMENT
                     item.Id = id;
                     item.Ngr = reader["Ngr"] as string;
                     item.GosNumber = reader["GosNumber"] != DBNull.Value ? (int)reader["GosNumber"] : (int?)null;
@@ -178,15 +179,16 @@ namespace Core.Services.Business {
                     item.Title = reader["Title"] as string;
                     item.Info = reader["Info"] as string;
 
-                    item.NsiDocumentStatusEntity_Id = reader["StatusId"] != DBNull.Value ? (int)reader["StatusId"] : (int?)null;
-                    item.NsiDocumentSectionEntity_Id = reader["SectionId"] != DBNull.Value ? (Guid)reader["SectionId"] : (Guid?)null;
-                    item.NsiLanguageEntity_Id = reader["LanguageId"] != DBNull.Value ? (int)reader["LanguageId"] : (int?)null;
-                    item.NsiDevAgencyEntity_Id = reader["DevAgencyId"] != DBNull.Value ? (Guid)reader["DevAgencyId"] : (Guid?)null;
-                    item.NsiRegAgencyEntity_Id = reader["RegAgencyId"] != DBNull.Value ? (Guid)reader["RegAgencyId"] : (Guid?)null;
-                    item.NsiRegionEntity_Id = reader["AcceptedRegionId"] != DBNull.Value ? (Guid)reader["AcceptedRegionId"] : (Guid?)null;
-                    item.NsiInitRegionEntity_Id = reader["InitRegionId"] != DBNull.Value ? (Guid)reader["InitRegionId"] : (Guid?)null;
-                    item.NsiClassifierEntity_Id = reader["ClassifierId"] != DBNull.Value ? (Guid)reader["ClassifierId"] : (Guid?)null;
-                    item.NsiLawForceEntity_Id = reader["LawForfceId"] != DBNull.Value ? (Guid)reader["LawForfceId"] : (Guid?)null;
+                    item.StatusId = reader["StatusId"] != DBNull.Value ? (int)reader["StatusId"] : (int?)null;
+                    item.SectionId = reader["SectionId"] != DBNull.Value ? (Guid)reader["SectionId"] : (Guid?)null;
+                    item.LanguageId = reader["LanguageId"] != DBNull.Value ? (int)reader["LanguageId"] : (int?)null;
+                    item.DevAgencyId = reader["DevAgencyId"] != DBNull.Value ? (Guid)reader["DevAgencyId"] : (Guid?)null;
+                    item.RegionActionId = reader["RegionActionId"] != DBNull.Value ? (Guid)reader["RegionActionId"] : (Guid?)null;
+                    item.RegAgencyId = reader["RegAgencyId"] != DBNull.Value ? (Guid)reader["RegAgencyId"] : (Guid?)null;
+                    item.AcceptedRegionId = reader["AcceptedRegionId"] != DBNull.Value ? (Guid)reader["AcceptedRegionId"] : (Guid?)null;
+                    item.InitRegionId = reader["InitRegionId"] != DBNull.Value ? (Guid)reader["InitRegionId"] : (Guid?)null;
+                    item.ClassifierId = reader["ClassifierId"] != DBNull.Value ? (Guid)reader["ClassifierId"] : (Guid?)null;
+                    item.LawForceId = reader["LawForfceId"] != DBNull.Value ? (Guid)reader["LawForfceId"] : (Guid?)null;
                     item.AcceptedDate = reader["AcceptedDate"] != DBNull.Value ? (DateTime)reader["AcceptedDate"] : (DateTime?)null;
                     item.EditionDate = (DateTime)reader["EditionDate"];
                     item.EntryDate = reader["EntryDate"] != DBNull.Value ? (DateTime)reader["EntryDate"] : (DateTime?)null;
@@ -196,10 +198,19 @@ namespace Core.Services.Business {
                     item.PrintDepartment = reader["PrintDepartment"] as string;
                     item.IssetOtherEditions = reader["IssetOtherEditions"] != DBNull.Value ? (bool)reader["IssetOtherEditions"] : false;
                     item.IsArchive = reader["IsArchive"] != DBNull.Value ? (bool)reader["IsArchive"] : false;
+                    #endregion
 
                     item = _documentManager.CreateOrUpdate(item).Result;
-                    if(item == null) {
-                        Console.Error.WriteLine($"SyncDocuments: recordId {id}");
+
+                    var bodyItem = _documentBodyManager.FindByDocumentIdAsync(id).Result;
+                    bodyItem.Id = (Guid)reader["BodyId"];
+                    bodyItem.DocumentId = id;
+                    bodyItem.Body = reader["Content"] as string;
+
+                    bodyItem = _documentBodyManager.CreateOrUpdate(bodyItem).Result;
+
+                    if(bodyItem == null) {
+                        Console.Error.WriteLine($"SyncDocumentBodis: recordId {id}");
                     }
                 }
             } catch(Exception e) {
@@ -661,26 +672,35 @@ namespace Core.Services.Business {
         #endregion
 
         private async Task<int> RunRemoteConnection(string query, Func<SqlDataReader, int> myMethodName) {
-            var count = await GetCountAsync(query);
-            if(count > 0) {
-                var limit = 1000;
-                var pages = count / limit;
-                for(var i = 0; i < pages; i++) {
-                    var offset = i * limit;
-                    using(SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("RemoteConnection"))) {
-                        var cmd = new SqlCommand($"SELECT * FROM {query} ORDER BY Id OFFSET {offset} ROWS FETCH NEXT {limit} ROWS ONLY; ");
-                        await connection.OpenAsync();
-
-                        using(var command = new SqlCommand(query, connection)) {
-                            await connection.OpenAsync();
-                            using(var reader = await command.ExecuteReaderAsync()) {
-                                return myMethodName(reader);
-                            }
-                        }
+            using(SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("RemoteConnection"))) {
+                // var query = $"SELECT COUNT(*) FROM {tableName}";
+                using(var command = new SqlCommand(query, connection)) {
+                    await connection.OpenAsync();
+                    using(var reader = await command.ExecuteReaderAsync()) {
+                        return myMethodName(reader);
                     }
                 }
             }
-            return 0;
+            //var count = await GetCountAsync(query);
+            //if(count > 0) {
+            //    var limit = 1000;
+            //    var pages = count / limit;
+            //    for(var i = 0; i < pages; i++) {
+            //        var offset = i * limit;
+            //        using(SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("RemoteConnection"))) {
+            //            var cmd = new SqlCommand($"SELECT * FROM {query} ORDER BY Id OFFSET {offset} ROWS FETCH NEXT {limit} ROWS ONLY; ");
+            //            await connection.OpenAsync();
+
+            //            using(var command = new SqlCommand(query, connection)) {
+            //                await connection.OpenAsync();
+            //                using(var reader = await command.ExecuteReaderAsync()) {
+            //                    return myMethodName(reader);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+            //return 0;
         }
 
         private async Task<int> GetCountAsync(string tableName) {
