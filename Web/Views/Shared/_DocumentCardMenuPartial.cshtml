@@ -8,7 +8,7 @@
     <a class="item"><i class="minus icon"></i></a>
 
     <div class="right menu">
-        <a class="item">
+        <a class="item" asp-controller="Document" asp-action="Print" asp-route-id="@Model.Id" target="_blank">
             <i class="print icon"></i> @Localizer["Print"]
         </a>
         <a class="item" asp-controller="Document" asp-action="PrintWord" asp-route-id="@Model.Id">

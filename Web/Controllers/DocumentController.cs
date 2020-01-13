@@ -70,6 +70,32 @@ namespace Web.Controllers {
             return View(model);
         }
 
+        /// <summary>
+        /// Печать документа HTML
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> Print(Guid id) {
+            var item = await _documentBusinessService.GetDocument(id);
+            if(item == null) {
+                return NotFound();
+            }
+
+            var model = _mapper.Map<DocumentViewModel>(item);
+            string html = _viewRenderService.RenderToStringAsync("_ExportToWord", model).Result;
+            var name = string.Format("{0}_{1}.doc", item.Ngr, item.EditionDate.ToString("ddMMyyyy"));
+
+            ViewBag.Title = name;
+            ViewBag.OnLoad = "window.print()";
+            //var name = string.Format("{0}_{1}.pdf", item.Ngr, (item.EditionDate != null) ? item.EditionDate.ToString("ddMMyyyy") : "");
+
+            return View("_ExportToWord", model);
+        }
+        /// <summary>
+        /// Выгрузка в PDF
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> PrintPdf(Guid id) {
             var item = await _documentBusinessService.GetDocument(id);
             if(item == null) {
@@ -94,7 +120,7 @@ namespace Web.Controllers {
             MemoryStream stream = new MemoryStream();
             doc.Save(stream);
             doc.Close();
-
+            
             stream.Position = 0;
 
             FileStreamResult fileStreamResult = new FileStreamResult(stream, "application/pdf");
@@ -103,6 +129,11 @@ namespace Web.Controllers {
             return fileStreamResult;
         }
 
+        /// <summary>
+        /// Выгрузка в DOC
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> PrintWord(Guid id) {
             var item = await _documentBusinessService.GetDocument(id);
             if(item == null) {
