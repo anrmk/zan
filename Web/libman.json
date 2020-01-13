@@ -110,6 +110,18 @@
         "semantic.js",
         "semantic.min.css"
       ]
+    },
+    {
+      "provider": "unpkg",
+      "library": "datatables.net-plugins@1.10.20",
+      "destination": "wwwroot/lib/jquery-datatables-net/plugins",
+      "files": [
+        "sorting/datetime-moment.js"
+      ]
+    },
+    {
+      "library": "moment.js@2.24.0",
+      "destination": "wwwroot/lib/moment-js/"
     }
   ]
 }

@@ -1,0 +1,21 @@
+﻿@model Web.Models.ViewModels.Document.DocumentViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
+<div class="ui menu">
+    <a class="item"><i class="plus icon"></i></a>
+    <a class="item"><i class="minus icon"></i></a>
+
+    <div class="right menu">
+        <a class="item">
+            <i class="print icon"></i> @Localizer["Print"]
+        </a>
+        <a class="item" asp-controller="Document" asp-action="PrintWord" asp-route-id="@Model.Id">
+            <i class="file word outline icon"></i> @Localizer["ExportToWord"]
+        </a>
+        <a class="item" asp-controller="Document" asp-action="PrintPdf" asp-route-id="@Model.Id">
+            <i class="file pdf outline icon"></i> @Localizer["ExportToPDF"]
+        </a>
+    </div>
+</div>

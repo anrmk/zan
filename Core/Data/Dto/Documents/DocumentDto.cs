@@ -47,7 +47,7 @@ namespace Core.Data.Dto.Documents {
 
         public DateTime? AcceptedDate { get; set; }
         public DateTime EditionDate { get; set; }
-        public string DisplayEditionDate => EditionDate.ToString("dd MMM yyyy");
+        public string DisplayEditionDate => EditionDate.ToString("dd/MM/yyyy");
         public DateTime? EntryDate { get; set; }
         public DateTime? RegJustDate { get; set; }
         public DateTime? RegSystDate { get; set; }

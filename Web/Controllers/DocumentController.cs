@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -17,18 +18,28 @@ using Web.Hubs;
 using Web.Models.Document;
 using Web.Models.ViewModels.Document;
 
+using System.IO;
+using SelectPdf;
+
 namespace Web.Controllers {
     public class DocumentController: BaseController<DocumentController> {
         private readonly IMapper _mapper;
+        private readonly IExportService _exportService;
+        private readonly IViewRenderService _viewRenderService;
         private readonly IDocumentBusinessService _documentBusinessService;
         private readonly INsiBusinessService _nsiBusinessService;
 
-        public DocumentController(IMapper mapper, IHttpContextAccessor httpContextAccessor,
+        public DocumentController(IMapper mapper,
+          IViewRenderService viewRenderService,
+          IExportService exportService,
+          IHttpContextAccessor httpContextAccessor,
           IStringLocalizer<DocumentController> localizer,
           ILogger<DocumentController> logger,
           IDocumentBusinessService documentBusinessService,
           INsiBusinessService nsiBusinessService) : base(httpContextAccessor, localizer, logger) {
             _mapper = mapper;
+            _exportService = exportService;
+            _viewRenderService = viewRenderService;
             _documentBusinessService = documentBusinessService;
             _nsiBusinessService = nsiBusinessService;
         }
@@ -57,6 +68,54 @@ namespace Web.Controllers {
             ViewBag.Versions = DocumentDtoExtension.GetAvailableVersions(item.Versions, item.Ngr, item.LanguageId);
 
             return View(model);
+        }
+
+        public async Task<ActionResult> PrintPdf(Guid id) {
+            var item = await _documentBusinessService.GetDocument(id);
+            if(item == null) {
+                return NotFound();
+            }
+
+            var model = _mapper.Map<DocumentViewModel>(item);
+            string html = _viewRenderService.RenderToStringAsync("_ExportToWord", model).Result;
+            var name = string.Format("{0}.{1}", item.Ngr, (item.EditionDate != null) ? item.EditionDate.ToString("ddMMyyyy") : "");
+
+            HtmlToPdf converter = new HtmlToPdf();
+
+            converter.Options.PdfPageSize = PdfPageSize.A4;
+            converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
+            converter.Options.MarginLeft = 20;
+            converter.Options.MarginRight = 10;
+            converter.Options.MarginTop = 20;
+            converter.Options.MarginBottom = 20;
+
+            PdfDocument doc = converter.ConvertHtmlString(html);
+
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream);
+            doc.Close();
+
+            stream.Position = 0;
+
+            FileStreamResult fileStreamResult = new FileStreamResult(stream, "application/pdf");
+            fileStreamResult.FileDownloadName = $"{name}.doc";
+
+            return fileStreamResult;
+        }
+
+        public async Task<ActionResult> PrintWord(Guid id) {
+            var item = await _documentBusinessService.GetDocument(id);
+            if(item == null) {
+                return NotFound();
+            }
+
+            var model = _mapper.Map<DocumentViewModel>(item);
+            //string html = _viewRenderService.RenderToStringAsync("_ExportToWord", model).Result;
+            var name = string.Format("{0}_{1}.doc", item.Ngr, item.EditionDate.ToString("ddMMyyyy"));
+
+            Response.Headers.Add("content-disposition", $"attachment; filename = {name}");
+            Response.ContentType = "application/ms-word";
+            return View("_ExportToWord", model);
         }
 
         // GET: Document/Create

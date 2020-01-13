@@ -1,4 +1,5 @@
 ﻿using Core.Context;
+using Core.Extensions;
 using Core.Services.Business;
 using Core.Services.Managers;
 
@@ -16,6 +17,10 @@ namespace Core.Config {
             services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            ///Extension Services
+            services.AddTransient<IExportService, PdfService>();
+            services.AddTransient<IViewRenderService, ViewRenderService>();
+          
             ///Managers
             services.AddTransient<IUserProfileManager, UserProfileManager>();
             services.AddTransient<IDocumentManager, DocumentManager>();

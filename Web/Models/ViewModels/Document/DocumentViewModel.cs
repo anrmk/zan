@@ -61,6 +61,16 @@ namespace Web.Models.ViewModels.Document {
         [Display(Name = "AcceptedDate")]
         public DateTime? AcceptedDate { get; set; }
 
+        [Display(Name = "EditionDate")]
+        public DateTime? EditionDate { get; set; }
+
+        [Display(Name = "EntryDate")]
+        public DateTime? EntryDate { get; set; }
+        //public DateTime? RegJustDate { get; set; }
+        //public DateTime? RegSystDate { get; set; }
+        [Display(Name = "PublishedDate")]
+        public DateTime? PublishedDate { get; set; }
+
         public List<DocumentViewModel> Versions { get; set; }
     }
 }

@@ -1,0 +1,60 @@
+﻿@model Web.Models.ViewModels.Document.DocumentViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
+@{
+    Layout = null;
+    ViewBag.Title = "";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>@Model.Title</title>
+    <style>
+        .p-word {
+            text-align: justify;
+            text-indent: 20px;
+            margin-bottom: 0.2em;
+            margin-top: 0.2em;
+            color: #000
+        }
+
+        .table-word {
+            table-layout: fixed;
+            width: 600px !important;
+            word-wrap: break-word;
+            font-size: 12px;
+        }
+
+        p {
+            text-indent: 30px;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body style="padding:60px 30px 60px 60px;">
+    <div style="padding: 10px;margin-bottom:5px;">
+        <div><b>База Данных "Zan"</b></div>
+        <div align="right">
+            <label asp-for="PublishedDate"></label>: @Model.PublishedDate?.ToString("dd.MM.yyyy")
+        </div>
+    </div>
+    <div>
+        <h4>@Model.Info</h4>
+        <div>
+            <text><label asp-for="PrintDepartment"></label>: </text> @Model.PrintDepartment
+        </div>
+    </div>
+    <br />
+    <h4 align="center" style="font-size: 20px; color: #000080">
+        <b>@Model.Title</b>
+    </h4>
+    <br />
+    <div>
+        @Html.Raw(Model.Content)
+    </div>
+</body>
+</html>

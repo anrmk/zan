@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+    $.fn.dataTable.moment('DD/MM/YYYY');
+
     // fix main menu to page on passing
     $('.main.menu').visibility({
         type: 'fixed'

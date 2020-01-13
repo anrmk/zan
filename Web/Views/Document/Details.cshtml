@@ -4,7 +4,7 @@
 @inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = "Document";
+    ViewData["Title"] = Model.Title;
     var lang = ViewBag.Language;
 }
 
@@ -45,14 +45,13 @@
         <partial name="_DocumentCardPartial" model="Model" />
     </div>
     <div class="twelve wide column">
-        @if(Model.StatusId == 2) {
-        <div class="ui ignored warning message">
-            @Model.Status
-        </div> 
-        }
         <h4>@Model.Title</h4>
         <p>@Model.Info</p>
+        <partial name="_DocumentCardMenuPartial" />
         <div class="ui raised segment">
+            <div class='ui @(Model.StatusId == 2 ? "red": (Model.StatusId == 3) ? "yellow": "blue") ribbon label'>
+                <i class='file alternate outline icon'></i> @Model.Status
+            </div>
             <div class="document">
                 @Html.Raw(Model.Content == null ? "" : Model.Content)
             </div>
