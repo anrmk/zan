@@ -78,7 +78,7 @@ namespace Web.Controllers {
 
             var model = _mapper.Map<DocumentViewModel>(item);
             string html = _viewRenderService.RenderToStringAsync("_ExportToWord", model).Result;
-            var name = string.Format("{0}.{1}", item.Ngr, (item.EditionDate != null) ? item.EditionDate.ToString("ddMMyyyy") : "");
+            var name = string.Format("{0}_{1}.pdf", item.Ngr, (item.EditionDate != null) ? item.EditionDate.ToString("ddMMyyyy") : "");
 
             HtmlToPdf converter = new HtmlToPdf();
 
@@ -98,7 +98,7 @@ namespace Web.Controllers {
             stream.Position = 0;
 
             FileStreamResult fileStreamResult = new FileStreamResult(stream, "application/pdf");
-            fileStreamResult.FileDownloadName = $"{name}.doc";
+            fileStreamResult.FileDownloadName = name;
 
             return fileStreamResult;
         }
