@@ -17,5 +17,45 @@
         <a class="item" asp-controller="Document" asp-action="PrintPdf" asp-route-id="@Model.Id">
             <i class="file pdf outline icon"></i> @Localizer["ExportToPDF"]
         </a>
+
+        <div class="ui right dropdown item disabled print-selection">
+            <i class="i cursor icon"></i> @Localizer["PrintFragment"]
+            <i class="dropdown icon"></i>
+            <div class="menu">
+                <div class="item">
+                    <form asp-controller="Document" asp-action="PrintFragment" target="_blank">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="selected" />
+                        <div onclick="javascript:$(this).closest('form').submit()">
+                            <i class="print icon"></i> @Localizer["Print"]
+                        </div>
+                    </form>
+                </div>
+                <div class="item">
+                    <form asp-controller="Document" asp-action="PrintFragmentWord">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="selected" />
+                        <div onclick="javascript:$(this).closest('form').submit()">
+                            <i class="file word outline icon"></i> @Localizer["ExportToWord"]
+                        </div>
+                    </form>
+                </div>
+                <div class="item">
+                    <form asp-controller="Document" asp-action="PrintFragmentPdf">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <input type="hidden" name="selected" />
+                        <div onclick="javascript:$(this).closest('form').submit()">
+                            <i class="file pdf outline icon"></i> @Localizer["ExportToPDF"]
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        @*<form asp-controller="Document" asp-action="PrintSelectedPdf" asp-route-id="@Model.Id">
+            <button class="item" type="submit">
+                <i class="file pdf outline icon"></i> @Localizer["ExportToPDF"]
+            </button>
+        </form>*@
     </div>
 </div>

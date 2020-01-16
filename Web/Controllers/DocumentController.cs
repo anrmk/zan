@@ -82,15 +82,29 @@ namespace Web.Controllers {
             }
 
             var model = _mapper.Map<DocumentViewModel>(item);
-            string html = _viewRenderService.RenderToStringAsync("_ExportToWord", model).Result;
-            var name = string.Format("{0}_{1}.doc", item.Ngr, item.EditionDate.ToString("ddMMyyyy"));
 
-            ViewBag.Title = name;
+            ViewBag.Title = string.Format("{0}_{1}.doc", model.Ngr, model.EditionDate?.ToString("ddMMyyyy")); ;
             ViewBag.OnLoad = "window.print()";
-            //var name = string.Format("{0}_{1}.pdf", item.Ngr, (item.EditionDate != null) ? item.EditionDate.ToString("ddMMyyyy") : "");
 
             return View("_ExportToWord", model);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> PrintFragment(Guid id, string selected) {
+            var item = await _documentBusinessService.GetDocument(id);
+            if(item == null) {
+                return NotFound();
+            }
+
+            var model = _mapper.Map<DocumentViewModel>(item);
+            model.Content = $"<div>{selected}</div>";
+
+            ViewBag.Title = string.Format("{0}_{1}.doc", model.Ngr, model.EditionDate?.ToString("ddMMyyyy")); ;
+            ViewBag.OnLoad = "window.print()";
+
+            return View("_ExportToWord", model);
+        }
+
         /// <summary>
         /// Выгрузка в PDF
         /// </summary>
@@ -129,6 +143,41 @@ namespace Web.Controllers {
             return fileStreamResult;
         }
 
+        [HttpPost]
+        public async Task<ActionResult> PrintFragmentPdf(Guid id, string selected) {
+            var item = await _documentBusinessService.GetDocument(id);
+            if(item == null) {
+                return NotFound();
+            }
+
+            var model = _mapper.Map<DocumentViewModel>(item);
+            model.Content = $"<div>{selected}</div>";
+            string html = _viewRenderService.RenderToStringAsync("_ExportToWord", model).Result;
+            var name = string.Format("{0}_{1}_Fragment.pdf", item.Ngr, (item.EditionDate != null) ? item.EditionDate.ToString("ddMMyyyy") : "");
+
+            HtmlToPdf converter = new HtmlToPdf();
+
+            converter.Options.PdfPageSize = PdfPageSize.A4;
+            converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
+            converter.Options.MarginLeft = 20;
+            converter.Options.MarginRight = 10;
+            converter.Options.MarginTop = 20;
+            converter.Options.MarginBottom = 20;
+
+            PdfDocument doc = converter.ConvertHtmlString(html);
+
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream);
+            doc.Close();
+
+            stream.Position = 0;
+
+            FileStreamResult fileStreamResult = new FileStreamResult(stream, "application/pdf");
+            fileStreamResult.FileDownloadName = name;
+
+            return fileStreamResult;
+        }
+
         /// <summary>
         /// Выгрузка в DOC
         /// </summary>
@@ -141,8 +190,23 @@ namespace Web.Controllers {
             }
 
             var model = _mapper.Map<DocumentViewModel>(item);
-            //string html = _viewRenderService.RenderToStringAsync("_ExportToWord", model).Result;
-            var name = string.Format("{0}_{1}.doc", item.Ngr, item.EditionDate.ToString("ddMMyyyy"));
+            var name = string.Format("{0}_{1}.doc", model.Ngr, model.EditionDate?.ToString("ddMMyyyy"));
+
+            Response.Headers.Add("content-disposition", $"attachment; filename = {name}");
+            Response.ContentType = "application/ms-word";
+            return View("_ExportToWord", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> PrintFragmentWord(Guid id, string selected) {
+            var item = await _documentBusinessService.GetDocument(id);
+            if(item == null) {
+                return NotFound();
+            }
+
+            var model = _mapper.Map<DocumentViewModel>(item);
+            model.Content = $"<div>{selected}</div>";
+            var name = string.Format("{0}_{1}.doc", model.Ngr, model.EditionDate?.ToString("ddMMyyyy"));
 
             Response.Headers.Add("content-disposition", $"attachment; filename = {name}");
             Response.ContentType = "application/ms-word";

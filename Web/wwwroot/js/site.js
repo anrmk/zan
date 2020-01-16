@@ -66,8 +66,45 @@ $.validator.setDefaults({
 });
 
 //Core
+String.isNullOrEmpty = function (value) {
+    if (value === null || value === undefined) {
+        return true;
+    }
+    var val = value.replace(/\s/g, "");
+    return !(typeof val === "string" && val.length > 0);
+};
+
 $.fn.changeFontSize = function (cmd, maxsize = 24, minsize = 11) {
     var cfs = parseInt($(this).css('font-size'));
     cfs = (cmd == '+' && cfs < maxsize) ? ++cfs : (cmd == '-' && cfs > minsize) ? --cfs : cfs;
     $(this).css('font-size', cfs);
+}
+
+$.fn.printSelected = function (callback = function (sender, text) { }) {
+    $(this).on('mouseup', function () {
+        var text = (window.getSelection) ? window.getSelection().toString() : (document.selection && document.selection.type != "Control") ? document.selection.createRange().text : "";
+        callback(this, text);
+    });
+}
+
+$.fn.printHtmlSelected = function (callback = function (sender, text) { }) {
+    $(this).on('mouseup', function () {
+        var range = '';
+        if (document.selection && document.selection.createRange) {
+            range = document.selection.createRange().htmlText;
+            return range.htmlText;
+        }
+        else if (window.getSelection) {
+            var selection = window.getSelection();
+            if (selection.rangeCount > 0) {
+                range = selection.getRangeAt(0);
+                var clonedSelection = range.cloneContents();
+                var div = document.createElement('div');
+                div.appendChild(clonedSelection);
+                range = div.innerHTML;
+            }
+
+        }
+        callback(this, range);
+    });
 }

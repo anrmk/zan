@@ -52,10 +52,23 @@
             <div class='ui @(Model.StatusId == 2 ? "red": (Model.StatusId == 3) ? "yellow": "blue") ribbon label'>
                 <i class='file alternate outline icon'></i> @Model.Status
             </div>
-            <div class="document">
+            <div id="document" class="document">
                 @Html.Raw(Model.Content == null ? "" : Model.Content)
             </div>
         </div>
     </div>
 </div>
-
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(() => {
+            $('#document').printHtmlSelected((sender, html) => {
+                if (!String.isNullOrEmpty(html) && html.length > 10) {
+                    $('input[name=selected]').val(html);
+                    $('.print-selection').removeClass('disabled');
+                } else {
+                    $('.print-selection').addClass('disabled');
+                }
+            });
+        });
+    </script>
+}
