@@ -73,8 +73,6 @@
         this.options.datatable = table;
     }
 
-    
-
     _renderTitle(data, type, row, controller) {
         var className = row['statusId'] == 2 ? 'red' : row['statusId'] == 3 ? 'yellow' : 'blue';
         var editionDate = moment(row['editionDate']).format('DD/MM/YYYY');

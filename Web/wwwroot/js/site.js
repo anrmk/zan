@@ -33,7 +33,7 @@
     $('.ui.accordion').accordion({
         'animateChildren': false,
         'exclusive': false,
-       // 'closeNested': false
+        // 'closeNested': false
     });
 
     $('.menu .item').tab();
@@ -64,3 +64,10 @@ $.validator.setDefaults({
         $(element).closest(".error").removeClass("error").addClass("success");
     }
 });
+
+//Core
+$.fn.changeFontSize = function (cmd, maxsize = 24, minsize = 11) {
+    var cfs = parseInt($(this).css('font-size'));
+    cfs = (cmd == '+' && cfs < maxsize) ? ++cfs : (cmd == '-' && cfs > minsize) ? --cfs : cfs;
+    $(this).css('font-size', cfs);
+}
