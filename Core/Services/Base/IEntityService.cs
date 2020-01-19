@@ -20,7 +20,7 @@ namespace Core.Services.Base {
         Task<T> UpdateType(T t);
         Task<IEnumerable<T>> UpdateType(IEnumerable<T> l);
         Task<int> Count { get; }
-        Task<Tuple<List<T>, int>> Pager<Key>(Expression<Func<T, bool>> where, Expression<Func<T, string>> sort, int offset, int limit, params string[] properties);
-        Task<Tuple<List<T>, int>> Pager<Key>(Expression<Func<T, bool>> where, Expression<Func<T, string>> sort, bool descSort, int offset, int limit, params string[] properties);
+        Task<Tuple<List<T>, int>> Pager<Key>(Expression<Func<T, bool>> where, string order, int offset, int limit, params string[] properties);
+        Task<Tuple<List<T>, int>> Pager<Key>(Expression<Func<T, bool>> where, string order, bool descSort, int offset, int limit, params string[] properties);
     }
 }

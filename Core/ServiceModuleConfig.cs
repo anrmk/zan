@@ -20,7 +20,7 @@ namespace Core.Config {
             ///Extension Services
             services.AddTransient<IExportService, PdfService>();
             services.AddTransient<IViewRenderService, ViewRenderService>();
-          
+
             ///Managers
             services.AddTransient<IUserProfileManager, UserProfileManager>();
             services.AddTransient<IDocumentManager, DocumentManager>();

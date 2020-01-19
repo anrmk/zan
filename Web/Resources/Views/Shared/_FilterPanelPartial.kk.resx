@@ -117,17 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ByAcceptedDate" xml:space="preserve">
+    <value>Қабылдау күні бойынша</value>
+  </data>
+  <data name="ByLawForce" xml:space="preserve">
+    <value>Заң күші бойынша</value>
+  </data>
+  <data name="ByRelevance" xml:space="preserve">
+    <value>Релеванттық бойынша</value>
+  </data>
+  <data name="ByUpdatedDate" xml:space="preserve">
+    <value>Жаңарту күні бойынша</value>
+  </data>
   <data name="FormAct" xml:space="preserve">
     <value>Актінің нысаны</value>
   </data>
   <data name="LanguageDoc" xml:space="preserve">
     <value>Құжаттың тілі</value>
   </data>
+  <data name="OrderByDescending" xml:space="preserve">
+    <value>Төмендеу тәртібімен</value>
+  </data>
   <data name="RegionDeistv" xml:space="preserve">
     <value>Әсер ету аймағы</value>
   </data>
   <data name="SectionOfLegislation" xml:space="preserve">
     <value>Заңнама бөлімі</value>
+  </data>
+  <data name="Sorting" xml:space="preserve">
+    <value>Сұрыптау</value>
   </data>
   <data name="SphereOfRights" xml:space="preserve">
     <value>Құқықтық қатынастардың саласы</value>

@@ -12,7 +12,7 @@ using Core.Services.Managers;
 
 namespace Core.Services.Business {
     public interface IDocumentBusinessService {
-        Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, string sort, string order, int offset, int limit);
+        Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, int offset, int limit);
         Task<DocumentDto> GetDocument(Guid id);
         Task<DocumentDto> GetDocumentByNgr(string ngr, int lng, DateTime editionDate);
         Task<List<DocumentDto>> GetDocumentsByNgr(string ngr);
@@ -31,7 +31,7 @@ namespace Core.Services.Business {
             _documentBodyManager = documentBodyManager;
         }
 
-        public async Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, string sort, string order, int offset, int limit) {
+        public async Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, int offset, int limit) {
             Expression<Func<DocumentEntity, bool>> where = x =>
                 (true)
                 && ((string.IsNullOrEmpty(search.SearchText)) || (x.Title.Contains(search.SearchText.Trim()) || x.Info.Contains(search.SearchText.Trim())))
@@ -43,19 +43,34 @@ namespace Core.Services.Business {
 
                 && (x.IsArchive == false);
 
-            var sortby = GetExpression<DocumentEntity>(null ?? "Name");
+            #region SORT EXPRESSION
+            string sortby;
+            switch(search.Sort) {
+                case 1: sortby = "Id"; break;
+                case 2: sortby = "LawForceId"; break;
+                case 3: sortby = "AcceptedDate"; break;
+                case 4: sortby = "EditionDate"; break;
+                default: sortby = "Id"; break;
+            }
+            #endregion
+           
+            try {
 
-            Tuple<List<DocumentEntity>, int> tuple = await _documentManager.Pager<DocumentEntity>(where, sortby, !order.Equals("asc"), offset, limit, new string[] { "Status", "Section" });
-            var list = tuple.Item1;
-            var count = tuple.Item2;
+                Tuple<List<DocumentEntity>, int> tuple = await _documentManager.Pager<DocumentEntity>(where, sortby, search.SortByDesc, offset, limit, new string[] { "Status", "Section" });
+                var list = tuple.Item1;
+                var count = tuple.Item2;
 
-            if(count == 0)
-                return new PagerExtended<DocumentDto>(new List<DocumentDto>(), 0, offset, limit);
+                if(count == 0)
+                    return new PagerExtended<DocumentDto>(new List<DocumentDto>(), 0, offset, limit);
 
-            var page = (offset + limit) / limit;
+                var page = (offset + limit) / limit;
 
-            var result = _mapper.Map<List<DocumentDto>>(list);
-            return new PagerExtended<DocumentDto>(result, count, page, limit);
+                var result = _mapper.Map<List<DocumentDto>>(list);
+                return new PagerExtended<DocumentDto>(result, count, page, limit);
+            } catch(Exception e) {
+                Console.WriteLine(e.Message);
+            }
+            return null;
         }
 
         public async Task<DocumentDto> GetDocument(Guid id) {
@@ -85,12 +100,6 @@ namespace Core.Services.Business {
         public async Task<List<DocumentDto>> GetDocumentsByNgr(string ngr) {
             var item = await _documentManager.FindAllByNgrAsync(ngr);
             return _mapper.Map<List<DocumentDto>>(item);
-        }
-
-        public static Expression<Func<TSource, string>> GetExpression<TSource>(string propertyName) {
-            var param = Expression.Parameter(typeof(TSource), "x");
-            Expression conversion = Expression.Convert(Expression.Property(param, propertyName), typeof(string));
-            return Expression.Lambda<Func<TSource, string>>(conversion, param);
         }
     }
 }

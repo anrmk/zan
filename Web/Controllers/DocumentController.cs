@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -14,12 +14,11 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
+using SelectPdf;
+
 using Web.Hubs;
 using Web.Models.Document;
 using Web.Models.ViewModels.Document;
-
-using System.IO;
-using SelectPdf;
 
 namespace Web.Controllers {
     public class DocumentController: BaseController<DocumentController> {
@@ -134,7 +133,7 @@ namespace Web.Controllers {
             MemoryStream stream = new MemoryStream();
             doc.Save(stream);
             doc.Close();
-            
+
             stream.Position = 0;
 
             FileStreamResult fileStreamResult = new FileStreamResult(stream, "application/pdf");
@@ -289,7 +288,7 @@ namespace Web.Controllers.Api {
         [HttpPost]
         public async Task<IActionResult> GetPager([FromForm] SearchViewModel model) {
             var search = _mapper.Map<SearchDto>(model);
-            var item = await _documentBusinessService.GetListOfDocument(search, "Id", "asc", search.Start, search.Length);
+            var item = await _documentBusinessService.GetListOfDocument(search, search.Start, search.Length);
             return Ok(item);
         }
     }

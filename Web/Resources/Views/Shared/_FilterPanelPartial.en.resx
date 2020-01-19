@@ -117,17 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ByAcceptedDate" xml:space="preserve">
+    <value>By date of adoption</value>
+  </data>
+  <data name="ByLawForce" xml:space="preserve">
+    <value>By legal force</value>
+  </data>
+  <data name="ByRelevance" xml:space="preserve">
+    <value>By relevance</value>
+  </data>
+  <data name="ByUpdatedDate" xml:space="preserve">
+    <value>By update date</value>
+  </data>
   <data name="FormAct" xml:space="preserve">
     <value>Form of act</value>
   </data>
   <data name="LanguageDoc" xml:space="preserve">
     <value>Document language</value>
   </data>
+  <data name="OrderByDescending" xml:space="preserve">
+    <value>Order by descending</value>
+  </data>
   <data name="RegionDeistv" xml:space="preserve">
     <value>Region of acting</value>
   </data>
   <data name="SectionOfLegislation" xml:space="preserve">
     <value>Section of legislation</value>
+  </data>
+  <data name="Sorting" xml:space="preserve">
+    <value>Sorting</value>
   </data>
   <data name="SphereOfRights" xml:space="preserve">
     <value>Sphere of legal relations</value>

@@ -46,8 +46,9 @@ namespace Core.Data.Dto.Documents {
                 return ((Total + Limit) / Limit);
             }
         }
-        //public SortEnum Sort { get; set; } = SortEnum.ByRelevance;
-        public bool SordByDesc { get; set; } = true;
+
+        public int Sort { get; set; }
+        public bool SortByDesc { get; set; }
 
         public string Spells { get; set; }
 

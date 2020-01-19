@@ -1,8 +1,32 @@
 ﻿@model Web.Models.Document.SearchViewModel
+
+@using Web.Models.Document
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer Localizer
 
 <form class="ui vertical fluid accordion text menu" id="documentFilterPanel">
+    <div class="item">
+        <div class="active title">
+            <i class="dropdown icon"></i>
+            <b>@Localizer["Sorting"]</b>
+        </div>
+        <div class="active content">
+            @foreach(int i in Enum.GetValues(typeof(SortEnum))) {
+                <div class="item">
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="sort" value="@i">
+                        <label>@Localizer[Enum.GetName(typeof(SortEnum), i)]</label>
+                    </div>
+                </div>
+            }
+            <div class="item">
+                <div class="ui slider checkbox">
+                    <input type="checkbox" name="sortByDesc:boolean" data-unchecked-value="false" value="@Model.SortByDesc" @(Model.SortByDesc ? "checked" : "")>
+                    <label>@Localizer["OrderByDescending"]</label>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="item">
         <div class="active title">
             <i class="dropdown icon"></i>
@@ -69,23 +93,23 @@
     </div>
 
     @*
-        <div class="item">
-        <div class="title">
-            <i class="dropdown icon"></i>
-            <b>@Localizer["TitlePrefix"]</b>
-        </div>
-        <div class="content scrolling ">
-            @foreach(var item in ViewBag.DocumentTitlePrefixes) {
-                <div class="item">
-                    <div class="ui checkbox">
-                        <input type="checkbox" name="DocumentTitlePrefixes[]">
-                        <label>@item.GetName(ViewBag.Language)</label>
+            <div class="item">
+            <div class="title">
+                <i class="dropdown icon"></i>
+                <b>@Localizer["TitlePrefix"]</b>
+            </div>
+            <div class="content scrolling ">
+                @foreach(var item in ViewBag.DocumentTitlePrefixes) {
+                    <div class="item">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="DocumentTitlePrefixes[]">
+                            <label>@item.GetName(ViewBag.Language)</label>
+                        </div>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
-    </div>
-        *@
+    *@
 
     @*<div class="item">
             <div class="header">@Localizer["SphereOfRights"]</div>

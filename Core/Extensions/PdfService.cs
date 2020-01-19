@@ -3,8 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 
-using Microsoft.Extensions.Configuration;
-
 namespace Core.Extensions {
     public interface IExportService {
         string Title { get; set; }
@@ -17,7 +15,7 @@ namespace Core.Extensions {
         public string Template { get; set; } = "<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8'></head><body>{0}</body></html>";
         public string PathExe;
 
-        public PdfService()  {
+        public PdfService() {
             PathExe = "Wkhtmltopdf:PathExe";
         }
 
@@ -42,7 +40,7 @@ namespace Core.Extensions {
                 p.WaitForExit();
                 ret = File.ReadAllBytes(outputFile);
                 return ret;
-            } catch (Exception ex) {
+            } catch(Exception ex) {
                 Console.WriteLine(ex.Message);
                 return null;
             }

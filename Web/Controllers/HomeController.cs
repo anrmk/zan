@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 using AutoMapper;
 
-using Core.Data.Dto.Documents;
 using Core.Services.Business;
 
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +15,6 @@ using Microsoft.Extensions.Logging;
 
 using Web.Hubs;
 using Web.Models;
-using Web.Models.Document;
 
 namespace Web.Controllers {
     [Authorize]
@@ -44,15 +41,15 @@ namespace Web.Controllers {
             return View();
         }
 
-        public IActionResult SetCulture(string culture = "ru") {
-            Response.Cookies.Append(
-                CookieRequestCultureProvider.DefaultCookieName,
-                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
-                );
+        //public IActionResult SetCulture(string culture = "ru") {
+        //    Response.Cookies.Append(
+        //        CookieRequestCultureProvider.DefaultCookieName,
+        //        CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+        //        new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+        //        );
 
-            return View();
-        }
+        //    return View();
+        //}
 
         [HttpPost]
         public IActionResult SetLanguage(string culture, string returnUrl) {
@@ -65,22 +62,22 @@ namespace Web.Controllers {
             return LocalRedirect(returnUrl);
         }
 
-        //public IActionResult SetRegion(string regionCode) {
-        //    if(string.IsNullOrEmpty(regionCode)) {
-        //        Response.Cookies.Delete("currentRegionEn");
-        //        Response.Cookies.Delete("currentRegionRu");
-        //        Response.Cookies.Delete("currentRegionKk");
-        //    } else {
-        //        //var region = _nsi.GetRegionByCodeMore(regionCode);
+        public IActionResult SetRegion(string regionCode) {
+            if(string.IsNullOrEmpty(regionCode)) {
+                Response.Cookies.Delete("currentRegionEn");
+                Response.Cookies.Delete("currentRegionRu");
+                Response.Cookies.Delete("currentRegionKk");
+            } else {
+                //var region = _nsi.GetRegionByCodeMore(regionCode);
 
-        //        CookieOptions options = new CookieOptions();
-        //        options.Expires = DateTime.Now.AddDays(1);
-        //        //Response.Cookies.Append("currentRegionEn", $"{region.Code}:{region.Name}");
-        //        //Response.Cookies.Append("currentRegionRu", $"{region.Code}:{region.NameRu}");
-        //        //Response.Cookies.Append("currentRegionKk", $"{region.Code}:{region.NameKz}");
-        //    }
-        //    return Redirect($"/{CurrentLanguage}");
-        //}
+                CookieOptions options = new CookieOptions();
+                options.Expires = DateTime.Now.AddDays(1);
+                //Response.Cookies.Append("currentRegionEn", $"{region.Code}:{region.Name}");
+                //Response.Cookies.Append("currentRegionRu", $"{region.Code}:{region.NameRu}");
+                //Response.Cookies.Append("currentRegionKk", $"{region.Code}:{region.NameKz}");
+            }
+            return Redirect($"/{CurrentLanguage}");
+        }
 
         //public IActionResult SetLanguage(string culture, string returnUrl) {
         //    Response.Cookies.Append(
@@ -121,11 +118,11 @@ namespace Web.Controllers.Api {
             _documentBusinessService = documentBusinessService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetPager([FromForm] SearchViewModel model) {
-            var search = _mapper.Map<SearchDto>(model);
-            var item = await _documentBusinessService.GetListOfDocument(search, "Id", "asc", search.Start, search.Length);
-            return Ok(item);
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> GetPager([FromForm] SearchViewModel model) {
+        //    var search = _mapper.Map<SearchDto>(model);
+        //    var item = await _documentBusinessService.GetListOfDocument(search, search.Start, search.Length);
+        //    return Ok(item);
+        //}
     }
 }

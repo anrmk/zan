@@ -52,14 +52,17 @@ namespace Web.Models.Document {
         /// </summary>
         public EndOfWordsEnum EndOfWords { get; set; } = EndOfWordsEnum.Any;
         #endregion
+
+        public SortEnum Sort { get; set; } = SortEnum.ByRelevance;
+
+        public bool SortByDesc { get; set; } = false;
         /*
         public Guid? Id { get; set; }
         public int Page { get; set; } = 1;
         public int Size { get; set; } = 100;
         public int Total { get; set; } = 0;
         public int TotalPages { get { return ((Total / Size) + 1); } }
-        //public SortEnum Sort { get; set; } = SortEnum.ByRelevance;
-        public bool SordByDesc { get; set; } = true;
+        
 
         public string Spells { get; set; }
         */
@@ -81,6 +84,13 @@ namespace Web.Models.Document {
         //public string NgrWord { get; set; }
         //public string GrWord { get; set; }
         #endregion
+    }
+
+    public enum SortEnum {
+        ByRelevance = 1,
+        ByLawForce = 2,
+        ByAcceptedDate = 3,
+        ByUpdatedDate = 4
     }
 
     public enum LogicalMultiEnum {

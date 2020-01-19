@@ -92,7 +92,7 @@ namespace Web {
             });
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddMvc()
-                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, opts => { opts.ResourcesPath = "Resources"; })
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
             services.Configure<RequestLocalizationOptions>(opts => {
@@ -131,11 +131,10 @@ namespace Web {
                 SupportedUICultures = supportedCultures
             });
 
-            app.UseAuthentication();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseSignalR(routes => {
                 routes.MapHub<SyncDataHub>("/syncDataHub");
