@@ -1,0 +1,70 @@
+﻿@model List<Core.Data.Dto.Documents.DocumentDto>
+
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body style="padding:60px 30px 60px 60px;" onload="@ViewBag.OnLoad" )>
+    <div style="padding: 10px;margin-bottom:5px;">
+        @ViewBag.PrintOnLoad
+        <div><b>База Данных "Zan"</b></div>
+        <div align="right">
+            <label>@DateTime.Now.ToString("dd.MM.yyyy")</label>
+        </div>
+    </div>
+
+    <br />
+    <h4 align="center" style="font-size: 20px; color: #000080">
+        <b>@Localizer["Title"]</b>
+    </h4>
+    <br />
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Localizer["Ngr"]</th>
+                    <th>@Localizer["RegNumber"]</th>
+                    <th>@Localizer["Title"]</th>
+                    <th>@Localizer["Info"]</th>
+                    <th>@Localizer["Section"]</th>
+                    <th>@Localizer["EditionDate"]</th>
+                    <th>@Localizer["AcceptedDate"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model) {
+                <tr>
+                    <td>@item.Ngr</td>
+                    <td>@item.RegNumber</td>
+                    <td>@item.Title</td>
+                    <td>@item.Info</td>
+                    <td>@item.Section</td>
+                    <td>@item.EditionDate</td>
+                    <td>@item.AcceptedDate</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

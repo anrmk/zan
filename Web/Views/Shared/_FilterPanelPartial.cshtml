@@ -14,14 +14,14 @@
             @foreach(int i in Enum.GetValues(typeof(SortEnum))) {
                 <div class="item">
                     <div class="ui radio checkbox">
-                        <input type="radio" name="sort" value="@i">
+                        <input type="radio" name="Sort:number" value="@i">
                         <label>@Localizer[Enum.GetName(typeof(SortEnum), i)]</label>
                     </div>
                 </div>
             }
             <div class="item">
                 <div class="ui slider checkbox">
-                    <input type="checkbox" name="sortByDesc:boolean" data-unchecked-value="false" value="@Model.SortByDesc" @(Model.SortByDesc ? "checked" : "")>
+                    <input type="checkbox" name="SortByDesc:boolean" data-unchecked-value="false" value="@Model.SortByDesc" @(Model.SortByDesc ? "checked" : "")>
                     <label>@Localizer["OrderByDescending"]</label>
                 </div>
             </div>
@@ -36,7 +36,7 @@
             @foreach(var item in ViewBag.Languages) {
                 <div class="item">
                     <div class="ui checkbox">
-                        <input type="checkbox" name="languages[]" value="@item.Id">
+                        <input type="checkbox" name="Languages[]" value="@item.Id">
                         <label>@item.GetName(ViewBag.Language)</label>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
             @foreach(var item in ViewBag.Statuses) {
                 <div class="item">
                     <div class="ui checkbox">
-                        <input type="checkbox" name="statuses[]" value="@item.Id">
+                        <input type="checkbox" name="Statuses[]" value="@item.Id">
                         <label>@item.GetName(ViewBag.Language)</label>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
             @foreach(var item in ViewBag.Regions) {
                 <div class="item">
                     <div class="ui checkbox">
-                        <input type="checkbox" name="acceptedRegions[]" value="@item.Id" />
+                        <input type="checkbox" name="AcceptedRegions[]" value="@item.Id" />
                         <label>@item.GetName(ViewBag.Language)</label>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
             @foreach(var item in ViewBag.DocumentSections) {
                 <div class="item">
                     <div class="ui checkbox">
-                        <input type="checkbox" name="documentSections[]" value="@item.Id">
+                        <input type="checkbox" name="DocumentSections[]" value="@item.Id">
                         <label>@item.GetName(ViewBag.Language)</label>
                     </div>
                 </div>

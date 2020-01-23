@@ -53,7 +53,7 @@ namespace Core.Services.Business {
                 default: sortby = "Id"; break;
             }
             #endregion
-           
+
             try {
 
                 Tuple<List<DocumentEntity>, int> tuple = await _documentManager.Pager<DocumentEntity>(where, sortby, search.SortByDesc, offset, limit, new string[] { "Status", "Section" });

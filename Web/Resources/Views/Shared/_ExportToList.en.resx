@@ -118,36 +118,39 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AcceptedDate" xml:space="preserve">
-    <value>Қабылдау күні</value>
+    <value>Date of adoption</value>
   </data>
   <data name="AcceptNumber" xml:space="preserve">
-    <value>Нөмір</value>
+    <value>Number RLA</value>
   </data>
   <data name="EditionDate" xml:space="preserve">
-    <value>Редакция күні</value>
+    <value>Date of Edition</value>
   </data>
   <data name="GosNumber" xml:space="preserve">
-    <value>ҚР НҚА Мемтізіліміндегі нөмірі</value>
+    <value>Number in state register RLA RK</value>
   </data>
   <data name="MainTypes" xml:space="preserve">
-    <value>НҚА-ның негізгі және туынды түрлері</value>
+    <value>Main and production types of RLA</value>
   </data>
   <data name="Ngr" xml:space="preserve">
-    <value>Тіркеу тобының нөмірі</value>
+    <value>Number group of registered</value>
   </data>
   <data name="PrintDepartment" xml:space="preserve">
-    <value>Басылым органы</value>
+    <value>Print Department</value>
   </data>
   <data name="PublishedDate" xml:space="preserve">
-    <value>Жарияланған күні</value>
+    <value>Publication Date</value>
   </data>
   <data name="RegionAction" xml:space="preserve">
-    <value>Әсер ету аймағы</value>
+    <value>Region of action</value>
   </data>
   <data name="RegNumber" xml:space="preserve">
-    <value>ӘМ тіркеу нөмірі</value>
+    <value>Number of registration in MJ</value>
   </data>
   <data name="Section" xml:space="preserve">
-    <value>Заңнама саласы</value>
+    <value>Branch of legislation</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>List of documents</value>
   </data>
 </root>

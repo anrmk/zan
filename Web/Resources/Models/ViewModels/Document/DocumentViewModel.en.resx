@@ -123,6 +123,9 @@
   <data name="AcceptNumber" xml:space="preserve">
     <value>Number RLA</value>
   </data>
+  <data name="EditionDate" xml:space="preserve">
+    <value>Revision date</value>
+  </data>
   <data name="GosNumber" xml:space="preserve">
     <value>Number in state register RLA RK</value>
   </data>

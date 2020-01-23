@@ -11,6 +11,7 @@ using Core.Services.Business;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
@@ -22,13 +23,15 @@ using Web.Models.ViewModels.Document;
 
 namespace Web.Controllers {
     public class DocumentController: BaseController<DocumentController> {
+        private readonly IMemoryCache _cache;
+
         private readonly IMapper _mapper;
         private readonly IExportService _exportService;
         private readonly IViewRenderService _viewRenderService;
         private readonly IDocumentBusinessService _documentBusinessService;
         private readonly INsiBusinessService _nsiBusinessService;
 
-        public DocumentController(IMapper mapper,
+        public DocumentController(IMemoryCache memoryCache, IMapper mapper,
           IViewRenderService viewRenderService,
           IExportService exportService,
           IHttpContextAccessor httpContextAccessor,
@@ -36,6 +39,7 @@ namespace Web.Controllers {
           ILogger<DocumentController> logger,
           IDocumentBusinessService documentBusinessService,
           INsiBusinessService nsiBusinessService) : base(httpContextAccessor, localizer, logger) {
+            _cache = memoryCache;
             _mapper = mapper;
             _exportService = exportService;
             _viewRenderService = viewRenderService;
@@ -70,6 +74,23 @@ namespace Web.Controllers {
         }
 
         /// <summary>
+        /// Печать списка документов
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> PrintList() {
+            var model = _cache.Get<SearchViewModel>("_SearchViewModel");
+            if(model == null)
+                return BadRequest();
+
+            var search = _mapper.Map<SearchDto>(model);
+            var item = await _documentBusinessService.GetListOfDocument(search, search.Start, search.Length);
+            ViewBag.OnLoad = "window.print()";
+
+            return View("_ExportToList", item.Data);
+        }
+
+        /// <summary>
         /// Печать документа HTML
         /// </summary>
         /// <param name="id"></param>
@@ -85,7 +106,7 @@ namespace Web.Controllers {
             ViewBag.Title = string.Format("{0}_{1}.doc", model.Ngr, model.EditionDate?.ToString("ddMMyyyy")); ;
             ViewBag.OnLoad = "window.print()";
 
-            return View("_ExportToWord", model);
+            return View("_ExportToFile", model);
         }
 
         [HttpPost]
@@ -101,7 +122,7 @@ namespace Web.Controllers {
             ViewBag.Title = string.Format("{0}_{1}.doc", model.Ngr, model.EditionDate?.ToString("ddMMyyyy")); ;
             ViewBag.OnLoad = "window.print()";
 
-            return View("_ExportToWord", model);
+            return View("_ExportToFile", model);
         }
 
         /// <summary>
@@ -116,7 +137,7 @@ namespace Web.Controllers {
             }
 
             var model = _mapper.Map<DocumentViewModel>(item);
-            string html = _viewRenderService.RenderToStringAsync("_ExportToWord", model).Result;
+            string html = _viewRenderService.RenderToStringAsync("_ExportToFile", model).Result;
             var name = string.Format("{0}_{1}.pdf", item.Ngr, (item.EditionDate != null) ? item.EditionDate.ToString("ddMMyyyy") : "");
 
             HtmlToPdf converter = new HtmlToPdf();
@@ -151,7 +172,7 @@ namespace Web.Controllers {
 
             var model = _mapper.Map<DocumentViewModel>(item);
             model.Content = $"<div>{selected}</div>";
-            string html = _viewRenderService.RenderToStringAsync("_ExportToWord", model).Result;
+            string html = _viewRenderService.RenderToStringAsync("_ExportToFile", model).Result;
             var name = string.Format("{0}_{1}_Fragment.pdf", item.Ngr, (item.EditionDate != null) ? item.EditionDate.ToString("ddMMyyyy") : "");
 
             HtmlToPdf converter = new HtmlToPdf();
@@ -193,7 +214,7 @@ namespace Web.Controllers {
 
             Response.Headers.Add("content-disposition", $"attachment; filename = {name}");
             Response.ContentType = "application/ms-word";
-            return View("_ExportToWord", model);
+            return View("_ExportToFile", model);
         }
 
         [HttpPost]
@@ -209,7 +230,7 @@ namespace Web.Controllers {
 
             Response.Headers.Add("content-disposition", $"attachment; filename = {name}");
             Response.ContentType = "application/ms-word";
-            return View("_ExportToWord", model);
+            return View("_ExportToFile", model);
         }
 
         // GET: Document/Create
@@ -272,13 +293,15 @@ namespace Web.Controllers.Api {
     [Route("api/[controller]")]
     [ApiController]
     public class DocumentController: ControllerBase {
+        private readonly IMemoryCache _cache;
         private readonly IMapper _mapper;
         private readonly ISyncBusinessService _syncBusinessService;
         private readonly IHubContext<SyncDataHub> _syncDataHubContext;
         private readonly IDocumentBusinessService _documentBusinessService;
 
-        public DocumentController(IMapper mapper, IHubContext<SyncDataHub> syncDataHubContext, ISyncBusinessService syncBusinessService,
+        public DocumentController(IMemoryCache memoryCache, IMapper mapper, IHubContext<SyncDataHub> syncDataHubContext, ISyncBusinessService syncBusinessService,
             IDocumentBusinessService documentBusinessService) {
+            _cache = memoryCache;
             _mapper = mapper;
             _syncDataHubContext = syncDataHubContext;
             _syncBusinessService = syncBusinessService;
@@ -287,6 +310,9 @@ namespace Web.Controllers.Api {
 
         [HttpPost]
         public async Task<IActionResult> GetPager([FromForm] SearchViewModel model) {
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetSlidingExpiration(TimeSpan.FromHours(1));
+            _cache.Set("_SearchViewModel", model, cacheEntryOptions);
+
             var search = _mapper.Map<SearchDto>(model);
             var item = await _documentBusinessService.GetListOfDocument(search, search.Start, search.Length);
             return Ok(item);

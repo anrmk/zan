@@ -9,7 +9,8 @@
             controller: {
                 api: '/api/document',
                 mvc: '/document'
-            }
+            },
+            printBtn: $('#printBtn')
         }, this.options);
 
         this.init(this.options);
@@ -22,6 +23,7 @@
             'processing': true,
             'serverSide': true,
             'searchDelay': 1800,
+            //'dom': '<"ui stackable grid" <"ui menu" <"item"f> <"right item "l>> <"row dt-table"t> <"row"> >',
             'mark': true,
             'ajax': {
                 'url': this.options.controller.api,
@@ -30,7 +32,15 @@
                     var data = $.extend({}, d, this.options.filter.serializeJSON());
                     return data;
                 },
-                'async': true
+                'async': true,
+                'complete': function (data, status, jqXHR) {
+                    if (status === 'success') {
+                       // localStorage.setItem('FILTERDATA', this.data);
+                    } else {
+                        //localStorage.clear('FILTERDATA');
+                        this.options.printBtn.disabled();
+                    }
+                }
             },
             'columns': [{
                 'data': 'title', 'render': (data, type, row) => this._renderTitle(data, type, row, this), 'orderable': false
@@ -60,10 +70,10 @@
         //});
 
         // Pre-process the data returned from the server
-        table.on('xhr', () => {
-            var data = this.options.datatable.ajax.params();
-            //alert('Search term was: ' + data.search.value);
-        });
+        //table.on('xhr', () => {
+        //    var data = this.options.datatable.ajax.params();
+        //    localStorage.setItem('FILTERDATA', JSON.stringify(data));
+        //});
 
         // Bind event on filter
         this.options.filter.find(':input').change((e) => {
