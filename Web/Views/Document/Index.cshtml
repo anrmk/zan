@@ -19,6 +19,10 @@
                 <a class="item" asp-controller="Document" asp-action="PrintList" target="_blank">
                     <i class="print icon"></i> @Localizer["Print"]
                 </a>
+
+                <a class="item" asp-controller="Document" asp-action="PrintListWord">
+                    <i class="file word outline icon"></i> @Localizer["ExportToWord"]
+                </a>
             </div>
         </div>
         <table class="" id="datatable" style="width:100%">

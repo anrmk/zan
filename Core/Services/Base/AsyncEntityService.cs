@@ -214,7 +214,7 @@ namespace Core.Services.Base {
             var query = where is null ? DbSet.AsQueryable() : DbSet.Where(where).AsQueryable();
             int count = await query.CountAsync();
 
-            query = string.IsNullOrEmpty(order) ? query.Skip(offset) : SortExtension.OrderByDynamic(query, order, descSort);
+            query = string.IsNullOrEmpty(order) ? query.Skip(offset) : SortExtension.OrderByDynamic(query, order, descSort).Skip(offset);
 
             foreach(var prop in properties)
                 query = query.Include(prop);

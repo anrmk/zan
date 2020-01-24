@@ -90,6 +90,21 @@ namespace Web.Controllers {
             return View("_ExportToList", item.Data);
         }
 
+        public async Task<ActionResult> PrintListWord() {
+            var model = _cache.Get<SearchViewModel>("_SearchViewModel");
+            if(model == null)
+                return BadRequest();
+
+            var search = _mapper.Map<SearchDto>(model);
+            var item = await _documentBusinessService.GetListOfDocument(search, search.Start, search.Length);
+
+            var name = string.Format("ReportList_{0}.doc", DateTime.Now.ToString("ddMMyyyy"));
+
+            Response.Headers.Add("content-disposition", $"attachment; filename = {name}");
+            Response.ContentType = "application/ms-word";
+            return View("_ExportToList", item.Data);
+        }
+
         /// <summary>
         /// Печать документа HTML
         /// </summary>
