@@ -38,10 +38,10 @@ namespace Core.Context {
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
             string conn = _configuration.GetConnectionString("DefaultConnection");
-            var dir = AppDomain.CurrentDomain.BaseDirectory;
-            if(conn.Contains("%CONTENTROOTPATH%")) {
-                conn = conn.Replace("%CONTENTROOTPATH%", _contentRootPath);
-            }
+            //var dir = AppDomain.CurrentDomain.BaseDirectory;
+            //if(conn.Contains("%CONTENTROOTPATH%")) {
+            //    conn = conn.Replace("%CONTENTROOTPATH%", _contentRootPath);
+            //}
             optionsBuilder.UseSqlServer(conn);
         }
 
@@ -49,9 +49,6 @@ namespace Core.Context {
             base.OnModelCreating(builder);
 
             builder.Entity<NsiLanguageEntity>().Property(e => e.Id).ValueGeneratedNever();
-            // Customize the ASP.NET Core Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Core Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
         }
 
         public async Task<int> SaveChangesAsync() {

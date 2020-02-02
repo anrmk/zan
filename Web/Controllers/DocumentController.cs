@@ -74,6 +74,19 @@ namespace Web.Controllers {
         }
 
         /// <summary>
+        /// Карточка документа (краткая информация)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> Card(Guid id) {
+            var item = await _documentBusinessService.GetDocument(id);
+            if(item == null) {
+                return NotFound();
+            }
+            return View("_DocumentCardPartial", _mapper.Map<DocumentViewModel>(item));
+        }
+
+        /// <summary>
         /// Печать списка документов
         /// </summary>
         /// <param name="model"></param>

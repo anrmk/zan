@@ -219,9 +219,15 @@ namespace Core.Services.Base {
             foreach(var prop in properties)
                 query = query.Include(prop);
 
-            query = query.Take(limit);
-            var result = await query.ToListAsync();
-            return new Tuple<List<T>, int>(result, count);
+            try {
+                query = query.Take(limit);
+                var result = await query.ToListAsync();
+                return new Tuple<List<T>, int>(result, count);
+            } catch(Exception ex) {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+
         }
 
         public async Task<Tuple<List<T>, int>> Pager<Key>(Expression<Func<T, bool>> where, string order, int offset, int limit, params string[] properties) {

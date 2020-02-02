@@ -74,6 +74,10 @@ String.isNullOrEmpty = function (value) {
     return !(typeof val === "string" && val.length > 0);
 };
 
+$.fn['any'] = function () {
+    return (this.length > 0);
+};
+
 $.fn.changeFontSize = function (cmd, maxsize = 24, minsize = 11) {
     var cfs = parseInt($(this).css('font-size'));
     cfs = (cmd == '+' && cfs < maxsize) ? ++cfs : (cmd == '-' && cfs > minsize) ? --cfs : cfs;

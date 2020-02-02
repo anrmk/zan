@@ -154,6 +154,10 @@ namespace Core.Data.Entities.Documents {
         /// </summary>
         public DateTime? PublishedDate { get; set; }
 
+        //[Column("DocumentBodyEntity_Id")]
+        //public Guid? DocumentBodyId { get; set; }
+        //public virtual DocumentBodyEntity Body { get; set; }
+
         /// <summary>
         /// Печатный орган
         /// </summary>

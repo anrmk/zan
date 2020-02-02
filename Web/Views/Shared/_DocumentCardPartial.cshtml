@@ -3,7 +3,11 @@
 
 @inject IViewLocalizer Localizer
 
-<div class="ui piled compact segment">
+@{
+    Layout = null;
+}
+
+<div class="ui piled compact segment" id="documentCard">
     <h4 class="ui header">@Localizer["Card"]</h4>
     <table class="ui definition small table">
         <tbody>
@@ -28,9 +32,9 @@
                 <td><label>@Model.RegionAction</label></td>
             </tr>
             @*<tr>
-                <td><label asp-for="MainTypes"></label></td>
-                <td><label>@Model.MainTypes</label></td>
-            </tr>*@
+                    <td><label asp-for="MainTypes"></label></td>
+                    <td><label>@Model.MainTypes</label></td>
+                </tr>*@
             <tr>
                 <td><label asp-for="PrintDepartment"></label></td>
                 <td><label>@Model.PrintDepartment</label></td>

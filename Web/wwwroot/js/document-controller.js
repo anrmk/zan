@@ -35,7 +35,7 @@
                 'async': true,
                 'complete': function (data, status, jqXHR) {
                     if (status === 'success') {
-                       // localStorage.setItem('FILTERDATA', this.data);
+                        // localStorage.setItem('FILTERDATA', this.data);
                     } else {
                         //localStorage.clear('FILTERDATA');
                         this.options.printBtn.disabled();
@@ -60,6 +60,20 @@
             //},
         });
 
+        table.on('click', 'a.document-card', (e)  => {
+            var closestRow = $(e.target).closest('tr');
+            var data = this.options.datatable.row(closestRow).data();
+            var fragment = closestRow.find('div.segment').addClass('loading');
+            $.ajax(`/document/card/${data.id}`).done((html) => {
+                fragment.removeClass('loading');
+                var documentCard = $('#documentCard');
+                if (!documentCard.any()) {
+                    documentCard = $('<div>', { id: 'documentCard' }).appendTo('.right-subpanel')
+                }
+                documentCard.replaceWith(html);
+            });
+            e.preventDefault();
+        });
 
 
         //table.on('draw', (e,x) => {
@@ -87,11 +101,14 @@
         var className = row['statusId'] == 2 ? 'red' : row['statusId'] == 3 ? 'yellow' : 'blue';
         var editionDate = moment(row['editionDate']).format('DD/MM/YYYY');
         //<a href='${controller.options.controller.mvc}/details?ngr=${row[' ngr']}&lng=${row['languageId']}&ed=${row['editionDate']}' > ${ row['title'] }</a >
-        return `<div class='ui raised segment'> 
-                    <div class='ui ${className} ribbon label'>
+        return `<div class='ui raised segment mb-1'> 
+                    <div class='ui top left attached ${className} label'>
                         <i class='file alternate outline icon'></i>${row['status']}
                     </div>
-                    <a href='${controller.options.controller.mvc}/details/${row['id']}'>${row['title']}</a>
+                    <div class='ui top right attached label'>
+                        <a href='#' class='document-card'><i class="file alternate outline icon"></i></a>
+                    </div>
+                    <h5><a href='${controller.options.controller.mvc}/details/${row['id']}'>${row['title']}</a></h5>
                     
                     <p>${row['info']}</p>
 

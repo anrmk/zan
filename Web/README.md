@@ -2,8 +2,8 @@
 «Institute of legislation and legal information of the Republic of Kazakhstan» of the Ministry of justice of the Republic of Kazakhstan
 
 # Remote Desktop DB
-Login: Administator
-Password: Qwerty1234
+Login: Administrator
+Password: Qwer123
 Open remote disk C: \\10.202.101.187\c$
 
 # Remote Desktop Web
