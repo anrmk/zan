@@ -75,6 +75,21 @@
             e.preventDefault();
         });
 
+        table.on('click', 'a.document-body', (e) => {
+            var closestRow = $(e.target).closest('tr');
+            var data = this.options.datatable.row(closestRow).data();
+            var fragment = closestRow.find('div.segment').addClass('loading');
+            $.ajax(`/document/documentbody/${data.id}`).done((html) => {
+                fragment.removeClass('loading');
+                var documentCard = $('#documentBody');
+                if (!documentCard.any()) {
+                    documentCard = $('<div>', { id: 'documentBody' }).appendTo('.right-subpanel')
+                }
+                documentCard.replaceWith(html);
+            });
+            e.preventDefault();
+        });
+
 
         //table.on('draw', (e,x) => {
         //    var body = $(this.options.datatable.table().body());
@@ -107,6 +122,8 @@
                     </div>
                     <div class='ui top right attached label'>
                         <a href='#' class='document-card'><i class="file alternate outline icon"></i></a>
+                        <a href='#' class='document-body'><i class="eye icon"></i></a>
+
                     </div>
                     <h5><a href='${controller.options.controller.mvc}/details/${row['id']}'>${row['title']}</a></h5>
                     

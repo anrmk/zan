@@ -1,0 +1,18 @@
+﻿@model Web.Models.ViewModels.Document.DocumentViewModel
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
+@{
+    Layout = null;
+}
+
+<div class="ui raised segment" id="documentBody">
+    <div class='ui @(Model.StatusId == 2 ? "red": (Model.StatusId == 3) ? "yellow": "blue") ribbon label'>
+        <i class='file alternate outline icon'></i> @Model.Status
+    </div>
+    <div id="documentContent" class="document">
+        <h4>@Model.Title</h4>
+        @Html.Raw(Model.Content == null ? "" : Model.Content)
+    </div>
+</div>

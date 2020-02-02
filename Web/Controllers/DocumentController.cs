@@ -87,6 +87,19 @@ namespace Web.Controllers {
         }
 
         /// <summary>
+        /// Содержание документа
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> DocumentBody(Guid id) {
+            var item = await _documentBusinessService.GetDocument(id);
+            if(item == null) {
+                return NotFound();
+            }
+            return View("_DocumentBodyPartial", _mapper.Map<DocumentViewModel>(item));
+        }
+
+        /// <summary>
         /// Печать списка документов
         /// </summary>
         /// <param name="model"></param>
