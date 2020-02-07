@@ -8,6 +8,7 @@ using Core.Data.Entities.Documents;
 using Core.Data.Entities.Nsi;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Core.Context {
+    //IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
     public class ApplicationDbContext: IdentityDbContext<ApplicationUserEntity>, IApplicationDbContext {
         /**
          * Первоначальное создание базы. Из консоли исполнить команды:
@@ -98,6 +100,7 @@ namespace Core.Context {
         public DbSet<UserProfileEntity> UserProfiles { get; set; }
         public DbSet<DocumentEntity> Documents { get; set; }
         public DbSet<DocumentBodyEntity> DocumentBodies { get; set; }
+        public DbSet<DocumentFavoriteEntity> DocumentFavorites { get; set; }
         #endregion
 
         #region NSI

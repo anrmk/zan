@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Threading.Tasks;
 using AutoMapper;
 
 using Core.Services.Business;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -15,6 +17,8 @@ using Microsoft.Extensions.Logging;
 
 using Web.Hubs;
 using Web.Models;
+using Web.Models.ViewModels.Document;
+using Web.ViewModels.DbStatus;
 
 namespace Web.Controllers {
     [Authorize]
@@ -22,18 +26,40 @@ namespace Web.Controllers {
         private readonly IMapper _mapper;
         private readonly IDocumentBusinessService _documentBusinessService;
         private readonly INsiBusinessService _nsiBusinessService;
+        private readonly IAccountBusinessService _accountBusinessService;
+        private readonly IDbStatusBusinessService _dbStatusBusinessService;
 
         public HomeController(IMapper mapper, IHttpContextAccessor httpContextAccessor,
+            IAccountBusinessService accountBusinessService,
             IStringLocalizer<HomeController> localizer,
             ILogger<HomeController> logger,
             IDocumentBusinessService documentBusinessService,
-            INsiBusinessService nsiBusinessService) : base(httpContextAccessor, localizer, logger) {
+            INsiBusinessService nsiBusinessService,
+            IDbStatusBusinessService dbStatusBusinessService) : base(httpContextAccessor, localizer, logger) {
             _mapper = mapper;
+            _accountBusinessService = accountBusinessService;
             _documentBusinessService = documentBusinessService;
             _nsiBusinessService = nsiBusinessService;
+            _dbStatusBusinessService = dbStatusBusinessService;
         }
 
-        public IActionResult Index() {
+        public async Task<IActionResult> Index() {
+            var user = await _accountBusinessService.GetUser(HttpContext.User);
+            if(user == null)
+                return BadRequest();
+
+            var favorites = await _documentBusinessService.GetFavorites(Guid.Parse(user.Id), 10);
+            ViewBag.Favorites = _mapper.Map<List<DocumentViewModel>>(favorites);
+
+            ViewBag.Viewed = new List<DocumentViewModel>();
+
+            var dbDocumentStatus = await _dbStatusBusinessService.GetDbDocumentStatistics();
+            ViewBag.DbStatusDocument = _mapper.Map<List<DbStatusDocumentViewModel>>(dbDocumentStatus);
+
+            return View();
+        }
+
+        public IActionResult About() {
             return View();
         }
 

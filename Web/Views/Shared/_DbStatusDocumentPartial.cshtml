@@ -1,0 +1,23 @@
+﻿@model List<Web.ViewModels.DbStatus.DbStatusDocumentViewModel>
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+@{
+    Layout = null;
+}
+
+<table class="ui celled striped table">
+    <thead>
+        <tr>
+            <th colspan="2"><i class="database icon"></i> @Localizer["DatabaseStatus"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var s in Model) {
+            <tr>
+                <td>@Localizer[s.Name]</td>
+                <td>@s.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>

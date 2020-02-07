@@ -50,7 +50,9 @@ namespace Web {
             #endregion
 
             #region Identity
-            services.AddIdentity<ApplicationUserEntity, IdentityRole>()
+            services
+                //.AddDefaultIdentity<ApplicationUserEntity>()
+                .AddIdentity<ApplicationUserEntity, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 

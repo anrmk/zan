@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Identity;
 namespace Core.Services.Business {
     public interface IAccountBusinessService {
         //Task<Pager<ApplicationUserDtoList>> GetPager(Dictionary<string, string> filter, int take, int skip);
-        //Task<ApplicationUserDto> GetUser(string id);
+        Task<ApplicationUserEntity> GetUser(ClaimsPrincipal principal);
         //Task<ApplicationUserDto> GetUserByName(string name);
         Task<ApplicationUserEntity> CreateUser(ApplicationUserDto dto, string password);
         Task<ApplicationUserDto> UpdateUserProfile(string id, UserProfileDto dto);
@@ -43,6 +44,10 @@ namespace Core.Services.Business {
             _roleManager = roleManager;
             _signInManager = signInManager;
             _userProfileManager = userProfileManager;
+        }
+
+        public async Task<ApplicationUserEntity> GetUser(ClaimsPrincipal principal) {
+            return await _userManager.GetUserAsync(principal);
         }
 
         public async Task<ApplicationUserEntity> CreateUser(ApplicationUserDto dto, string password) {

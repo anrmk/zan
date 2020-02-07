@@ -8,9 +8,5 @@ namespace Core.Data.Entities {
         [ForeignKey("Profile")]
         public long? Profile_Id { get; set; }
         public virtual UserProfileEntity Profile { get; set; }
-
-        //public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUserEntity> manager) {
-        //    return await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-        //}
     }
 }

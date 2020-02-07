@@ -1,0 +1,24 @@
+﻿@model List<Web.Models.ViewModels.Document.DocumentViewModel>
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+@{
+    Layout = null;
+}
+<table class="ui celled striped table">
+    <thead>
+        <tr>
+            <th colspan="2"><i class="stopwatch icon"></i> @Localizer["Viewed"]</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var i in Model) {
+            <tr>
+                <td>@i.Title</td>
+                <td class="collapsing">
+                    <a class="ui button" asp-action="Details" asp-controller="Document" asp-route-id="@i.Id">Перейти</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

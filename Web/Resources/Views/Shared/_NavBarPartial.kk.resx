@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value>«Zan» ДБ туралы</value>
+  </data>
   <data name="AccountSettings" xml:space="preserve">
     <value>Account Settings</value>
     <comment>не переведено</comment>
@@ -128,13 +131,13 @@
   <data name="AllDocs" xml:space="preserve">
     <value>Барлық құжаттар</value>
   </data>
-  <data name="DicJurTermin" xml:space="preserve">
+  <data name="DicLawTerms" xml:space="preserve">
     <value>Заң терминдерінің сөздігі</value>
   </data>
   <data name="DicRusKazTermin" xml:space="preserve">
     <value>Орысша-қазақша терминологиялық сөздік</value>
   </data>
-  <data name="DicTermin" xml:space="preserve">
+  <data name="DicTerms" xml:space="preserve">
     <value>Терминдер сөздігі</value>
   </data>
   <data name="Dictionaries" xml:space="preserve">
@@ -152,7 +155,13 @@
   <data name="Language" xml:space="preserve">
     <value>Yazyk</value>
   </data>
-  <data name="Tema" xml:space="preserve">
+  <data name="LegalBase" xml:space="preserve">
+    <value>Құқықтық база</value>
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value>Басты</value>
+  </data>
+  <data name="ThematicSearch" xml:space="preserve">
     <value>Тақырыптық іздеу</value>
   </data>
 </root>

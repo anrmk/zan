@@ -6,16 +6,17 @@
     <Company>WaspLine LLC</Company>
     <Authors>Aziz Nurmukhamedov</Authors>
   </PropertyGroup>
-
   <ItemGroup>
-    <Compile Remove="Migrations\20191127203501_init.cs" />
-    <Compile Remove="Migrations\20191127203501_init.Designer.cs" />
-    <Compile Remove="Migrations\20191216193828_added-document-entity4.cs" />
-    <Compile Remove="Migrations\20191216193828_added-document-entity4.Designer.cs" />
-    <Compile Remove="Migrations\20191217031047_init2.cs" />
-    <Compile Remove="Migrations\20191217031047_init2.Designer.cs" />
-    <Compile Remove="Migrations\20200103022416_update-entities.cs" />
-    <Compile Remove="Migrations\20200103022416_update-entities.Designer.cs" />
+    <Compile Remove="Migrations\20200203020817_update.cs" />
+    <Compile Remove="Migrations\20200203020817_update.Designer.cs" />
+    <Compile Remove="Migrations\20200203050748_update.cs" />
+    <Compile Remove="Migrations\20200203050748_update.Designer.cs" />
+    <Compile Remove="Migrations\20200204023324_init.cs" />
+    <Compile Remove="Migrations\20200204023324_init.Designer.cs" />
+    <Compile Remove="Migrations\20200204023435_init-test.cs" />
+    <Compile Remove="Migrations\20200204023435_init-test.Designer.cs" />
+    <Compile Remove="Migrations\20200204023531_init.cs" />
+    <Compile Remove="Migrations\20200204023531_init.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

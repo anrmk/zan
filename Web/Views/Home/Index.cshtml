@@ -6,10 +6,15 @@
     var lang = ViewBag.Language;
 }
 
-<div class="ui grid">
-    <div class="four wide column">
-    </div>
-    <div class="twelve wide column">
-        Главная страница. Краткая информация, ссылки на "Справочник"
+<div class="ui stackable grid container">
+    <div class="row">
+        <div class="four wide column">
+            <partial name="_DbStatusDocumentPartial" model="ViewBag.DbStatusDocument" />
+            <partial name="_TechnicalSupportPartial" />
+        </div>
+        <div class="twelve wide column">
+            <partial name="_DocumentFavoritePartial" model="ViewBag.Favorites" />
+            <partial name="_DocumentViewedPartial" model="ViewBag.Viewed" />
+        </div>
     </div>
 </div>

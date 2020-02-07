@@ -60,7 +60,7 @@
             //},
         });
 
-        table.on('click', 'a.document-card', (e)  => {
+        table.on('click', 'a.document-card', (e) => {
             var closestRow = $(e.target).closest('tr');
             var data = this.options.datatable.row(closestRow).data();
             var fragment = closestRow.find('div.segment').addClass('loading');
@@ -86,6 +86,18 @@
                     documentCard = $('<div>', { id: 'documentBody' }).appendTo('.right-subpanel')
                 }
                 documentCard.replaceWith(html);
+            });
+            e.preventDefault();
+        });
+
+        table.on('click', 'a.document-favorite', (e) => {
+            var target = $(e.target);
+            var closestRow = target.closest('tr');
+            var data = this.options.datatable.row(closestRow).data();
+            var fragment = closestRow.find('div.segment').addClass('loading');
+            $.ajax(`/api/document/addfavorite/`, { data: { 'id': data.id}}).done((result) => {
+                fragment.removeClass('loading');
+                alert('Документ добавлен в подборку "Избранные"')
             });
             e.preventDefault();
         });
@@ -123,7 +135,7 @@
                     <div class='ui top right attached label'>
                         <a href='#' class='document-card'><i class="file alternate outline icon"></i></a>
                         <a href='#' class='document-body'><i class="eye icon"></i></a>
-
+                        <a href='#' class='document-favorite'><i class="star icon"></i></a>
                     </div>
                     <h5><a href='${controller.options.controller.mvc}/details/${row['id']}'>${row['title']}</a></h5>
                     

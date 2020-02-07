@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value>About the DB "Zan"</value>
+  </data>
   <data name="AccountSettings" xml:space="preserve">
     <value>Account Settings</value>
   </data>
@@ -126,13 +129,13 @@
   <data name="AllDocs" xml:space="preserve">
     <value>All documents</value>
   </data>
-  <data name="DicJurTermin" xml:space="preserve">
+  <data name="DicLawTerms" xml:space="preserve">
     <value>Dictionary of legal terms</value>
   </data>
   <data name="DicRusKazTermin" xml:space="preserve">
     <value>Russian Kazakh terminological dictionary</value>
   </data>
-  <data name="DicTermin" xml:space="preserve">
+  <data name="DicTerms" xml:space="preserve">
     <value>Glossary of terms</value>
   </data>
   <data name="Dictionaries" xml:space="preserve">
@@ -150,7 +153,13 @@
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
-  <data name="Tema" xml:space="preserve">
+  <data name="LegalBase" xml:space="preserve">
+    <value>Legal base</value>
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value>Main page</value>
+  </data>
+  <data name="ThematicSearch" xml:space="preserve">
     <value>Thematic search</value>
   </data>
 </root>

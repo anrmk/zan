@@ -30,8 +30,10 @@ namespace Web.Controllers {
         private readonly IViewRenderService _viewRenderService;
         private readonly IDocumentBusinessService _documentBusinessService;
         private readonly INsiBusinessService _nsiBusinessService;
+        private readonly IAccountBusinessService _accountBusinessService;
 
         public DocumentController(IMemoryCache memoryCache, IMapper mapper,
+          IAccountBusinessService accountBusinessService,
           IViewRenderService viewRenderService,
           IExportService exportService,
           IHttpContextAccessor httpContextAccessor,
@@ -43,6 +45,7 @@ namespace Web.Controllers {
             _mapper = mapper;
             _exportService = exportService;
             _viewRenderService = viewRenderService;
+            _accountBusinessService = accountBusinessService;
             _documentBusinessService = documentBusinessService;
             _nsiBusinessService = nsiBusinessService;
         }
@@ -72,6 +75,20 @@ namespace Web.Controllers {
 
             return View(model);
         }
+
+        /// <summary>
+        /// Добавить документ в раздел "Избранные"
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        //public async Task<ActionResult> AddFavorite(Guid id) {
+        //    var user = await _accountBusinessService.GetUser(HttpContext.User);
+        //    if(user == null)
+        //        return BadRequest();
+            
+        //    var item = await _documentBusinessService.AddToFavorite(Guid.Parse(user.Id), id);
+        //    return View(_mapper.Map<DocumentViewModel>(item));
+        //}
 
         /// <summary>
         /// Карточка документа (краткая информация)
@@ -110,7 +127,7 @@ namespace Web.Controllers {
                 return BadRequest();
 
             var search = _mapper.Map<SearchDto>(model);
-            var item = await _documentBusinessService.GetListOfDocument(search, search.Start, search.Length);
+            var item = await _documentBusinessService.GetListOfDocument(Guid.Empty, search, search.Start, search.Length);
             ViewBag.OnLoad = "window.print()";
 
             return View("_ExportToList", item.Data);
@@ -122,7 +139,7 @@ namespace Web.Controllers {
                 return BadRequest();
 
             var search = _mapper.Map<SearchDto>(model);
-            var item = await _documentBusinessService.GetListOfDocument(search, search.Start, search.Length);
+            var item = await _documentBusinessService.GetListOfDocument(Guid.Empty, search, search.Start, search.Length);
 
             var name = string.Format("ReportList_{0}.doc", DateTime.Now.ToString("ddMMyyyy"));
 
@@ -339,13 +356,15 @@ namespace Web.Controllers.Api {
         private readonly ISyncBusinessService _syncBusinessService;
         private readonly IHubContext<SyncDataHub> _syncDataHubContext;
         private readonly IDocumentBusinessService _documentBusinessService;
+        private readonly IAccountBusinessService _accountBusinessService;
 
         public DocumentController(IMemoryCache memoryCache, IMapper mapper, IHubContext<SyncDataHub> syncDataHubContext, ISyncBusinessService syncBusinessService,
-            IDocumentBusinessService documentBusinessService) {
+            IAccountBusinessService accountBusinessService, IDocumentBusinessService documentBusinessService) {
             _cache = memoryCache;
             _mapper = mapper;
             _syncDataHubContext = syncDataHubContext;
             _syncBusinessService = syncBusinessService;
+            _accountBusinessService = accountBusinessService;
             _documentBusinessService = documentBusinessService;
         }
 
@@ -355,8 +374,25 @@ namespace Web.Controllers.Api {
             _cache.Set("_SearchViewModel", model, cacheEntryOptions);
 
             var search = _mapper.Map<SearchDto>(model);
-            var item = await _documentBusinessService.GetListOfDocument(search, search.Start, search.Length);
+            var item = await _documentBusinessService.GetListOfDocument(Guid.Empty, search, search.Start, search.Length);
             return Ok(item);
+        }
+
+        /// <summary>
+        /// Добавить документ в раздел "Избранные"
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("addFavorite")]
+        public async Task<ActionResult> AddFavorite(Guid id) {
+            var user = await _accountBusinessService.GetUser(HttpContext.User);
+            if(user == null)
+                return BadRequest();
+
+            var item = await _documentBusinessService.AddToFavorite(Guid.Parse(user.Id), id);
+
+            return Ok(_mapper.Map<DocumentViewModel>(item));
         }
     }
 }

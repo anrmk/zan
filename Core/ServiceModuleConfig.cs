@@ -25,6 +25,7 @@ namespace Core.Config {
             services.AddTransient<IUserProfileManager, UserProfileManager>();
             services.AddTransient<IDocumentManager, DocumentManager>();
             services.AddTransient<IDocumentBodyManager, DocumentBodyManager>();
+            services.AddTransient<IDocumentFavoriteManager, DocumentFavoriteManager>();
 
             ///NSI Managers
             services.AddTransient<INsiLanguageManager, NsiLanguageManager>();
@@ -47,6 +48,7 @@ namespace Core.Config {
             services.AddTransient<INsiBusinessService, NsiBusinessService>(); //для работы со справочниками
             services.AddTransient<ISyncBusinessService, SyncBusinessService>(); //для работы с синхронизацией данных
             services.AddTransient<IDocumentBusinessService, DocumentBusinessService>();
+            services.AddTransient<IDbStatusBusinessService, DbStatusBusinessService>(); //для получения статистики
         }
     }
 }

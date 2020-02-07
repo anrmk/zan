@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -12,28 +13,44 @@ using Core.Services.Managers;
 
 namespace Core.Services.Business {
     public interface IDocumentBusinessService {
-        Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, int offset, int limit);
+        Task<PagerExtended<DocumentDto>> GetListOfDocument(Guid userId, SearchDto search, int offset, int limit);
         Task<DocumentDto> GetDocument(Guid id);
         Task<DocumentDto> GetDocumentByNgr(string ngr, int lng, DateTime editionDate);
         Task<List<DocumentDto>> GetDocumentsByNgr(string ngr);
+
+        Task<List<DocumentDto>> GetFavorites(Guid userId, int limit);
+        Task<DocumentDto> AddToFavorite(Guid userId, Guid documentId);
     }
 
     public class DocumentBusinessService: IDocumentBusinessService {
         private readonly IMapper _mapper;
         private readonly IDocumentManager _documentManager;
         private readonly IDocumentBodyManager _documentBodyManager;
+        private readonly IDocumentFavoriteManager _documentFavoriteManager;
 
         public DocumentBusinessService(IMapper mapper,
             IDocumentManager documentManager,
-            IDocumentBodyManager documentBodyManager) {
+            IDocumentBodyManager documentBodyManager,
+            IDocumentFavoriteManager documentFavoriteManager) {
             _mapper = mapper;
             _documentManager = documentManager;
             _documentBodyManager = documentBodyManager;
+            _documentFavoriteManager = documentFavoriteManager;
         }
 
-        public async Task<PagerExtended<DocumentDto>> GetListOfDocument(SearchDto search, int offset, int limit) {
+        public async Task<PagerExtended<DocumentDto>> GetListOfDocument(Guid userId, SearchDto search, int offset, int limit) {
+            #region FAVORITE
+            var favoriteDocumentIds = new List<Guid?>();
+
+            var favoriteEntity = await _documentFavoriteManager.FindListByUserIdAsync(userId);
+            if(favoriteEntity != null)
+                favoriteDocumentIds = favoriteEntity.Select(x => x.DocumentId).ToList();
+
+            #endregion
+
             Expression<Func<DocumentEntity, bool>> where = x =>
                 (true)
+                && ((favoriteDocumentIds.Count > 0) ? favoriteDocumentIds.Contains(x.Id) : true)
                 && ((string.IsNullOrEmpty(search.SearchText)) || (x.Title.Contains(search.SearchText.Trim()) || x.Info.Contains(search.SearchText.Trim())))
                 && ((search.Languages == null || search.Languages.Count == 0) || search.Languages.Contains(x.Language.Id))
                 && ((search.Statuses == null || search.Statuses.Count == 0) || search.Statuses.Contains(x.Status.Id))
@@ -70,7 +87,7 @@ namespace Core.Services.Business {
             } catch(Exception e) {
                 Console.WriteLine(e.Message);
             }
-            return null;
+            return new PagerExtended<DocumentDto>(new List<DocumentDto>(), 0, offset, limit);
         }
 
         public async Task<DocumentDto> GetDocument(Guid id) {
@@ -100,6 +117,32 @@ namespace Core.Services.Business {
         public async Task<List<DocumentDto>> GetDocumentsByNgr(string ngr) {
             var item = await _documentManager.FindAllByNgrAsync(ngr);
             return _mapper.Map<List<DocumentDto>>(item);
+        }
+
+        /// <summary>
+        /// Получение списка избранных документов
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<List<DocumentDto>> GetFavorites(Guid userId, int limit = 10) {
+            var favorites = await _documentFavoriteManager.FindListByUserIdAsync(userId);
+            var favoritesIds = favorites.Take(limit).Select(x => x.DocumentId).ToArray();
+
+            var item = await _documentManager.FindAllByIds(favoritesIds);
+            return _mapper.Map<List<DocumentDto>>(item);
+        }
+
+        public async Task<DocumentDto> AddToFavorite(Guid userId, Guid documentId) {
+            var item = await _documentFavoriteManager.FindByUserIdAsync(userId, documentId);
+            if(item == null) {
+                item = await _documentFavoriteManager.CreateOrUpdate(new DocumentFavoriteEntity() {
+                    ApplicationUserId = userId,
+                    DocumentId = documentId
+                });
+            }
+
+            var result = await _documentManager.FindInclude(documentId);
+            return _mapper.Map<DocumentDto>(result);
         }
     }
 }

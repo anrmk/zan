@@ -14,6 +14,7 @@ namespace Core.Services.Managers {
         Task<DocumentEntity> FindInclude(Guid id);
         Task<List<DocumentEntity>> FindAllByNgrAsync(string ngr);
         Task<DocumentEntity> FindByNgrAsync(string ngr, int lng, DateTime editionDate);
+        Task<List<DocumentEntity>> FindAllByIds(Guid?[] ids);
     }
 
     public class DocumentManager: AsyncEntityService<DocumentEntity>, IDocumentManager {
@@ -40,6 +41,10 @@ namespace Core.Services.Managers {
                 .Where(x => x.LanguageId == lng)
                 .Where(x => x.EditionDate == editionDate)
                 .SingleOrDefaultAsync();
+        }
+
+        public async Task<List<DocumentEntity>> FindAllByIds(Guid?[] ids) {
+            return await DbSet.Where(x => ids.Contains(x.Id)).ToListAsync();
         }
     }
 }
