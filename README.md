@@ -6,3 +6,9 @@
 This is [ASP.NET Core ](https://dotnet.microsoft.com/learn/aspnet/what-is-aspnet-core) Web Application with dynamicaly render HTML (Razor), seamless integration with [Entity Framework (EF)](https://docs.microsoft.com/en-us/ef/) including SQL Server (or SQL Light as you wish). For building interactiv Web UI I used [Semantic UI](https://semantic-ui.com/) and [jQuery](https://jquery.com/)
 
 All information posted on that resource is published for informational purposes only and under no circumstances is a public offer.
+
+![ZanKz - Main Page](/Screenshots/printscreen_1.png) "Main page display statisctics of Database and list of Favorites Documents"
+
+![ZanKz - Legal Base](/Screenshots/printscreen_legalbase.png) "A list of Documents available in Database in chronological order by the date of their adotpion"
+
+![ZanKz - Legal Base](/Screenshots/printscreen_document.png) "When you open the document you will see the content and different editions of document, various language versions"
